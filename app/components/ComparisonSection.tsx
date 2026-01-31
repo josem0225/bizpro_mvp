@@ -7,8 +7,9 @@ export default function ComparisonSection() {
     const { language, data } = useBizPro();
     const comparison = data.content.landing.comparison;
 
+
     return (
-        <section className="py-[100px] bg-[rgba(0,0,0,0.3)]">
+        <section className="py-[100px] bg-[var(--background)]">
             <div className="w-[90%] max-w-[var(--container-width)] mx-auto">
                 <div className="text-center mb-[60px]">
                     <h2 className="text-[2.5rem] font-bold mb-4">{comparison.title[language]}</h2>
@@ -16,26 +17,26 @@ export default function ComparisonSection() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                     {/* BizPro Side */}
-                    <div className="bg-[rgba(23,19,77,0.6)] border border-[var(--blue-electric)] rounded-[var(--radius-lg)] p-8 relative overflow-hidden">
+                    <div className="bg-[var(--background)] border-2 border-[var(--blue-electric)] rounded-[var(--radius-lg)] p-8 relative overflow-hidden shadow-sm">
                         <div className="absolute top-0 left-0 w-full h-1 bg-[var(--blue-electric)]"></div>
-                        <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
+                        <h3 className="text-2xl font-bold mb-8 flex items-center gap-2 text-[var(--foreground)]">
                             <div className="w-8 h-8 bg-[var(--blue-electric)] rounded-md flex items-center justify-center text-sm text-white">B</div>
                             BizPro
                         </h3>
                         <div className="space-y-6">
                             {comparison.bizpro[language].map((item, idx) => (
                                 <div key={idx} className="flex items-start gap-4">
-                                    <div className="w-6 h-6 rounded-full bg-[rgba(16,185,129,0.1)] border border-[var(--success)] flex items-center justify-center text-[var(--success)] shrink-0">
+                                    <div className="w-6 h-6 rounded-full bg-[var(--success)]/10 border border-[var(--success)] flex items-center justify-center text-[var(--success)] shrink-0">
                                         <Check className="w-3.5 h-3.5" />
                                     </div>
-                                    <span className="text-lg">{item}</span>
+                                    <span className="text-lg text-[var(--foreground)]">{item}</span>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     {/* Others Side */}
-                    <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-lg)] p-8 relative opacity-80">
+                    <div className="bg-[var(--background)] border border-[var(--glass-border)] rounded-[var(--radius-lg)] p-8 relative opacity-80">
                         <h3 className="text-2xl font-bold mb-8 text-[var(--text-gray)]">Gestores / Others</h3>
                         <div className="space-y-6">
                             {comparison.others[language].map((item, idx) => (

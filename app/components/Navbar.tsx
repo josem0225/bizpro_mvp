@@ -5,6 +5,7 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useBizPro } from "@/app/context/BizProContext";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
     const { language, toggleLanguage, data, login } = useBizPro();
@@ -18,11 +19,11 @@ export default function Navbar() {
     };
 
     return (
-        <header className="fixed top-0 left-0 w-full h-[var(--header-height)] z-[1000] bg-[rgba(5,5,17,0.8)] backdrop-blur-[10px] border-b border-[var(--glass-border)] flex items-center">
+        <header className="fixed top-0 left-0 w-full h-[var(--header-height)] z-[1000] bg-[var(--background)]/90 backdrop-blur-[10px] border-b border-[var(--glass-border)] flex items-center transition-colors duration-300">
             <div className="w-[90%] max-w-[var(--container-width)] mx-auto flex justify-between items-center">
                 {/* Logo - Navigates to Landing */}
-                <Link href="/" className="text-2xl font-bold tracking-tighter flex items-center gap-2.5 text-[var(--white)]">
-                    <div className="w-8 h-8 bg-[var(--blue-electric)] rounded-md flex items-center justify-center text-lg">
+                <Link href="/" className="text-2xl font-bold tracking-tighter flex items-center gap-2.5 text-[var(--foreground)]">
+                    <div className="w-8 h-8 bg-[var(--blue-electric)] rounded-md flex items-center justify-center text-lg text-white">
                         B
                     </div>
                     BizPro USA
@@ -32,17 +33,17 @@ export default function Navbar() {
                 <nav className="hidden md:block">
                     <ul className="flex gap-[30px]">
                         <li>
-                            <Link href="#funciona" className="text-[var(--text-gray)] font-medium hover:text-[var(--white)] transition-colors">
+                            <Link href="#funciona" className="text-[var(--text-gray)] font-medium hover:text-[var(--foreground)] transition-colors">
                                 {navText.howItWorks[language]}
                             </Link>
                         </li>
                         <li>
-                            <Link href="#precios" className="text-[var(--text-gray)] font-medium hover:text-[var(--white)] transition-colors">
+                            <Link href="#precios" className="text-[var(--text-gray)] font-medium hover:text-[var(--foreground)] transition-colors">
                                 {navText.pricing[language]}
                             </Link>
                         </li>
                         <li>
-                            <Link href="#nosotros" className="text-[var(--text-gray)] font-medium hover:text-[var(--white)] transition-colors">
+                            <Link href="#nosotros" className="text-[var(--text-gray)] font-medium hover:text-[var(--foreground)] transition-colors">
                                 {navText.about[language]}
                             </Link>
                         </li>
@@ -51,18 +52,23 @@ export default function Navbar() {
 
                 {/* CTA Buttons */}
                 <div className="flex gap-4 items-center">
+                    {/* Theme Toggle */}
+                    <div className="hidden md:block">
+                        <ThemeToggle />
+                    </div>
+
                     {/* Language Toggle */}
                     <button
                         onClick={toggleLanguage}
-                        className="hidden md:flex items-center gap-1 text-sm font-medium text-white/80 hover:text-white mr-4"
+                        className="hidden md:flex items-center gap-1 text-sm font-medium text-[var(--text-gray)] hover:text-[var(--foreground)] mr-4"
                     >
-                        <span className={language === 'es' ? "text-white font-bold" : "text-white/40"}>ES</span>
-                        <span className="text-white/40">/</span>
-                        <span className={language === 'en' ? "text-white font-bold" : "text-white/40"}>EN</span>
+                        <span className={language === 'es' ? "text-[var(--foreground)] font-bold" : "text-[var(--text-gray)]/60"}>ES</span>
+                        <span className="text-[var(--text-gray)]/40">/</span>
+                        <span className={language === 'en' ? "text-[var(--foreground)] font-bold" : "text-[var(--text-gray)]/60"}>EN</span>
                     </button>
 
                     {/* Login -> Login Page */}
-                    <Link href="/login" className="hidden sm:block text-sm text-[var(--text-gray)] hover:text-white transition-colors">
+                    <Link href="/login" className="hidden sm:block text-sm text-[var(--text-gray)] hover:text-[var(--foreground)] transition-colors">
                         {navText.login[language]}
                     </Link>
                     {/* Start -> Intake */}
@@ -75,7 +81,7 @@ export default function Navbar() {
 
                     {/* Mobile Menu Toggle */}
                     <button
-                        className="md:hidden text-white"
+                        className="md:hidden text-[var(--foreground)]"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
                         <Menu className="w-6 h-6" />
@@ -85,17 +91,17 @@ export default function Navbar() {
 
             {/* Mobile Menu Dropdown */}
             {isMobileMenuOpen && (
-                <div className="absolute top-[var(--header-height)] left-0 w-full bg-[var(--navy-deep)] border-b border-[var(--glass-border)] p-4 md:hidden flex flex-col gap-4">
-                    <Link href="#funciona" className="text-[var(--text-gray)] font-medium hover:text-[var(--white)]">
+                <div className="absolute top-[var(--header-height)] left-0 w-full bg-[var(--background)] border-b border-[var(--glass-border)] p-4 md:hidden flex flex-col gap-4">
+                    <Link href="#funciona" className="text-[var(--text-gray)] font-medium hover:text-[var(--foreground)]">
                         {navText.howItWorks[language]}
                     </Link>
-                    <Link href="#precios" className="text-[var(--text-gray)] font-medium hover:text-[var(--white)]">
+                    <Link href="#precios" className="text-[var(--text-gray)] font-medium hover:text-[var(--foreground)]">
                         {navText.pricing[language]}
                     </Link>
-                    <Link href="/login" className="text-left text-[var(--text-gray)] font-medium hover:text-[var(--white)]">
+                    <Link href="/login" className="text-left text-[var(--text-gray)] font-medium hover:text-[var(--foreground)]">
                         {navText.login[language]}
                     </Link>
-                    <button onClick={toggleLanguage} className="text-left text-[var(--text-gray)] font-medium hover:text-[var(--white)]">
+                    <button onClick={toggleLanguage} className="text-left text-[var(--text-gray)] font-medium hover:text-[var(--foreground)]">
                         Cambiar Idioma ({language.toUpperCase()})
                     </button>
                 </div>

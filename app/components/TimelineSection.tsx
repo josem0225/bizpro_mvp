@@ -29,7 +29,7 @@ export default function TimelineSection() {
     }, []);
 
     return (
-        <section className="py-[100px] bg-[rgba(0,0,0,0.2)]" id="funciona">
+        <section className="py-[100px] bg-[var(--background)]" id="funciona">
             <div className="w-[90%] max-w-[var(--container-width)] mx-auto">
                 <div className="text-center mb-[60px]">
                     <h2 className="text-[2.5rem] font-bold mb-4">{data.content.ui.nav.howItWorks[language]}</h2>
@@ -49,11 +49,11 @@ export default function TimelineSection() {
                                 <div className="w-[42px] h-[42px] bg-[var(--navy-deep)] border-[2px] border-[var(--blue-electric)] rounded-full grid place-items-center font-bold text-[var(--blue-electric)] z-[2] shrink-0 shadow-[0_0_0_4px_var(--navy-deep)]">
                                     {step.id}
                                 </div>
-                                <div className="ml-6 bg-[var(--glass-bg)] border border-[var(--glass-border)] p-6 rounded-[var(--radius-md)] grow">
+                                <div className="ml-6 bg-[var(--background)] border border-[var(--glass-border)] p-6 rounded-[var(--radius-md)] grow shadow-sm">
                                     <div className="flex justify-between items-start mb-2">
-                                        <h3 className="text-white font-bold text-lg">{step.title[language]}</h3>
+                                        <h3 className="text-[var(--foreground)] font-bold text-lg">{step.title[language]}</h3>
                                         {price > 0 && (
-                                            <span className="text-sm font-bold text-[var(--blue-glow)] bg-[rgba(59,130,246,0.1)] border border-[rgba(59,130,246,0.3)] px-2 py-0.5 rounded">
+                                            <span className="text-sm font-bold text-[var(--blue-electric)] bg-[var(--navy-brand)]/5 border border-[var(--blue-electric)]/20 px-2 py-0.5 rounded">
                                                 ${price}
                                             </span>
                                         )}
@@ -69,8 +69,8 @@ export default function TimelineSection() {
                         <div className="w-[42px] h-[42px] bg-[var(--navy-deep)] border-[2px] border-[var(--blue-electric)] rounded-full grid place-items-center font-bold text-[var(--blue-electric)] z-[2] shrink-0 shadow-[0_0_0_4px_var(--navy-deep)]">
                             ...
                         </div>
-                        <div className="ml-6 bg-[var(--glass-bg)] border border-dashed border-[var(--glass-border)] p-6 rounded-[var(--radius-md)] grow">
-                            <h3 className="text-white mb-2 font-bold text-lg opacity-80">{language === 'es' ? "Crecimiento Continuo" : "Continuous Growth"}</h3>
+                        <div className="ml-6 bg-[var(--background)] border border-dashed border-[var(--glass-border)] p-6 rounded-[var(--radius-md)] grow">
+                            <h3 className="text-[var(--foreground)] mb-2 font-bold text-lg opacity-80">{language === 'es' ? "Crecimiento Continuo" : "Continuous Growth"}</h3>
                             <p className="text-[var(--text-gray)] text-sm md:text-base">{language === 'es' ? "Escala tu negocio sin límites." : "Scale your business without limits."}</p>
                         </div>
                     </div>

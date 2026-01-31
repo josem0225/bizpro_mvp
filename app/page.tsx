@@ -14,7 +14,7 @@ export default function Home() {
     <main className="min-h-screen relative font-sans text-[var(--foreground)] bg-[var(--background)]">
 
       {/* Background Layer */}
-      <ParticlesBackground />
+      {/* <ParticlesBackground /> -- Removed per user request for clean look */}
 
       {/* Content Layer */}
       <div className="relative z-[2]">

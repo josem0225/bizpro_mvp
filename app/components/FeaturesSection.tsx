@@ -41,13 +41,13 @@ export default function FeaturesSection() {
                     {features.cards.map((card, idx) => (
                         <div
                             key={idx}
-                            className={`bento-card-reveal opacity-0 translate-y-[20px] transition-all duration-700 ease-out bg-[var(--glass-bg)] border border-[var(--glass-border)] p-8 rounded-[var(--radius-md)] hover:bg-[rgba(255,255,255,0.05)] hover:border-[rgba(255,255,255,0.2)] hover:translate-y-[-5px] group ${card.wide ? "md:col-span-2" : ""}`}
+                            className="bento-card-reveal opacity-0 translate-y-[20px] transition-all duration-700 ease-out bg-[var(--background)] border border-[var(--glass-border)] p-8 rounded-[var(--radius-md)] hover:border-[var(--navy-brand)] hover:translate-y-[-5px] group h-full flex flex-col items-start text-left shadow-sm"
                         >
-                            <span className="text-[2rem] mb-5 inline-block bg-gradient-to-br from-[var(--blue-electric)] to-[var(--navy-brand)] bg-clip-text text-transparent">
+                            <span className="text-[2rem] mb-5 inline-block text-[var(--navy-brand)]">
                                 {card.icon}
                             </span>
-                            <h3 className="text-xl font-bold mb-2.5 group-hover:text-[var(--blue-glow)] transition-colors">{card.title[language]}</h3>
-                            <p className="text-[var(--text-gray)]">{card.desc[language]}</p>
+                            <h3 className="text-xl font-bold mb-2.5 group-hover:text-[var(--navy-brand)] transition-colors text-[var(--foreground)]">{card.title[language]}</h3>
+                            <p className="text-[var(--text-gray)] flex-1">{card.desc[language]}</p>
                         </div>
                     ))}
                 </div>
