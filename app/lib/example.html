@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizPro USA | Tu Socio de Negocios en Florida</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. VARIABLES & RESET (SYSTEM DESIGN)
+           ========================================= */
+        :root {
+            /* PALETA CORE */
+            --navy-deep: #050511;
+            /* Fondo Principal */
+            --navy-brand: #17134D;
+            /* Tu Color Corporativo */
+            --navy-light: #23235B;
+            /* Variación para hover */
+
+            --blue-electric: #3B82F6;
+            /* Acciones Primarias */
+            --blue-glow: #60A5FA;
+            /* Efectos de luz */
+
+            --success: #10B981;
+            /* Confirmación */
+            --gold: #F59E0B;
+            /* Premium/Atención */
+            --white: #FFFFFF;
+            --text-gray: #94A3B8;
+
+            /* GLASSMORPHISM FORMULA */
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-blur: 12px;
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+            /* ESPACIADO & TAMAÑOS */
+            --container-width: 1200px;
+            --header-height: 80px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+        }
+
+        /* RESET MODERNO */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--navy-deep);
+            color: var(--white);
+            line-height: 1.6;
+            font-size: 18px;
+            /* Base 18px para Carlos */
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* =========================================
+           2. UTILIDADES & ANIMACIONES
+           ========================================= */
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--white) 0%, var(--text-gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .highlight {
+            color: var(--blue-electric);
+        }
+
+        .gold-text {
+            color: var(--gold);
+        }
+
+        /* Animaciones on Scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Botones */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--blue-electric);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+            background: #2563EB;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--white);
+            background: var(--glass-bg);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* =========================================
+           3. HEADER (Navegación Clara)
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            z-index: 1000;
+            background: rgba(5, 5, 17, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--blue-electric);
+            border-radius: 6px;
+            display: grid;
+            place-items: center;
+            font-size: 18px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--white);
+        }
+
+        .auth-btn-small {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* =========================================
+           4. HERO SECTION (3D Abstract + Glass)
+           ========================================= */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            overflow: hidden;
+        }
+
+        /* Canvas Background */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.6;
+        }
+
+        /* Gradient Overlay */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(23, 19, 77, 0.4) 0%, var(--navy-deep) 90%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--blue-glow);
+            margin-bottom: 24px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Glass Card Showcase */
+        .glass-showcase {
+            margin-top: 60px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(var(--glass-blur));
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transform: perspective(1000px) rotateX(2deg);
+            transition: transform 0.5s;
+        }
+
+        .glass-showcase:hover {
+            transform: perspective(1000px) rotateX(0deg);
+        }
+
+        .dashboard-mockup {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            background: #0f172a;
+            /* Mock dark UI */
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 20px;
+            text-align: left;
+        }
+
+        /* =========================================
+           5. BENTO GRID (Segmentation)
+           ========================================= */
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .bento-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 32px;
+            border-radius: var(--radius-md);
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .bento-card.wide {
+            grid-column: span 2;
+        }
+
+        .bento-card.tall {
+            grid-row: span 2;
+        }
+
+        .bento-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: linear-gradient(135deg, var(--blue-electric), var(--navy-brand));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* =========================================
+           6. TIMELINE (How it works)
+           ========================================= */
+        .timeline-wrapper {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Linea vertical */
+        .timeline-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            /* Alineación mobile */
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--glass-border);
+        }
+
+        .step-item {
+            display: flex;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .step-marker {
+            width: 42px;
+            height: 42px;
+            background: var(--navy-deep);
+            border: 2px solid var(--blue-electric);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            color: var(--blue-electric);
+            z-index: 2;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 4px var(--navy-deep);
+            /* Masking effect */
+        }
+
+        .step-content {
+            margin-left: 24px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            flex-grow: 1;
+        }
+
+        .step-content h3 {
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+        }
+
+        /* =========================================
+           7. PRICING (Decoy Effect)
+           ========================================= */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            align-items: center;
+        }
+
+        .price-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            position: relative;
+        }
+
+        .price-card.featured {
+            background: rgba(23, 19, 77, 0.6);
+            border: 1px solid var(--blue-electric);
+            transform: scale(1.05);
+            z-index: 2;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+        }
+
+        .badge-popular {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: black;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        .price-amount span {
+            font-size: 1rem;
+            color: var(--text-gray);
+            font-weight: 400;
+        }
+
+        .savings {
+            color: var(--success);
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .features-list {
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .features-list li {
+            margin-bottom: 12px;
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .check-icon {
+            color: var(--success);
+        }
+
+        /* =========================================
+           8. MOCK DASHBOARD UI ELEMENTS (CSS-Only)
+           ========================================= */
+        .mock-sidebar {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .mock-nav-item {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
+            border-radius: 4px;
+            width: 70%;
+        }
+
+        .mock-main {
+            display: grid;
+            gap: 15px;
+        }
+
+        .mock-header {
+            height: 40px;
+            background: linear-gradient(90deg, var(--navy-brand), transparent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .mock-progress {
+            width: 100px;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .mock-bar {
+            width: 30%;
+            height: 100%;
+            background: var(--success);
+        }
+
+        .mock-card {
+            background: rgba(255, 255, 255, 0.05);
+            height: 80px;
+            border-radius: 8px;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* =========================================
+           9. RESPONSIVE
+           ========================================= */
+        @media (max-width: 768px) {
+            header {
+                height: 60px;
+            }
+
+            .hero {
+                padding-top: 100px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bento-card.wide,
+            .bento-card.tall {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
+            .price-card.featured {
+                transform: scale(1);
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            /* Simplificado para demo */
+            .mobile-toggle {
+                display: block;
+            }
+
+            .timeline-wrapper::before {
+                left: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container nav-content">
+            <div class="logo">
+                <div class="logo-icon">B</div>
+                BizPro USA
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#funciona">Cómo Funciona</a></li>
+                    <li><a href="#precios">Precios</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                </ul>
+            </nav>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <a href="#" style="font-size: 0.9rem; color: var(--text-gray);">Ingresar</a>
+                <a href="#" class="btn btn-primary auth-btn-small">Comenzar</a>
+                <div class="mobile-toggle">☰</div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="container hero-content reveal">
+            <span class="hero-badge">Plataforma Oficial para Emprendedores</span>
+            <h1>Coordina tu negocio.<br> <span class="text-gradient">Sin Miedo. Sin Multas.</span></h1>
+            <p>La primera plataforma diseñada para guiar a emprendedores hispanos en Florida. Transforma la burocracia
+                en confianza paso a paso.</p>
+
+            <div class="hero-buttons">
+                <button class="btn btn-primary">Crear mi Cuenta Gratis</button>
+                <button class="btn btn-secondary">Ver Demo en Video</button>
+            </div>
+
+            <div class="glass-showcase reveal">
+                <div class="dashboard-mockup">
+                    <div class="mock-sidebar">
+                        <div class="mock-nav-item" style="background: var(--blue-electric); width: 90%;"></div>
+                        <div class="mock-nav-item"></div>
+                        <div class="mock-nav-item"></div>
+                    </div>
+                    <div class="mock-main">
+                        <div class="mock-header">
+                            <span style="font-size: 0.8rem; margin-right: 10px;">Progreso: </span>
+                            <div class="mock-progress">
+                                <div class="mock-bar"></div>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div class="mock-card"
+                                style="border: 1px solid var(--success); background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                                ✔ Paso 0: Orientación</div>
+                            <div class="mock-card">🔒 Paso 1: Identidad</div>
+                            <div class="mock-card">🔒 Paso 2: Docs</div>
+                            <div class="mock-card">🔒 Paso 3: Banco</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="nosotros">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>¿Es BizPro para ti?</h2>
+                <p style="color: var(--text-gray);">Diseñado específicamente para la realidad latina en USA.</p>
+            </div>
+
+            <div class="bento-grid">
+                <div class="bento-card wide reveal">
+                    <span class="bento-icon">🌎</span>
+                    <h3>Hablas Español, Operas en USA</h3>
+                    <p style="margin-top: 10px; color: var(--text-gray);">Toda la plataforma está en español nativo,
+                        pero generamos tus documentos en inglés legal perfecto para Florida.</p>
+                </div>
+                <div class="bento-card reveal">
+                    <span class="bento-icon">😰</span>
+                    <h3>Adiós Ansiedad</h3>
+                    <p style="margin-top: 10px; color: var(--text-gray);">¿Miedo a equivocarte con el IRS? Te blindamos
+                        con listas de verificación a prueba de errores.</p>
+                </div>
+                <div class="bento-card reveal">
+                    <span class="bento-icon">🏦</span>
+                    <h3>Estética Bancaria</h3>
+                    <p style="margin-top: 10px; color: var(--text-gray);">Seguridad de grado institucional. Tus datos
+                        están tan seguros como en Wells Fargo.</p>
+                </div>
+                <div class="bento-card wide reveal">
+                    <span class="bento-icon">🚀</span>
+                    <h3>No somos Gestores, somos Socios</h3>
+                    <p style="margin-top: 10px; color: var(--text-gray);">No solo llenamos formularios. Te enseñamos a
+                        manejar tu negocio para que no dependas de nadie.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" style="background: rgba(0,0,0,0.2);" id="funciona">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Tu Ruta al Éxito</h2>
+                <p>Un sistema probado de 6 pasos.</p>
+            </div>
+
+            <div class="timeline-wrapper">
+
+                <div class="step-item reveal">
+                    <div class="step-marker">0</div>
+                    <div class="step-content">
+                        <h3>Orientación Inicial (Gratis)</h3>
+                        <p>Entiende el juego antes de pagar. Te explicamos qué es una LLC, impuestos básicos y si esto
+                            es para ti.</p>
+                    </div>
+                </div>
+
+                <div class="step-item reveal">
+                    <div class="step-marker">1</div>
+                    <div class="step-content">
+                        <h3>Identidad Corporativa</h3>
+                        <p>Búsqueda de nombre en Sunbiz, registro de dominio y estructura legal. Evita nombres que ya
+                            existen.</p>
+                    </div>
+                </div>
+
+                <div class="step-item reveal">
+                    <div class="step-marker">2</div>
+                    <div class="step-content">
+                        <h3>Documentación Legal</h3>
+                        <p>Obtención de EIN (Tax ID) y creación del Acuerdo Operativo. La base legal de tu empresa.</p>
+                    </div>
+                </div>
+
+                <div class="step-item reveal">
+                    <div class="step-marker">...</div>
+                    <div class="step-content" style="border-style: dashed;">
+                        <h3>Operación, Banca y Crecimiento</h3>
+                        <p>Apertura de cuenta bancaria, pasarelas de pago y preparación para créditos.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="precios">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Inversión Transparente</h2>
+                <p>Sin costos ocultos. Elige tu velocidad.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="price-card reveal">
+                    <h3>Paso a Paso</h3>
+                    <div class="price-amount">$79<span>/paso</span></div>
+                    <p style="color: var(--text-gray); font-size: 0.9rem;">Ideal si tienes poco presupuesto inicial.</p>
+                    <ul class="features-list">
+                        <li><span class="check-icon">✔</span> Acceso secuencial</li>
+                        <li><span class="check-icon">✔</span> Pagas a tu ritmo</li>
+                        <li><span class="check-icon">✔</span> Soporte básico</li>
+                    </ul>
+                    <button class="btn btn-secondary" style="width: 100%;">Elegir Opción A</button>
+                </div>
+
+                <div class="price-card featured reveal">
+                    <span class="badge-popular">RECOMENDADO</span>
+                    <div class="savings">Ahorras $58</div>
+                    <h3>Startup Pack</h3>
+                    <div class="price-amount">$299<span>/único</span></div>
+                    <p style="color: var(--text-gray); font-size: 0.9rem;">Pasos 1 al 3. Todo lo esencial para arrancar
+                        legalmente.</p>
+                    <ul class="features-list">
+                        <li><span class="check-icon">✔</span> Identidad + Documentos + Banco</li>
+                        <li><span class="check-icon">✔</span> Prioridad en soporte</li>
+                        <li><span class="check-icon">✔</span> Acceso a comunidad</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%;">Comenzar Ahora</button>
+                </div>
+
+                <div class="price-card reveal">
+                    <h3>Business Ready</h3>
+                    <div class="price-amount">$899<span>/único</span></div>
+                    <p style="color: var(--text-gray); font-size: 0.9rem;">Tu negocio llave en mano con preparación
+                        financiera.</p>
+                    <ul class="features-list">
+                        <li><span class="check-icon">✔</span> Todos los 6 pasos</li>
+                        <li><span class="check-icon">✔</span> Asesoría 1 a 1 (1 hora)</li>
+                        <li><span class="check-icon">✔</span> Plan de Negocio Base</li>
+                    </ul>
+                    <button class="btn btn-secondary" style="width: 100%;">Ver Detalles</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer
+        style="border-top: 1px solid var(--glass-border); padding: 50px 0; margin-top: 50px; text-align: center; color: var(--text-gray); font-size: 0.9rem;">
+        <div class="container">
+            <p>&copy; 2026 BizPro USA LLC. Todos los derechos reservados.</p>
+            <p style="margin-top: 10px;">BizPro es una plataforma educativa y de coordinación. No somos abogados ni
+                contadores.</p>
+        </div>
+    </footer>
+
+    <script>
+        /* =========================================
+           1. CANVAS PARTICLE ANIMATION (THE 3D EFFECT)
+           ========================================= */
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        // Ajustar tamaño
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Clase Partícula
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5; // Velocidad lenta
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Rebotar en bordes
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.5)'; // Azul eléctrico suave
+                ctx.fill();
+            }
+        }
+
+        // Crear partículas
+        for (let i = 0; i < 60; i++) {
+            particles.push(new Particle());
+        }
+
+        // Loop de animación
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Dibujar partículas y conexiones
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                // Conectar nodos cercanos (Efecto Constelación)
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.15 - distance / 1000})`; // Linea muy sutil
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        /* =========================================
+           2. SCROLL REVEAL ANIMATION
+           ========================================= */
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Animación solo una vez
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        /* =========================================
+           3. SMOOTH SCROLL FOR NAV
+           ========================================= */
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>

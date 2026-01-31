@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* PALETA CORE */
+  --navy-deep: #050511;    /* Fondo Principal */
+  --navy-brand: #17134D;   /* Tu Color Corporativo */
+  --navy-light: #23235B;   /* Variación para hover */
+
+  --blue-electric: #3B82F6; /* Acciones Primarias */
+  --blue-glow: #60A5FA;    /* Efectos de luz */
+
+  --success: #10B981;      /* Confirmación */
+  --gold: #F59E0B;         /* Premium/Atención */
+  --white: #FFFFFF;
+  --text-gray: #94A3B8;
+
+  /* GLASSMORPHISM FORMULA */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 12px;
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+  /* UTILS */
+  --header-height: 80px;
+  --container-width: 1200px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  
+  /* DEFAULT NEXTJS VARS (Overridden/Adapted) */
+  --background: var(--navy-deep);
+  --foreground: var(--white);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  
+  --color-navy-deep: var(--navy-deep);
+  --color-navy-brand: var(--navy-brand);
+  --color-navy-light: var(--navy-light);
+  --color-blue-electric: var(--blue-electric);
+  --color-blue-glow: var(--blue-glow);
+  --color-success: var(--success);
+  --color-gold: var(--gold);
+  --color-text-gray: var(--text-gray);
+  
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
