@@ -144,6 +144,12 @@ export const BIZPRO_DATA = {
                     { value: "miami", label: "Miami-Dade" },
                     { value: "broward", label: "Broward" }
                 ]
+            },
+            {
+                id: 'q3',
+                type: 'email',
+                label: { es: "¿A dónde enviamos tu plan?", en: "Where should we send your plan?" },
+                placeholder: { es: "tu@email.com", en: "you@email.com" }
             }
         ],
         stepsDetail: [
@@ -198,6 +204,71 @@ export const BIZPRO_DATA = {
                 ]
             }
         ]
+    },
+    admin: {
+        users: [
+            { id: "u1", name: "Carlos Emprendedor", email: "carlos@example.com", plan: "Start", status: "Paid", lastContact: "2026-01-29", step: 1 },
+            { id: "u2", name: "Ana Pizzería", email: "ana@pizza.com", plan: "Readiness", status: "Pending", lastContact: "2026-01-25", step: 3 },
+            { id: "u3", name: "Luis Taller", email: "luis@taller.com", plan: "None", status: "Lead", lastContact: "2026-01-30", step: 0 },
+            { id: "u4", name: "María Consultora", email: "maria@legal.com", plan: "Start", status: "Paid", lastContact: "2026-01-20", step: 2 },
+            { id: "u5", name: "Jorge Tech", email: "jorge@startup.com", plan: "Readiness", status: "Paid", lastContact: "2026-01-31", step: 5 }
+        ],
+        transactions: [
+            { id: "tx1", date: "2026-01-31", user: "Jorge Tech", amount: 899, method: "Stripe", status: "Completed", concept: "Pack Business Ready" },
+            { id: "tx2", date: "2026-01-29", user: "Carlos Emprendedor", amount: 299, method: "Zelle", status: "Completed", concept: "Pack Startup" },
+            { id: "tx3", date: "2026-01-20", user: "María Consultora", amount: 79, method: "Stripe", status: "Completed", concept: "Step 1: Identity" },
+            { id: "tx4", date: "2026-01-15", user: "Pedro Construct", amount: 150, method: "Cash", status: "Pending", concept: "Manual Adjustment" }
+        ],
+        builder: {
+            verticals: [
+                {
+                    id: "v1",
+                    name: "Restaurantes / Food Service",
+                    description: "Licencias de salud, alcohol y permisos municipales.",
+                    status: "Active",
+                    steps: [
+                        {
+                            id: "s1",
+                            title: "Consulta Inicial & Estructura",
+                            price: 0, // Hook (Free)
+                            description: "Definimos si serás LLC o Corp y verificamos el nombre.",
+                            files: [{ name: "Guia_Restaurantes_FL.pdf", url: "#" }],
+                            formFields: [
+                                { id: "f1", type: "text", label: "Nombre Propuesto del Restaurante" },
+                                { id: "f2", type: "select", label: "Tipo de Servicio", options: ["Dine-in", "Takeout", "Food Truck"] }
+                            ]
+                        },
+                        {
+                            id: "s2",
+                            title: "Licencias Estatales (DBPR)",
+                            price: 199,
+                            description: "Gestión de la licencia de Hoteles y Restaurantes de FL.",
+                            files: [],
+                            formFields: [
+                                { id: "f3", type: "text", label: "Número de Asientos" },
+                                { id: "f4", type: "textarea", label: "Descripción del Menú (para plan review)" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "v2",
+                    name: "Detailing / Car Wash Móvil",
+                    description: "Permisos de agua, seguro y registro de vehículo comercial.",
+                    status: "Draft",
+                    steps: [
+                        {
+                            id: "s1",
+                            title: "Registro Básico",
+                            price: 0,
+                            description: "Registro en Sunbiz y EIN.",
+                            files: [],
+                            formFields: []
+                        }
+                    ]
+                }
+            ]
+        }
     }
 };
 

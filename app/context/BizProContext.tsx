@@ -12,11 +12,12 @@ interface BizProContextType {
     updatePrice: (stepId: number, newPrice: number) => void;
     updateStepStatus: (stepId: number, status: string) => void;
     updatePaywallTemplate: (lang: Language, template: string) => void;
+    updateVertical: (vertical: any) => void; // New method
     login: (name: string) => void;
     logout: () => void;
     setBusinessName: (name: string) => void;
     setActiveStep: (stepId: number) => void;
-    isAdminMode: boolean; // Just a helper state for simulation
+    isAdminMode: boolean;
 }
 
 const BizProContext = createContext<BizProContextType | undefined>(undefined);
@@ -34,6 +35,24 @@ export function BizProProvider({ children }: { children: React.ReactNode }) {
                 language: prev.config.language === 'es' ? 'en' : 'es'
             }
         }));
+    };
+
+    const updateVertical = (updatedVertical: any) => {
+        setData(prev => {
+            if (!prev.admin?.builder) return prev;
+            return {
+                ...prev,
+                admin: {
+                    ...prev.admin,
+                    builder: {
+                        ...prev.admin.builder,
+                        verticals: prev.admin.builder.verticals.map(v =>
+                            v.id === updatedVertical.id ? updatedVertical : v
+                        )
+                    }
+                }
+            };
+        });
     };
 
     const updatePrice = (stepId: number, newPrice: number) => {
@@ -130,6 +149,7 @@ export function BizProProvider({ children }: { children: React.ReactNode }) {
                 updatePrice,
                 updateStepStatus,
                 updatePaywallTemplate,
+                updateVertical,
                 login,
                 logout,
                 setBusinessName,

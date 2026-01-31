@@ -74,16 +74,25 @@ export default function IntakeWizard() {
                     {currentQuestion.label[language]}
                 </h2>
 
-                <div className="mb-8">
-                    {currentQuestion.type === 'text' && (
-                        <input
-                            type="text"
-                            className="w-full text-xl px-5 py-4 rounded-xl bg-[rgba(0,0,0,0.3)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] transition-colors text-center"
-                            placeholder={currentQuestion.placeholder ? currentQuestion.placeholder[language] : ''}
-                            value={answers[currentQuestion.id] || ''}
-                            onChange={(e) => handleAnswerChange(e.target.value)}
-                            autoFocus
-                        />
+                <div className="mb-8 relative">
+                    {(currentQuestion.type === 'text' || currentQuestion.type === 'email') && (
+                        <div className="relative">
+                            <input
+                                type={currentQuestion.type}
+                                className="w-full text-xl px-5 py-4 rounded-xl bg-[rgba(0,0,0,0.3)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] transition-colors text-center"
+                                placeholder={currentQuestion.placeholder ? currentQuestion.placeholder[language] : ''}
+                                value={answers[currentQuestion.id] || ''}
+                                onChange={(e) => handleAnswerChange(e.target.value)}
+                                autoFocus
+                            />
+                            {/* Trust Signal for Input */}
+                            <div className="flex justify-center items-center gap-2 mt-4 text-xs text-[var(--success)] opacity-80">
+                                <CheckCircle className="w-3 h-3" />
+                                <span>
+                                    {language === 'es' ? "Sus datos están encriptados con 256-bit SSL" : "Your data is encrypted with 256-bit SSL"}
+                                </span>
+                            </div>
+                        </div>
                     )}
 
                     {currentQuestion.type === 'select' && currentQuestion.options && (

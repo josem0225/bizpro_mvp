@@ -4,6 +4,7 @@ import { useBizPro } from "@/app/context/BizProContext";
 import { Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import ParticlesBackground from "@/app/components/ParticlesBackground";
+import DocumentPreview from "@/app/components/DocumentPreview";
 
 export default function TeaserPage() {
     const { language, data } = useBizPro();
@@ -23,17 +24,23 @@ export default function TeaserPage() {
 
             <div className="relative z-10 max-w-6xl mx-auto px-4 py-12">
 
-                <div className="text-center mb-16">
+                <div className="text-center mb-12">
                     <span className="inline-block px-4 py-1.5 bg-[rgba(16,185,129,0.1)] border border-[var(--success)] rounded-full text-sm text-[var(--success)] mb-6 font-bold uppercase tracking-widest">
                         ANÁLISIS COMPLETADO
                     </span>
                     <h1 className="text-4xl md:text-5xl font-bold mb-6">
                         Hola {userName}, aquí está el plan para {displayBusinessName}.
                     </h1>
-                    <p className="text-xl text-[var(--text-gray)] max-w-2xl mx-auto">
+                    <p className="text-xl text-[var(--text-gray)] max-w-2xl mx-auto mb-12">
                         Basado en tus respuestas, hemos diseñado la ruta más eficiente para legalizar tu negocio en Florida sin errores.
                     </p>
+
+                    {/* INSTANT GRATIFICATION: Document Preview */}
+                    <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+                        <DocumentPreview businessName={displayBusinessName} language={language} />
+                    </div>
                 </div>
+
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
 

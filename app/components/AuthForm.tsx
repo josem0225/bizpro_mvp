@@ -5,25 +5,58 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, ArrowRight } from "lucide-react";
 import { useBizPro } from "@/app/context/BizProContext";
 
-export default function AuthForm() {
+interface AuthFormProps {
+    initialMode?: "login" | "register";
+}
+
+export default function AuthForm({ initialMode }: AuthFormProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const mode = searchParams.get("mode") === "register" ? "register" : "login";
+    // Prioritize prop, then search param, default to login
+    const mode = initialMode || (searchParams.get("mode") === "register" ? "register" : "login");
     const { login } = useBizPro();
 
     const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState("");
+    const [confirmEmail, setConfirmEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [error, setError] = useState("");
+
+    // New fields for real registration
+    const [fullName, setFullName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [country, setCountry] = useState("");
+    const [city, setCity] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError("");
+
+        // VALIDATION LOGIC
+        if (mode === "register") {
+            if (email !== confirmEmail) {
+                setError("Los correos electrónicos no coinciden.");
+                return;
+            }
+            if (password !== confirmPassword) {
+                setError("Las contraseñas no coinciden.");
+                return;
+            }
+            if (password.length < 6) {
+                setError("La contraseña debe tener al menos 6 caracteres.");
+                return;
+            }
+        }
+
         setIsLoading(true);
 
         // Simulate network delay & Fake Login
         setTimeout(() => {
-            const fakeName = email.split('@')[0] || "Usuario";
+            // Use provided name or fallback
+            const finalName = fullName || email.split('@')[0] || "Usuario";
             // Capitalize first letter
-            const formattedName = fakeName.charAt(0).toUpperCase() + fakeName.slice(1);
+            const formattedName = finalName.charAt(0).toUpperCase() + finalName.slice(1);
 
             login(formattedName);
             setIsLoading(false);
@@ -40,8 +73,14 @@ export default function AuthForm() {
                 <p className="text-[var(--text-gray)] mb-6">
                     {mode === "login"
                         ? "Ingresa tus credenciales para continuar"
-                        : "Comienza a organizar tu negocio hoy mismo"}
+                        : "Completa el formulario para organizar tu negocio"}
                 </p>
+
+                {error && (
+                    <div className="bg-red-500/10 border border-red-500/50 text-red-500 text-sm p-3 rounded-lg mb-6 animate-in fade-in">
+                        {error}
+                    </div>
+                )}
 
                 {/* DEMO FAST ACCESS */}
                 <button
@@ -57,6 +96,68 @@ export default function AuthForm() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+
+                {mode === "register" && (
+                    <>
+                        <div>
+                            <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                                Nombre Completo
+                            </label>
+                            <input
+                                type="text"
+                                required
+                                value={fullName}
+                                onChange={(e) => setFullName(e.target.value)}
+                                className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                                placeholder="Juan Pérez"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                                Teléfono
+                            </label>
+                            <input
+                                type="tel"
+                                required
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                                placeholder="+1 (555) 000-0000"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                                    País
+                                </label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={country}
+                                    onChange={(e) => setCountry(e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                                    placeholder="EE.UU."
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                                    Ciudad
+                                </label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={city}
+                                    onChange={(e) => setCity(e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                                    placeholder="Miami"
+                                />
+                            </div>
+                        </div>
+                    </>
+                )}
+
                 <div>
                     <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
                         Correo Electrónico
@@ -70,6 +171,23 @@ export default function AuthForm() {
                         placeholder="nombre@ejemplo.com"
                     />
                 </div>
+
+                {mode === "register" && (
+                    <div>
+                        <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                            Confirmar Correo
+                        </label>
+                        <input
+                            type="email"
+                            required
+                            value={confirmEmail}
+                            onChange={(e) => setConfirmEmail(e.target.value)}
+                            onPaste={(e) => e.preventDefault()} // Block paste for strict security
+                            className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                            placeholder="Repite tu correo"
+                        />
+                    </div>
+                )}
 
                 <div>
                     <div className="flex justify-between items-center mb-1.5">
@@ -91,6 +209,22 @@ export default function AuthForm() {
                         placeholder="••••••••"
                     />
                 </div>
+
+                {mode === "register" && (
+                    <div>
+                        <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                            Confirmar Contraseña
+                        </label>
+                        <input
+                            type="password"
+                            required
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                            placeholder="••••••••"
+                        />
+                    </div>
+                )}
 
                 <button
                     type="submit"
@@ -116,23 +250,7 @@ export default function AuthForm() {
                 )}
             </div>
 
-            <div className="mt-8 relative">
-                <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-[var(--glass-border)]"></div>
-                </div>
-                <div className="relative flex justify-center text-xs">
-                    <span className="bg-[var(--navy-deep)] px-2 text-[var(--text-gray)] uppercase">O continúa con</span>
-                </div>
-            </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-3">
-                <button type="button" className="flex items-center justify-center px-4 py-2 border border-[var(--glass-border)] rounded-xl bg-[var(--glass-bg)] hover:bg-white/5 transition-colors">
-                    <span className="text-white text-sm font-medium">Google</span>
-                </button>
-                <button type="button" className="flex items-center justify-center px-4 py-2 border border-[var(--glass-border)] rounded-xl bg-[var(--glass-bg)] hover:bg-white/5 transition-colors">
-                    <span className="text-white text-sm font-medium">Apple</span>
-                </button>
-            </div>
 
         </div>
     );
