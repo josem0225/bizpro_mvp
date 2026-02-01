@@ -47,16 +47,20 @@ export default function StepDetailPage() {
     const progress = Math.round((checkedItems.length / (stepData.checklist.length || 1)) * 100);
 
     return (
-        <main className="min-h-screen bg-[#050511] text-white flex flex-col md:flex-row">
+        <main className="min-h-screen bg-white text-[var(--foreground)] flex flex-col md:flex-row font-sans relative">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30 z-0 pointer-events-none"></div>
 
             {/* Sidebar (Simple navigation) */}
-            <aside className="w-full md:w-64 bg-black/20 border-r border-white/10 flex-shrink-0 p-6 hidden md:block">
-                <Link href="/dashboard" className="flex items-center gap-2 text-sm text-[var(--text-gray)] hover:text-white mb-8">
+            <aside className="w-full md:w-64 bg-slate-50 border-r border-slate-200 flex-shrink-0 p-6 hidden md:block relative z-10">
+                <Link href="/dashboard" className="flex items-center gap-2 text-sm text-slate-500 hover:text-[var(--navy-brand)] mb-8 font-medium transition-colors">
                     <ArrowLeft className="w-4 h-4" /> {language === 'es' ? "Volver" : "Back"}
                 </Link>
                 <div className="space-y-2">
                     {data.content.stepsDetail.map(s => (
-                        <div key={s.id} className={`p-3 rounded-lg text-sm ${s.id === stepId ? 'bg-[var(--blue-electric)] text-white font-bold' : 'text-[var(--text-gray)] hover:bg-white/5'}`}>
+                        <div key={s.id} className={`p-3 rounded-lg text-sm transition-all ${s.id === stepId
+                            ? 'bg-[var(--navy-brand)] text-white font-bold shadow-md'
+                            : 'text-slate-600 hover:bg-white hover:shadow-sm cursor-pointer'}`}>
                             {language === 'es' ? "Paso" : "Step"} {s.id}: {s.title[language]}
                         </div>
                     ))}
@@ -64,10 +68,10 @@ export default function StepDetailPage() {
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 overflow-y-auto h-screen">
+            <div className="flex-1 overflow-y-auto h-screen relative z-10">
                 {/* Mobile Back Header */}
-                <div className="md:hidden p-4 border-b border-white/10 bg-black/20 flex items-center sticky top-0 backdrop-blur-md z-10">
-                    <Link href="/dashboard" className="flex items-center gap-2 text-sm text-[var(--text-gray)]">
+                <div className="md:hidden p-4 border-b border-slate-200 bg-white/80 flex items-center sticky top-0 backdrop-blur-md z-20">
+                    <Link href="/dashboard" className="flex items-center gap-2 text-sm text-slate-600 font-medium">
                         <ArrowLeft className="w-4 h-4" /> Dashboard
                     </Link>
                 </div>
@@ -77,13 +81,13 @@ export default function StepDetailPage() {
                     {/* Header */}
                     <div className="mb-10">
                         <div className="flex items-center gap-3 mb-2">
-                            <span className="text-xs font-bold uppercase tracking-wider text-[var(--blue-glow)]">
+                            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
                                 {language === 'es' ? "Paso" : "Step"} {stepId}
                             </span>
-                            {!isUnlocked && <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded flex gap-1 items-center"><Lock className="w-3 h-3" /> Locked</span>}
+                            {!isUnlocked && <span className="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded flex gap-1 items-center border border-slate-200"><Lock className="w-3 h-3" /> Locked</span>}
                         </div>
-                        <h1 className="text-3xl md:text-4xl font-bold mb-4">{stepData.title[language]}</h1>
-                        <p className="text-xl text-[var(--text-gray)]">{stepData.short_desc[language]}</p>
+                        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-[var(--navy-brand)]">{stepData.title[language]}</h1>
+                        <p className="text-xl text-slate-600">{stepData.short_desc[language]}</p>
                     </div>
 
                     {/* Content Grid */}
@@ -93,41 +97,41 @@ export default function StepDetailPage() {
                         <div className="lg:col-span-2 space-y-8">
 
                             {/* Education HTML Content */}
-                            <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-8 prose prose-invert max-w-none">
+                            <div className="bg-white border border-slate-200 rounded-2xl p-8 prose prose-slate max-w-none shadow-sm">
                                 <div dangerouslySetInnerHTML={{ __html: stepData.education_html[language] }} />
                             </div>
 
                             {/* Checklist */}
-                            <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-8">
-                                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                                    <CheckCircle className="w-5 h-5 text-[var(--success)]" />
+                            <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+                                <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-[var(--navy-brand)]">
+                                    <CheckCircle className="w-5 h-5 text-emerald-500" />
                                     {language === 'es' ? "Tu Lista de Tareas" : "Your Checklist"}
                                 </h3>
                                 <div className="space-y-4">
                                     {stepData.checklist.map((item) => (
-                                        <label key={item.id} className="flex items-start gap-3 cursor-pointer group hover:bg-white/5 p-3 rounded-lg transition-colors border border-transparent hover:border-white/5">
+                                        <label key={item.id} className="flex items-start gap-3 cursor-pointer group hover:bg-slate-50 p-3 rounded-lg transition-colors border border-transparent hover:border-slate-100">
                                             <div className="relative flex items-center">
                                                 <input
                                                     type="checkbox"
-                                                    className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-white/30 bg-transparent checked:border-[var(--success)] checked:bg-[var(--success)] transition-all"
+                                                    className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-slate-300 bg-white checked:border-emerald-500 checked:bg-emerald-500 transition-all focus:ring-2 focus:ring-emerald-500/20"
                                                     checked={checkedItems.includes(item.id)}
                                                     onChange={() => toggleCheck(item.id)}
                                                 />
                                                 <CheckCircle className="absolute pointer-events-none opacity-0 peer-checked:opacity-100 text-white w-3.5 h-3.5 left-[3px] top-[3px]" />
                                             </div>
-                                            <span className={`text-sm md:text-base ${checkedItems.includes(item.id) ? 'text-[var(--text-gray)] line-through' : 'text-white'}`}>
+                                            <span className={`text-sm md:text-base ${checkedItems.includes(item.id) ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
                                                 {item.text[language]}
                                             </span>
                                         </label>
                                     ))}
                                 </div>
-                                <div className="mt-6 pt-6 border-t border-white/10">
+                                <div className="mt-6 pt-6 border-t border-slate-100">
                                     <div className="flex justify-between text-sm mb-2">
-                                        <span className="text-[var(--text-gray)]">Progreso</span>
-                                        <span className="font-bold">{progress}%</span>
+                                        <span className="text-slate-500">Progreso</span>
+                                        <span className="font-bold text-[var(--navy-brand)]">{progress}%</span>
                                     </div>
-                                    <div className="h-2 bg-black/40 rounded-full overflow-hidden">
-                                        <div className="h-full bg-[var(--success)] transition-all duration-500" style={{ width: `${progress}%` }}></div>
+                                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                                        <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${progress}%` }}></div>
                                     </div>
                                 </div>
                             </div>
@@ -139,21 +143,21 @@ export default function StepDetailPage() {
 
                             {/* Downloads */}
                             {stepData.downloads && stepData.downloads.length > 0 && (
-                                <div className="bg-[#0f0f2d] border border-[var(--glass-border)] rounded-xl p-6">
-                                    <h4 className="text-sm font-bold uppercase tracking-wider text-[var(--text-gray)] mb-4">
+                                <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
+                                    <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
                                         {language === 'es' ? "Descargas" : "Downloads"}
                                     </h4>
                                     <div className="space-y-3">
                                         {stepData.downloads.map((dl, idx) => (
-                                            <a key={idx} href={dl.url} className="flex items-center gap-3 p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors group">
-                                                <div className="w-10 h-10 bg-[var(--navy-deep)] rounded flex items-center justify-center text-[var(--blue-glow)] group-hover:scale-110 transition-transform">
+                                            <a key={idx} href={dl.url} className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-lg hover:border-[var(--navy-brand)] hover:shadow-sm transition-all group">
+                                                <div className="w-10 h-10 bg-[var(--navy-brand)] rounded flex items-center justify-center text-white group-hover:scale-105 transition-transform">
                                                     <FileText className="w-5 h-5" />
                                                 </div>
                                                 <div className="overflow-hidden">
-                                                    <div className="text-sm font-medium truncate">{dl.name[language]}</div>
-                                                    <div className="text-xs text-[var(--text-gray)]">PDF • 2.4 MB</div>
+                                                    <div className="text-sm font-bold text-slate-700 truncate group-hover:text-[var(--navy-brand)] transition-colors">{dl.name[language]}</div>
+                                                    <div className="text-xs text-slate-400">PDF • 2.4 MB</div>
                                                 </div>
-                                                <Download className="w-4 h-4 ml-auto text-[var(--text-gray)]" />
+                                                <Download className="w-4 h-4 ml-auto text-slate-400 group-hover:text-[var(--navy-brand)]" />
                                             </a>
                                         ))}
                                     </div>
@@ -162,13 +166,13 @@ export default function StepDetailPage() {
 
                             {/* External Resources */}
                             {stepData.resources && stepData.resources.length > 0 && (
-                                <div className="bg-[#0f0f2d] border border-[var(--glass-border)] rounded-xl p-6">
-                                    <h4 className="text-sm font-bold uppercase tracking-wider text-[var(--text-gray)] mb-4">
+                                <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
+                                    <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
                                         {language === 'es' ? "Herramientas Oficiales" : "Official Tools"}
                                     </h4>
                                     <div className="space-y-3">
                                         {stepData.resources.map((res, idx) => (
-                                            <a key={idx} href={res.url} target="_blank" className="flex items-center gap-2 text-sm text-[var(--blue-glow)] hover:underline">
+                                            <a key={idx} href={res.url} target="_blank" className="flex items-center gap-2 text-sm text-[var(--navy-brand)] font-semibold hover:underline bg-white p-3 rounded-lg border border-slate-200 hover:border-[var(--navy-brand)] transition-all">
                                                 <ExternalLink className="w-3.5 h-3.5" />
                                                 {res.name}
                                             </a>
@@ -180,35 +184,33 @@ export default function StepDetailPage() {
                             {/* Referrals/Pros */}
                             {stepData.referrals && stepData.referrals.length > 0 && (
                                 <div className="space-y-4">
-                                    <h4 className="text-sm font-bold uppercase tracking-wider text-[var(--text-gray)]">
+                                    <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500">
                                         {language === 'es' ? "Expertos Recomendados" : "Recommended Experts"}
                                     </h4>
 
                                     {stepData.referrals.map((ref, idx) => (
-                                        <div key={idx} className="bg-[#0f0f2d] border border-[var(--glass-border)] rounded-xl p-4 flex gap-4 transition-all hover:border-[var(--gold)] group relative overflow-hidden">
-                                            {/* Gold shine effect */}
-                                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[rgba(234,179,8,0.1)] to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none"></div>
+                                        <div key={idx} className="bg-white border border-slate-200 rounded-xl p-4 flex gap-4 transition-all hover:border-[var(--navy-brand)] hover:shadow-md group relative overflow-hidden">
 
                                             {/* Avatar Mock */}
-                                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--gold)] to-[var(--navy-brand)] shrink-0 flex items-center justify-center text-white font-bold text-lg shadow-lg border-2 border-[#0f0f2d]">
+                                            <div className="w-12 h-12 rounded-full bg-[var(--navy-brand)] shrink-0 flex items-center justify-center text-white font-bold text-lg shadow-sm">
                                                 {ref.name.charAt(0)}
                                             </div>
 
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex justify-between items-start">
-                                                    <h5 className="font-bold text-white truncate pr-2">{ref.name}</h5>
-                                                    <div className="flex text-[var(--gold)] text-[10px]">
+                                                    <h5 className="font-bold text-[var(--foreground)] truncate pr-2 group-hover:text-[var(--navy-brand)] transition-colors">{ref.name}</h5>
+                                                    <div className="flex text-amber-400 text-[10px]">
                                                         {'★'.repeat(5)}
                                                     </div>
                                                 </div>
-                                                <p className="text-xs text-[var(--blue-glow)] font-medium mb-1">{ref.specialty[language]}</p>
-                                                <p className="text-xs text-[var(--text-gray)] flex items-center gap-1">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                                <p className="text-xs text-slate-500 font-medium mb-1">{ref.specialty[language]}</p>
+                                                <p className="text-xs text-slate-400 flex items-center gap-1">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                                     {ref.location}
                                                 </p>
                                             </div>
 
-                                            <button className="self-center bg-[var(--white)] text-[var(--navy-deep)] text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-gray-200 transition-colors">
+                                            <button className="self-center bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-[var(--navy-brand)] hover:text-white transition-colors">
                                                 Contactar
                                             </button>
                                         </div>

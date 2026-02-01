@@ -20,7 +20,7 @@ export default function AdminDashboard() {
     return (
         <div className="space-y-8">
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-slate-900">Panel de Control</h1>
+                <h1 className="text-3xl font-bold text-[var(--navy-brand)]">Panel de Control</h1>
                 <span className="text-sm text-slate-500">Última actualización: Ahora mismo</span>
             </div>
 
