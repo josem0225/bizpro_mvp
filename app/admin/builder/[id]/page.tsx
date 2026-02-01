@@ -56,24 +56,24 @@ export default function BuilderEditorPage() {
     return (
         <div className="h-[calc(100vh-100px)] flex flex-col">
             {/* Header */}
-            <div className="flex justify-between items-center mb-6 pb-6 border-b border-[var(--glass-border)]">
+            <div className="flex justify-between items-center mb-6 pb-6 border-b border-slate-200">
                 <div className="flex items-center gap-4">
-                    <Link href="/admin/builder" className="p-2 bg-white/5 rounded-lg hover:bg-white/10 text-white transition-colors">
+                    <Link href="/admin/builder" className="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-600 transition-colors shadow-sm">
                         <ArrowLeft className="w-5 h-5" />
                     </Link>
                     <div>
                         <div className="flex items-center gap-3">
-                            <h1 className="text-2xl font-bold text-white">{vertical.name}</h1>
-                            <span className="px-2 py-0.5 rounded-full bg-[var(--blue-electric)]/20 text-[var(--blue-electric)] text-xs border border-[var(--blue-electric)]/30">
+                            <h1 className="text-2xl font-bold text-[var(--navy-brand)]">{vertical.name}</h1>
+                            <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs border border-blue-100 font-bold">
                                 {vertical.status}
                             </span>
                         </div>
-                        <p className="text-sm text-[var(--text-gray)]">Editando flujo de trabajo</p>
+                        <p className="text-sm text-slate-500">Editando flujo de trabajo</p>
                     </div>
                 </div>
                 <button
                     onClick={handleSave}
-                    className="px-5 py-2.5 bg-[var(--success)] text-white rounded-xl font-bold hover:brightness-110 transition-all flex items-center gap-2 shadow-[0_4px_15px_rgba(34,197,94,0.4)]"
+                    className="px-5 py-2.5 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center gap-2 shadow-md hover:shadow-lg"
                 >
                     <Save className="w-5 h-5" />
                     Guardar Cambios
@@ -85,8 +85,8 @@ export default function BuilderEditorPage() {
 
                 {/* LEFT: Steps Outline */}
                 <div className="w-1/3 flex flex-col gap-4">
-                    <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-4 flex-1 overflow-y-auto">
-                        <h3 className="text-sm font-bold text-[var(--text-gray)] uppercase tracking-wider mb-4 px-2">
+                    <div className="bg-white border border-slate-200 rounded-2xl p-4 flex-1 overflow-y-auto shadow-sm">
+                        <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 px-2">
                             Secuencia de Pasos
                         </h3>
 
@@ -96,27 +96,30 @@ export default function BuilderEditorPage() {
                                     key={step.id}
                                     onClick={() => setActiveStepIndex(idx)}
                                     className={`group flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all border ${idx === activeStepIndex
-                                        ? "bg-[var(--blue-electric)]/20 border-[var(--blue-electric)] text-white"
-                                        : "bg-transparent border-transparent hover:bg-white/5 text-[var(--text-gray)] hover:text-white"
+                                        ? "bg-slate-50 border-slate-200 shadow-sm"
+                                        : "bg-transparent border-transparent hover:bg-slate-50 hover:border-slate-100"
                                         }`}
                                 >
-                                    <GripVertical className="w-4 h-4 opacity-50 cursor-grab" />
-                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${idx === activeStepIndex ? "bg-[var(--blue-electric)] text-white" : "bg-white/10"
+                                    <GripVertical className="w-4 h-4 text-slate-400 cursor-grab" />
+                                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${idx === activeStepIndex ? "bg-[var(--navy-brand)] text-white" : "bg-slate-100 text-slate-500"
                                         }`}>
                                         {idx + 1}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <div className="font-medium truncate">{step.title}</div>
-                                        <div className="text-xs opacity-70 flex justify-between">
+                                        <div className={`font-bold truncate ${idx === activeStepIndex ? "text-[var(--navy-brand)]" : "text-slate-600"}`}>
+                                            {step.title}
+                                        </div>
+                                        <div className="text-xs text-slate-400 flex justify-between mt-0.5">
                                             <span>{step.price === 0 ? "Gratis" : `$${step.price}`}</span>
                                             <span>{Array.isArray(step.formFields) ? step.formFields.length : 0} inputs</span>
                                         </div>
                                     </div>
+                                    {idx === activeStepIndex && <div className="w-1.5 h-1.5 rounded-full bg-[var(--navy-brand)]"></div>}
                                 </div>
                             ))}
                         </div>
 
-                        <button className="w-full mt-4 py-3 border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/5 rounded-xl text-[var(--text-gray)] font-medium transition-all flex items-center justify-center gap-2">
+                        <button className="w-full mt-4 py-3 border-2 border-dashed border-slate-200 hover:border-[var(--navy-brand)] hover:bg-slate-50 rounded-xl text-slate-500 hover:text-[var(--navy-brand)] font-bold transition-all flex items-center justify-center gap-2">
                             <Plus className="w-4 h-4" />
                             Agregar Paso
                         </button>
@@ -124,78 +127,78 @@ export default function BuilderEditorPage() {
                 </div>
 
                 {/* RIGHT: Detail Editor */}
-                <div className="w-2/3 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl p-6 overflow-y-auto">
+                <div className="w-2/3 bg-white border border-slate-200 rounded-2xl p-6 overflow-y-auto shadow-sm">
                     {activeStep ? (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
 
                             {/* Basics */}
                             <div className="space-y-4">
-                                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                                    <Edit className="w-5 h-5 text-[var(--blue-glow)]" />
+                                <h3 className="text-lg font-bold text-[var(--navy-brand)] flex items-center gap-2">
+                                    <Edit className="w-5 h-5 text-blue-500" />
                                     Configuración Básica
                                 </h3>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm text-[var(--text-gray)] mb-1">Título del Paso</label>
+                                        <label className="block text-sm font-bold text-slate-600 mb-1">Título del Paso</label>
                                         <input
                                             type="text"
                                             value={activeStep.title}
                                             onChange={(e) => handleUpdateActiveStep('title', e.target.value)}
-                                            className="w-full bg-black/20 border border-[var(--glass-border)] rounded-lg px-4 py-2 text-white focus:border-[var(--blue-electric)] outline-none"
+                                            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-[var(--navy-brand)] focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)]/20 outline-none font-medium"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm text-[var(--text-gray)] mb-1">Precio ($)</label>
+                                        <label className="block text-sm font-bold text-slate-600 mb-1">Precio ($)</label>
                                         <input
                                             type="number"
                                             value={activeStep.price}
                                             onChange={(e) => handleUpdateActiveStep('price', Number(e.target.value))}
-                                            className="w-full bg-black/20 border border-[var(--glass-border)] rounded-lg px-4 py-2 text-white focus:border-[var(--blue-electric)] outline-none"
+                                            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-[var(--navy-brand)] focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)]/20 outline-none font-medium"
                                         />
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm text-[var(--text-gray)] mb-1">Descripción Educativa</label>
+                                    <label className="block text-sm font-bold text-slate-600 mb-1">Descripción Educativa</label>
                                     <textarea
                                         value={activeStep.description}
                                         onChange={(e) => handleUpdateActiveStep('description', e.target.value)}
                                         rows={3}
-                                        className="w-full bg-black/20 border border-[var(--glass-border)] rounded-lg px-4 py-2 text-white focus:border-[var(--blue-electric)] outline-none resize-none"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-slate-700 focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)]/20 outline-none resize-none"
                                     />
                                 </div>
                             </div>
 
-                            <hr className="border-white/10" />
+                            <hr className="border-slate-100" />
 
                             {/* Dynamic Form Builder */}
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center">
-                                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                                        <List className="w-5 h-5 text-[var(--gold)]" />
+                                    <h3 className="text-lg font-bold text-[var(--navy-brand)] flex items-center gap-2">
+                                        <List className="w-5 h-5 text-amber-500" />
                                         Formulario de Entrada
                                     </h3>
                                     <div className="flex gap-2">
-                                        <button onClick={() => handleAddField('text')} className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium text-white flex items-center gap-1 transition-colors">
+                                        <button onClick={() => handleAddField('text')} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-600 flex items-center gap-1 transition-colors">
                                             <Type className="w-3 h-3" /> Texto
                                         </button>
-                                        <button onClick={() => handleAddField('textarea')} className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium text-white flex items-center gap-1 transition-colors">
+                                        <button onClick={() => handleAddField('textarea')} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-600 flex items-center gap-1 transition-colors">
                                             <AlignLeft className="w-3 h-3" /> Area
                                         </button>
-                                        <button onClick={() => handleAddField('select')} className="px-3 py-1.5 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-medium text-white flex items-center gap-1 transition-colors">
+                                        <button onClick={() => handleAddField('select')} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-600 flex items-center gap-1 transition-colors">
                                             <List className="w-3 h-3" /> Dropdown
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="space-y-3 bg-black/20 rounded-xl p-4 min-h-[100px]">
+                                <div className="space-y-3 bg-slate-50 rounded-xl p-4 min-h-[100px] border border-slate-100">
                                     {(!activeStep.formFields || activeStep.formFields.length === 0) && (
-                                        <div className="text-center text-[var(--text-gray)] text-sm py-4 italic">
+                                        <div className="text-center text-slate-400 text-sm py-8 italic">
                                             No hay campos configurados para este paso.
                                         </div>
                                     )}
                                     {activeStep.formFields?.map((field: any, idx: number) => (
-                                        <div key={field.id} className="flex gap-3 items-start bg-[var(--glass-bg)] p-3 rounded-lg border border-[var(--glass-border)]">
-                                            <div className="mt-2 text-[var(--text-gray)]">
+                                        <div key={field.id} className="flex gap-3 items-start bg-white p-3 rounded-lg border border-slate-200 shadow-sm group hover:border-slate-300 transition-all">
+                                            <div className="mt-2 text-slate-400">
                                                 {field.type === 'text' && <Type className="w-4 h-4" />}
                                                 {field.type === 'textarea' && <AlignLeft className="w-4 h-4" />}
                                                 {field.type === 'select' && <List className="w-4 h-4" />}
@@ -209,7 +212,7 @@ export default function BuilderEditorPage() {
                                                         newFields[idx].label = e.target.value;
                                                         handleUpdateActiveStep('formFields', newFields);
                                                     }}
-                                                    className="w-full bg-transparent border-none p-0 text-white font-medium focus:ring-0 placeholder-white/30"
+                                                    className="w-full bg-transparent border-none p-0 text-[var(--navy-brand)] font-bold focus:ring-0 placeholder-slate-300"
                                                     placeholder="Pregunta o Etiqueta del Campo"
                                                 />
                                                 {field.type === 'select' && (
@@ -221,14 +224,14 @@ export default function BuilderEditorPage() {
                                                             newFields[idx].options = e.target.value.split(',').map(s => s.trim());
                                                             handleUpdateActiveStep('formFields', newFields);
                                                         }}
-                                                        className="w-full text-xs bg-white/5 rounded px-2 py-1 text-[var(--text-gray)] border-none focus:ring-0"
+                                                        className="w-full text-xs bg-slate-50 rounded px-2 py-1 text-slate-500 border border-slate-200 focus:border-[var(--navy-brand)] focus:ring-0"
                                                         placeholder="Opciones separadas por coma (ej. Opción A, Opción B)"
                                                     />
                                                 )}
                                             </div>
                                             <button
                                                 onClick={() => handleDeleteField(field.id)}
-                                                className="p-1.5 hover:bg-red-500/10 text-[var(--text-gray)] hover:text-red-500 rounded transition-colors"
+                                                className="p-1.5 hover:bg-red-50 text-slate-300 hover:text-red-500 rounded transition-colors"
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </button>
@@ -237,33 +240,35 @@ export default function BuilderEditorPage() {
                                 </div>
                             </div>
 
-                            <hr className="border-white/10" />
+                            <hr className="border-slate-100" />
 
                             {/* Files Library */}
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center">
-                                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                                        <Download className="w-5 h-5 text-purple-400" />
+                                    <h3 className="text-lg font-bold text-[var(--navy-brand)] flex items-center gap-2">
+                                        <Download className="w-5 h-5 text-purple-600" />
                                         Biblioteca de Archivos
                                     </h3>
-                                    <button className="px-3 py-1.5 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 border border-purple-500/20 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors">
+                                    <button className="px-3 py-1.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors hover:bg-purple-100">
                                         <Upload className="w-3 h-3" /> Subir PDF
                                     </button>
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-2">
                                     {(!activeStep.files || activeStep.files.length === 0) ? (
-                                        <div className="text-center text-[var(--text-gray)] text-sm py-4 italic border border-dashed border-white/10 rounded-xl">
+                                        <div className="text-center text-slate-400 text-sm py-8 italic border border-dashed border-slate-200 rounded-xl bg-slate-50">
                                             No hay archivos adjuntos para que el usuario descargue.
                                         </div>
                                     ) : (
                                         activeStep.files.map((file: any, index: number) => (
-                                            <div key={index} className="flex items-center justify-between p-3 bg-black/20 rounded-lg border border-[var(--glass-border)]">
+                                            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 shadow-sm hover:border-purple-200 transition-colors">
                                                 <div className="flex items-center gap-3">
-                                                    <FileText className="w-4 h-4 text-purple-400" />
-                                                    <span className="text-sm text-white">{file.name}</span>
+                                                    <div className="p-2 bg-purple-50 rounded-lg text-purple-600">
+                                                        <FileText className="w-4 h-4" />
+                                                    </div>
+                                                    <span className="text-sm font-medium text-slate-700">{file.name}</span>
                                                 </div>
-                                                <button className="text-red-500 hover:text-red-400 text-xs">Eliminar</button>
+                                                <button className="text-red-400 hover:text-red-600 text-xs font-medium px-2 py-1 hover:bg-red-50 rounded">Eliminar</button>
                                             </div>
                                         ))
                                     )}
@@ -272,8 +277,8 @@ export default function BuilderEditorPage() {
 
                         </div>
                     ) : (
-                        <div className="h-full flex flex-col items-center justify-center text-[var(--text-gray)]">
-                            <Plus className="w-12 h-12 mb-4 opacity-50" />
+                        <div className="h-full flex flex-col items-center justify-center text-slate-400">
+                            <Plus className="w-12 h-12 mb-4 opacity-20" />
                             <p>Selecciona un paso para editar</p>
                         </div>
                     )}

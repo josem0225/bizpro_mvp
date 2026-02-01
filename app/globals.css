@@ -1,68 +1,44 @@
 @import "tailwindcss";
+/* Forcing rebuild 2 */
 
 :root {
-  /* PALETA CORE */
-  --navy-deep: #1A1A2E;
-  /* Adjusted deeper navy for contrast */
-  /* Fondo Principal */
+  /* PALETA CORE - CLEAN WHITE THEME */
+  --background: #FFFFFF;
+  --foreground: #0F172A;
+  /* Slate 900 for sharper text */
+
+  /* BRAND COLORS */
+  --navy-deep: #F1F5F9;
+  /* Slate 100 - Subtle contrast for "dark" areas */
   --navy-brand: #2C2C54;
-  /* New Brand Color */
-  /* Tu Color Corporativo */
+  /* OFFICIAL LOGO NAVY */
   --navy-light: #414175;
-  /* Variación para hover */
 
   --blue-electric: #3B82F6;
-  /* Acciones Primarias */
+  /* Primary Actions */
   --blue-glow: #60A5FA;
-  /* Efectos de luz */
 
   --success: #10B981;
-  /* Confirmación */
   --gold: #F59E0B;
-  /* Premium/Atención */
-  --white: #FFFFFF;
-  --text-gray: #94A3B8;
 
-  /* GLASSMORPHISM FORMULA */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-blur: 12px;
-  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --white: #FFFFFF;
+  --text-gray: #475569;
+  /* Slate 600 */
+
+  /* GLASSMORPHISM & SHADOWS - CLEAN STYLE */
+  --glass-bg: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(0, 0, 0, 0.04);
+  --glass-blur: 16px;
+  --glass-card-bg: #FFFFFF;
+
+  /* Modern "Corporate" Soft Shadow */
+  --card-shadow: 0 10px 40px -10px rgba(44, 44, 84, 0.08);
 
   /* UTILS */
   --header-height: 80px;
   --container-width: 1200px;
   --radius-md: 16px;
   --radius-lg: 24px;
-
-  /* DARK MODE DEFAULT */
-  --background: var(--navy-deep);
-  --foreground: var(--white);
-  --glass-card-bg: rgba(255, 255, 255, 0.03);
-}
-
-:root[data-theme='light'] {
-  --background: #FFFFFF;
-  --foreground: #0F172A;
-  /* Slate 900 for sharper text */
-  --navy-deep: #F1F5F9;
-  /* Slate 100 - Subtle contrast for "dark" areas in light mode */
-
-  /* Main Brand Color Update */
-  --navy-brand: #2C2C54;
-
-  --navy-light: #414175;
-  --text-gray: #475569;
-  /* Slate 600 */
-
-  /* PREMIUM GLASS & SHADOWS */
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(0, 0, 0, 0.04);
-  /* Ultra subtle border */
-  --glass-card-bg: #FFFFFF;
-
-  /* Modern "Corporate" Soft Shadow */
-  --card-shadow: 0 10px 40px -10px rgba(44, 44, 84, 0.08);
 }
 
 @theme inline {

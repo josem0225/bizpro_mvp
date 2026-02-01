@@ -2,6 +2,7 @@
 
 import { CheckCircle, Lock, PlayCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useBizPro } from "@/app/context/BizProContext";
 
@@ -40,9 +41,15 @@ export default function DashboardPage() {
 
             {/* Top Bar */}
             <header className="h-[80px] border-b border-slate-200 flex items-center bg-white/80 backdrop-blur-md px-8 sticky top-0 z-50 relative text-[var(--foreground)]">
-                <Link href="/" className="flex items-center gap-2 font-bold text-xl mr-auto text-[var(--navy-brand)]">
-                    <div className="w-8 h-8 bg-[var(--navy-brand)] rounded-md flex items-center justify-center text-sm text-white">B</div>
-                    BizPro
+                <Link href="/" className="flex items-center gap-3 mr-auto">
+                    <Image
+                        src="/logos/bizpro-logo-navy.svg"
+                        alt="BizPro"
+                        width={40}
+                        height={40}
+                        className="w-10 h-10"
+                    />
+                    <span className="font-bold text-xl text-[var(--navy-brand)]">BizPro</span>
                 </Link>
                 <div className="flex items-center gap-4">
                     <div className="hidden md:block text-right">

@@ -5,7 +5,7 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useBizPro } from "@/app/context/BizProContext";
-import ThemeToggle from "./ThemeToggle";
+
 
 import Image from "next/image";
 
@@ -59,11 +59,6 @@ export default function Navbar() {
 
                 {/* CTA Buttons */}
                 <div className="flex gap-4 items-center">
-                    {/* Theme Toggle */}
-                    <div className="hidden md:block">
-                        <ThemeToggle />
-                    </div>
-
                     {/* Language Toggle */}
                     <button
                         onClick={toggleLanguage}

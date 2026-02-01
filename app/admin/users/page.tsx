@@ -9,6 +9,7 @@ export default function ClientsPage() {
     const users = data.admin?.users || [];
     const [searchTerm, setSearchTerm] = useState("");
     const [filterStatus, setFilterStatus] = useState<"All" | "Paid" | "Pending" | "Lead">("All");
+    const [selectedUser, setSelectedUser] = useState<any | null>(null);
 
     const filteredUsers = users.filter(user => {
         const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -18,7 +19,7 @@ export default function ClientsPage() {
     });
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 relative">
             <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-3xl font-bold text-[var(--navy-brand)] mb-2">Cartera de Clientes</h1>
@@ -116,7 +117,10 @@ export default function ClientsPage() {
                                 <button className="p-2 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-[var(--navy-brand)] transition-colors">
                                     <MoreHorizontal className="w-5 h-5" />
                                 </button>
-                                <button className="px-4 py-2 bg-white text-[var(--navy-brand)] hover:bg-[var(--navy-brand)] hover:text-white border border-[var(--navy-brand)] rounded-lg text-sm font-bold transition-all">
+                                <button
+                                    onClick={() => setSelectedUser(user)}
+                                    className="px-4 py-2 bg-white text-[var(--navy-brand)] hover:bg-[var(--navy-brand)] hover:text-white border border-[var(--navy-brand)] rounded-lg text-sm font-bold transition-all shadow-sm"
+                                >
                                     Gestionar
                                 </button>
                             </div>
@@ -138,6 +142,114 @@ export default function ClientsPage() {
                     </div>
                 ))}
             </div>
+
+            {/* CRM Drawer (Slide-over) */}
+            {selectedUser && (
+                <>
+                    <div
+                        className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 transition-opacity"
+                        onClick={() => setSelectedUser(null)}
+                    ></div>
+                    <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 transform transition-transform duration-300 overflow-y-auto border-l border-slate-200">
+                        {/* Drawer Header */}
+                        <div className="p-6 border-b border-slate-100 bg-slate-50">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="flex gap-4 items-center">
+                                    <div className="w-14 h-14 rounded-full bg-[var(--navy-brand)] flex items-center justify-center text-white font-bold text-xl shadow-lg border-2 border-white">
+                                        {selectedUser.name.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-[var(--navy-brand)]">{selectedUser.name}</h2>
+                                        <p className="text-slate-500 text-sm flex items-center gap-2">
+                                            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                            Cliente Activo
+                                        </p>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => setSelectedUser(null)}
+                                    className="p-2 hover:bg-slate-200 rounded-full text-slate-400 transition-colors"
+                                >
+                                    <span className="sr-only">Cerrar</span>
+                                    ✕
+                                </button>
+                            </div>
+                            <div className="flex gap-2">
+                                <button className="flex-1 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-100 flex items-center justify-center gap-2">
+                                    <Mail className="w-4 h-4" /> Email
+                                </button>
+                                <button className="flex-1 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-100 flex items-center justify-center gap-2">
+                                    <Phone className="w-4 h-4" /> Llamar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="p-6 space-y-8">
+                            {/* CRM Stats */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                    <div className="text-xs font-bold text-slate-400 uppercase mb-1">Lifetime Value (LTV)</div>
+                                    <div className="text-2xl font-bold text-[var(--navy-brand)]">$1,240</div>
+                                </div>
+                                <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                    <div className="text-xs font-bold text-slate-400 uppercase mb-1">Última Actividad</div>
+                                    <div className="text-sm font-bold text-slate-700">Hace 2 horas</div>
+                                    <div className="text-xs text-slate-400">Viendo Dashboard</div>
+                                </div>
+                            </div>
+
+                            {/* Notes / Timeline */}
+                            <div>
+                                <h3 className="text-sm font-bold text-[var(--navy-brand)] uppercase tracking-wider mb-4">Notas & Actividad</h3>
+                                <div className="space-y-4 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+                                    <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                        <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                            <CheckCircle className="w-5 h-5" />
+                                        </div>
+                                        <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-xl border border-slate-200 shadow-sm ml-4">
+                                            <div className="flex items-center justify-between space-x-2 mb-1">
+                                                <div className="font-bold text-slate-900 text-sm">Pago Completado</div>
+                                                <time className="font-mono text-xs text-slate-500">Hoy</time>
+                                            </div>
+                                            <div className="text-slate-500 text-xs">El cliente pagó la cuota inicial de $400 USD.</div>
+                                        </div>
+                                    </div>
+                                    <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                                        <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-100 text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                            <User className="w-5 h-5" />
+                                        </div>
+                                        <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded-xl border border-slate-200 shadow-sm ml-4">
+                                            <div className="flex items-center justify-between space-x-2 mb-1">
+                                                <div className="font-bold text-slate-900 text-sm">Registro</div>
+                                                <time className="font-mono text-xs text-slate-500">Ayer</time>
+                                            </div>
+                                            <div className="text-slate-500 text-xs">Usuario creado desde Landing Page.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Super Admin Actions */}
+                            <div className="pt-6 border-t border-slate-100">
+                                <h3 className="text-sm font-bold text-[var(--navy-brand)] uppercase tracking-wider mb-4">Zona de Peligro & Soporte</h3>
+                                <div className="space-y-3">
+                                    <button className="w-full py-3 bg-[var(--navy-brand)] text-white rounded-xl font-bold hover:bg-[#1e1e38] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+                                        <User className="w-4 h-4" />
+                                        Impersonar Usuario (Log In)
+                                    </button>
+                                    <button className="w-full py-3 bg-white border border-red-200 text-red-600 rounded-xl font-bold hover:bg-red-50 transition-all flex items-center justify-center gap-2">
+                                        <span className="w-4 h-4">✕</span>
+                                        Resetear Password
+                                    </button>
+                                </div>
+                                <p className="text-xs text-slate-400 text-center mt-4">
+                                    Acciones registradas en el log de auditoría.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
