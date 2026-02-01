@@ -42,19 +42,27 @@
 }
 
 :root[data-theme='light'] {
-  --background: #F8FAFC;
-  --foreground: #1E293B;
-  --navy-deep: #FFFFFF;
-  /* Override for light mode components using this var */
-  --navy-brand: #3B82F6;
-  /* Use blue as primary brand in light */
-  --text-gray: #64748B;
+  --background: #FFFFFF;
+  --foreground: #0F172A;
+  /* Slate 900 for sharper text */
+  --navy-deep: #F1F5F9;
+  /* Slate 100 - Subtle contrast for "dark" areas in light mode */
 
-  /* GLASSMORPHISM LIGHT */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.05);
-  --glass-card-bg: rgba(255, 255, 255, 0.9);
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  /* Main Brand Color Update */
+  --navy-brand: #2C2C54;
+
+  --navy-light: #414175;
+  --text-gray: #475569;
+  /* Slate 600 */
+
+  /* PREMIUM GLASS & SHADOWS */
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.04);
+  /* Ultra subtle border */
+  --glass-card-bg: #FFFFFF;
+
+  /* Modern "Corporate" Soft Shadow */
+  --card-shadow: 0 10px 40px -10px rgba(44, 44, 84, 0.08);
 }
 
 @theme inline {

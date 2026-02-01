@@ -23,7 +23,7 @@ export default function Navbar() {
             <div className="w-[90%] max-w-[var(--container-width)] mx-auto flex justify-between items-center">
                 {/* Logo - Navigates to Landing */}
                 <Link href="/" className="text-2xl font-bold tracking-tighter flex items-center gap-2.5 text-[var(--foreground)]">
-                    <div className="w-8 h-8 bg-[var(--blue-electric)] rounded-md flex items-center justify-center text-lg text-white">
+                    <div className="w-8 h-8 bg-[var(--navy-brand)] rounded-md flex items-center justify-center text-lg text-white">
                         B
                     </div>
                     BizPro USA
@@ -74,7 +74,7 @@ export default function Navbar() {
                     {/* Start -> Intake */}
                     <Link
                         href="/intake"
-                        className="px-5 py-2 text-sm font-semibold rounded-xl bg-[var(--blue-electric)] text-white shadow-[0_4px_15px_rgba(59,130,246,0.4)] hover:translate-y-[-2px] hover:shadow-[0_8px_25px_rgba(59,130,246,0.6)] hover:bg-[#2563EB] transition-all"
+                        className="px-5 py-2 text-sm font-semibold rounded-xl bg-[var(--navy-brand)] text-white shadow-[0_4px_15px_rgba(44,44,84,0.2)] hover:translate-y-[-2px] hover:shadow-[0_8px_25px_rgba(44,44,84,0.3)] hover:bg-[#1A1A35] transition-all"
                     >
                         {navText.start[language]}
                     </Link>

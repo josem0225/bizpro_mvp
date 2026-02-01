@@ -9,10 +9,10 @@ export default function ComparisonSection() {
 
 
     return (
-        <section className="py-[100px] bg-[var(--background)]">
+        <section className="py-6 bg-[var(--background)]">
             <div className="w-[90%] max-w-[var(--container-width)] mx-auto">
-                <div className="text-center mb-[60px]">
-                    <h2 className="text-[2.5rem] font-bold mb-4">{comparison.title[language]}</h2>
+                <div className="text-center mb-6">
+                    <h2 className="text-[2.5rem] font-bold mb-2">{comparison.title[language]}</h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">

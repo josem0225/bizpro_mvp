@@ -29,10 +29,10 @@ export default function TimelineSection() {
     }, []);
 
     return (
-        <section className="py-[100px] bg-[var(--background)]" id="funciona">
+        <section className="py-6 bg-[var(--background)]" id="funciona">
             <div className="w-[90%] max-w-[var(--container-width)] mx-auto">
-                <div className="text-center mb-[60px]">
-                    <h2 className="text-[2.5rem] font-bold mb-4">{data.content.ui.nav.howItWorks[language]}</h2>
+                <div className="text-center mb-6">
+                    <h2 className="text-[2.5rem] font-bold mb-2">{data.content.ui.nav.howItWorks[language]}</h2>
                     <p className="text-[var(--text-gray)]">{language === 'es' ? "Un sistema probado paso a paso." : "A proven step-by-step system."}</p>
                 </div>
 
@@ -45,7 +45,7 @@ export default function TimelineSection() {
                         // Resolve price from pricing Data
                         const price = data.pricing.steps[step.id]?.price || 0;
                         return (
-                            <div key={step.id} className="step-reveal flex mb-[50px] relative opacity-0 translate-y-[30px] transition-all duration-700 ease-out">
+                            <div key={step.id} className="step-reveal flex mb-8 relative opacity-0 translate-y-[30px] transition-all duration-700 ease-out">
                                 <div className="w-[42px] h-[42px] bg-[var(--navy-deep)] border-[2px] border-[var(--blue-electric)] rounded-full grid place-items-center font-bold text-[var(--blue-electric)] z-[2] shrink-0 shadow-[0_0_0_4px_var(--navy-deep)]">
                                     {step.id}
                                 </div>
