@@ -56,21 +56,21 @@ export default function IntakeWizard() {
         <div className="w-full max-w-2xl mx-auto">
             {/* Progress Bar */}
             <div className="mb-8">
-                <div className="flex justify-between text-sm text-[var(--text-gray)] mb-2">
+                <div className="flex justify-between text-sm text-slate-500 mb-2 font-medium">
                     <span>Paso {currentStep + 1} de {questions.length}</span>
                     <span>{Math.round(progressPercentage)}% Completado</span>
                 </div>
-                <div className="h-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full overflow-hidden">
+                <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
                     <div
-                        className="h-full bg-[var(--blue-electric)] transition-all duration-500 ease-out"
+                        className="h-full bg-[var(--navy-brand)] transition-all duration-500 ease-out"
                         style={{ width: `${progressPercentage}%` }}
                     ></div>
                 </div>
             </div>
 
             {/* Question Card */}
-            <div className="bg-[var(--glass-bg)] border border-[var(--glass-border)] p-8 rounded-[var(--radius-lg)] shadow-lg min-h-[300px] flex flex-col justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 className="text-2xl font-bold mb-6 text-white text-center">
+            <div className="bg-white border border-slate-200 p-8 rounded-2xl shadow-xl min-h-[300px] flex flex-col justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h2 className="text-2xl font-bold mb-6 text-slate-900 text-center">
                     {currentQuestion.label[language]}
                 </h2>
 
@@ -79,14 +79,14 @@ export default function IntakeWizard() {
                         <div className="relative">
                             <input
                                 type={currentQuestion.type}
-                                className="w-full text-xl px-5 py-4 rounded-xl bg-[rgba(0,0,0,0.3)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] transition-colors text-center"
+                                className="w-full text-xl px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[var(--navy-brand)] transition-colors text-center"
                                 placeholder={currentQuestion.placeholder ? currentQuestion.placeholder[language] : ''}
                                 value={answers[currentQuestion.id] || ''}
                                 onChange={(e) => handleAnswerChange(e.target.value)}
                                 autoFocus
                             />
                             {/* Trust Signal for Input */}
-                            <div className="flex justify-center items-center gap-2 mt-4 text-xs text-[var(--success)] opacity-80">
+                            <div className="flex justify-center items-center gap-2 mt-4 text-xs text-emerald-600 opacity-80">
                                 <CheckCircle className="w-3 h-3" />
                                 <span>
                                     {language === 'es' ? "Sus datos están encriptados con 256-bit SSL" : "Your data is encrypted with 256-bit SSL"}
@@ -102,8 +102,8 @@ export default function IntakeWizard() {
                                     key={option.value}
                                     onClick={() => handleAnswerChange(option.value)}
                                     className={`p-4 rounded-xl border text-left transition-all ${answers[currentQuestion.id] === option.value
-                                        ? "bg-[var(--blue-electric)] border-[var(--blue-electric)] text-white shadow-lg"
-                                        : "bg-[rgba(0,0,0,0.3)] border-[var(--glass-border)] text-[var(--text-gray)] hover:bg-white/5 hover:border-white/20"
+                                        ? "bg-[var(--navy-brand)] border-[var(--navy-brand)] text-white shadow-lg"
+                                        : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100 hover:border-slate-300"
                                         }`}
                                 >
                                     {option.label}
@@ -118,7 +118,7 @@ export default function IntakeWizard() {
                     <button
                         onClick={handleBack}
                         disabled={currentStep === 0}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-[var(--text-gray)] transition-colors ${currentStep === 0 ? 'opacity-0 pointer-events-none' : 'hover:text-white'}`}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-slate-400 transition-colors ${currentStep === 0 ? 'opacity-0 pointer-events-none' : 'hover:text-slate-700'}`}
                     >
                         <ArrowLeft className="w-4 h-4" /> Anterior
                     </button>
@@ -126,7 +126,7 @@ export default function IntakeWizard() {
                     <button
                         onClick={handleNext}
                         disabled={!answers[currentQuestion.id] && !isSubmitting} // Require answer unless submitting (simplified)
-                        className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--white)] text-[var(--navy-deep)] font-bold shadow-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                        className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--navy-brand)] text-white font-bold shadow-lg shadow-indigo-900/10 hover:bg-[#1a1a3a] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                         {isLastStep ? (
                             isSubmitting ? "Finalizando..." : "Finalizar"

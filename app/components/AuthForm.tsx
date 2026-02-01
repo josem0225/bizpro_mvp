@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, ArrowRight } from "lucide-react";
 import { useBizPro } from "@/app/context/BizProContext";
@@ -65,19 +66,29 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
     };
 
     return (
-        <div className="w-full max-w-sm mx-auto">
+        <div className="w-full max-w-sm mx-auto bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
             <div className="mb-8 text-center">
-                <h1 className="text-3xl font-bold mb-2 text-white">
+                <div className="flex justify-center mb-6">
+                    <Image
+                        src="/logos/bizpro-logo-navy.svg"
+                        alt="BizPro"
+                        width={96}
+                        height={96}
+                        className="h-24 w-24"
+                        priority
+                    />
+                </div>
+                <h1 className="text-3xl font-bold mb-2 text-slate-900">
                     {mode === "login" ? "Bienvenido de nuevo" : "Crea tu cuenta"}
                 </h1>
-                <p className="text-[var(--text-gray)] mb-6">
+                <p className="text-slate-500 mb-6">
                     {mode === "login"
                         ? "Ingresa tus credenciales para continuar"
                         : "Completa el formulario para organizar tu negocio"}
                 </p>
 
                 {error && (
-                    <div className="bg-red-500/10 border border-red-500/50 text-red-500 text-sm p-3 rounded-lg mb-6 animate-in fade-in">
+                    <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg mb-6 border border-red-100 animate-in fade-in">
                         {error}
                     </div>
                 )}
@@ -89,7 +100,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                         login("Carlos Emprendedor");
                         router.push("/dashboard");
                     }}
-                    className="w-full py-3 border-2 border-dashed border-[var(--gold)]/50 bg-[var(--gold)]/10 text-[var(--gold)] rounded-xl font-bold hover:bg-[var(--gold)]/20 transition-all flex items-center justify-center gap-2 mb-6"
+                    className="w-full py-3 border border-amber-200 bg-amber-50 text-amber-700 rounded-xl font-bold hover:bg-amber-100 transition-all flex items-center justify-center gap-2 mb-6"
                 >
                     🚀 Acceso Rápido (DEMO)
                 </button>
@@ -100,7 +111,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                 {mode === "register" && (
                     <>
                         <div>
-                            <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
                                 Nombre Completo
                             </label>
                             <input
@@ -108,13 +119,13 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                                 required
                                 value={fullName}
                                 onChange={(e) => setFullName(e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                                className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)] transition-all"
                                 placeholder="Juan Pérez"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
                                 Teléfono
                             </label>
                             <input
@@ -122,14 +133,14 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                                 required
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
-                                className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                                className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)] transition-all"
                                 placeholder="+1 (555) 000-0000"
                             />
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">
                             <div>
-                                <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                                <label className="block text-sm font-medium text-slate-700 mb-1.5">
                                     País
                                 </label>
                                 <input
@@ -137,12 +148,12 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                                     required
                                     value={country}
                                     onChange={(e) => setCountry(e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)] transition-all"
                                     placeholder="EE.UU."
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                                <label className="block text-sm font-medium text-slate-700 mb-1.5">
                                     Ciudad
                                 </label>
                                 <input
@@ -150,7 +161,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                                     required
                                     value={city}
                                     onChange={(e) => setCity(e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)] transition-all"
                                     placeholder="Miami"
                                 />
                             </div>
@@ -159,7 +170,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                 )}
 
                 <div>
-                    <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">
                         Correo Electrónico
                     </label>
                     <input
@@ -167,14 +178,14 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)] transition-all"
                         placeholder="nombre@ejemplo.com"
                     />
                 </div>
 
                 {mode === "register" && (
                     <div>
-                        <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                        <label className="block text-sm font-medium text-slate-700 mb-1.5">
                             Confirmar Correo
                         </label>
                         <input
@@ -183,7 +194,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                             value={confirmEmail}
                             onChange={(e) => setConfirmEmail(e.target.value)}
                             onPaste={(e) => e.preventDefault()} // Block paste for strict security
-                            className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                            className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)] transition-all"
                             placeholder="Repite tu correo"
                         />
                     </div>
@@ -191,11 +202,11 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
 
                 <div>
                     <div className="flex justify-between items-center mb-1.5">
-                        <label className="block text-sm font-medium text-[var(--text-gray)]">
+                        <label className="block text-sm font-medium text-slate-700">
                             Contraseña
                         </label>
                         {mode === "login" && (
-                            <a href="#" className="text-xs text-[var(--blue-glow)] hover:text-white transition-colors">
+                            <a href="#" className="text-xs text-[var(--navy-brand)] hover:underline transition-colors">
                                 ¿Olvidaste tu contraseña?
                             </a>
                         )}
@@ -205,14 +216,14 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)] transition-all"
                         placeholder="••••••••"
                     />
                 </div>
 
                 {mode === "register" && (
                     <div>
-                        <label className="block text-sm font-medium text-[var(--text-gray)] mb-1.5">
+                        <label className="block text-sm font-medium text-slate-700 mb-1.5">
                             Confirmar Contraseña
                         </label>
                         <input
@@ -220,7 +231,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                             required
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-white placeholder-white/20 focus:outline-none focus:border-[var(--blue-electric)] focus:ring-1 focus:ring-[var(--blue-electric)] transition-all"
+                            className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)] transition-all"
                             placeholder="••••••••"
                         />
                     </div>
@@ -229,7 +240,7 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-3.5 rounded-xl font-bold bg-[var(--blue-electric)] text-white shadow-[0_4px_15px_rgba(59,130,246,0.4)] hover:bg-[#2563EB] disabled:opacity-70 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3.5 rounded-xl font-bold bg-[var(--navy-brand)] text-white shadow-lg shadow-indigo-900/10 hover:bg-[#1a1a3a] disabled:opacity-70 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                 >
                     {isLoading ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
@@ -242,16 +253,13 @@ export default function AuthForm({ initialMode }: AuthFormProps) {
                 </button>
             </form>
 
-            <div className="mt-8 text-center text-sm text-[var(--text-gray)]">
+            <div className="mt-8 text-center text-sm text-slate-500">
                 {mode === "login" ? (
-                    <p>¿No tienes una cuenta? <button type="button" onClick={() => router.push("/login?mode=register")} className="text-[var(--blue-glow)] font-semibold hover:text-white ml-1">Regístrate gratis</button></p>
+                    <p>¿No tienes una cuenta? <button type="button" onClick={() => router.push("/login?mode=register")} className="text-[var(--navy-brand)] font-bold hover:underline ml-1">Regístrate gratis</button></p>
                 ) : (
-                    <p>¿Ya tienes cuenta? <button type="button" onClick={() => router.push("/login")} className="text-[var(--blue-glow)] font-semibold hover:text-white ml-1">Inicia sesión</button></p>
+                    <p>¿Ya tienes cuenta? <button type="button" onClick={() => router.push("/login")} className="text-[var(--navy-brand)] font-bold hover:underline ml-1">Inicia sesión</button></p>
                 )}
             </div>
-
-
-
         </div>
     );
 }

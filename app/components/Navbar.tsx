@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { useBizPro } from "@/app/context/BizProContext";
 import ThemeToggle from "./ThemeToggle";
 
+import Image from "next/image";
+
 export default function Navbar() {
     const { language, toggleLanguage, data, login } = useBizPro();
     const navText = data.content.ui.nav;
@@ -22,11 +24,16 @@ export default function Navbar() {
         <header className="fixed top-0 left-0 w-full h-[var(--header-height)] z-[1000] bg-[var(--background)]/90 backdrop-blur-[10px] border-b border-[var(--glass-border)] flex items-center transition-colors duration-300">
             <div className="w-[90%] max-w-[var(--container-width)] mx-auto flex justify-between items-center">
                 {/* Logo - Navigates to Landing */}
-                <Link href="/" className="text-2xl font-bold tracking-tighter flex items-center gap-2.5 text-[var(--foreground)]">
-                    <div className="w-8 h-8 bg-[var(--navy-brand)] rounded-md flex items-center justify-center text-lg text-white">
-                        B
-                    </div>
-                    BizPro USA
+                <Link href="/" className="flex items-center gap-3">
+                    <Image
+                        src="/logos/bizpro-logo-navy.svg"
+                        alt="BizPro Logo"
+                        width={56}
+                        height={56}
+                        className="h-14 w-14"
+                        priority
+                    />
+                    <span className="text-2xl font-bold tracking-tighter text-[var(--foreground)]">BizPro USA</span>
                 </Link>
 
                 {/* Desktop Nav */}

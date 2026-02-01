@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<svg id="navy-logo" xmlns="http://www.w3.org/2000/svg" version="1.1" width="1280" height="1024" viewBox="0 0 1280 1024">
+    <g transform="matrix(1.9211538461538462 0 0 1.9211538461538462 640 410.851616868616)" id="logo-content-navy">
+        <g>
+            <g transform="matrix(1.5243802660514352 0 0 1.5243802660514352 0 0)">
+                <path d="M 165.2 203 L 93.4 203 L 93.4 192.2 L 165.2 192.2 C 182.1 192.2 195.79999999999998 178.5 195.79999999999998 161.6 C 195.79999999999998 155 193.7 148.9 190.2 143.9 C 185 150.20000000000002 177.1 154.20000000000002 168.29999999999998 154.20000000000002 L 93.4 154.20000000000002 L 93.4 120.20000000000002 L 165.2 120.20000000000002 C 172.79999999999998 120.20000000000002 179.89999999999998 122.30000000000001 186 125.80000000000001 C 186 125.70000000000002 186 125.60000000000001 186 125.60000000000001 C 186 115.80000000000001 178 107.80000000000001 168.2 107.80000000000001 L 93.4 107.80000000000001 L 93.4 97 L 168.3 97 C 184.10000000000002 97 196.9 109.8 196.9 125.6 C 196.9 128.4 196.5 131.1 195.8 133.6 C 202.60000000000002 141 206.70000000000002 150.79999999999998 206.70000000000002 161.6 C 206.6 184.4 188 203 165.2 203 z M 104.2 143.4 L 168.2 143.4 C 174 143.4 179.1 140.6 182.39999999999998 136.3 C 177.49999999999997 132.9 171.59999999999997 131 165.2 131 L 104.19999999999999 131 L 104.19999999999999 143.4 z" />
+            </g>
+            <g transform="matrix(1.5243802660514352 0 0 1.5243802660514352 40.16742001045526 -33.095961843407)">
+                <path d="M 186 125.8 C 186 125.8 185.8 131.2 182.4 136.3 C 182.4 136.3 174.9 131.60000000000002 167 131.10000000000002 L 166.8 120.30000000000003 C 166.8 120.2 177.9 120.2 186 125.8 z" />
+            </g>
+            <g transform="matrix(1.5243802660514352 0 0 1.5243802660514352 72.48428165074563 -6.631054157323774)">
+                <path d="M 190.2 143.9 C 190.2 143.9 193.7 140.20000000000002 195.79999999999998 133.6 C 195.79999999999998 133.6 202.29999999999998 140 204.99999999999997 150 L 195.59999999999997 157.7 C 195.6 157.7 195 151.4 190.2 143.9 z" />
+            </g>
+        </g>
+    </g>
+</svg>
+
+<script>
+    const group = document.getElementById('logo-content-navy');
+    const bbox = group.getBBox();
+    
+    // We need to account for the CTM (Current Transformation Matrix) of the group itself relative to the SVG root
+    // But since we want to create a NEW svg where this group is the only content, we can essentially just take the bounding box of the group geometry 
+    // IF we keep the group transform.
+    // However, getBBox() gives the box in the group's coordinate system (before group transform) if called on the group? 
+    // No, getBBox() on a 'g' element gives the bounding box of its children in the 'g' element's coordinate system.
+    // To get the box in the SVG coordinate system (after the group transform 'matrix(...)'), we can't just use getBBox directly if we want the final screen coordinates?
+    
+    // Actually, the simplest way to "crop" is:
+    // 1. Keep the exact same inner SVG structure including the root-level group transform.
+    // 2. Measure the bounding box of that group in the ROOT SVG coordinate system.
+    // 3. Set the root SVG viewBox to that bounding box.
+    
+    // To get coordinate in root SVG space:
+    const svg = document.getElementById('navy-logo');
+    const rect = group.getBoundingClientRect(); 
+    // getBoundingClientRect is in viewport px.
+    // This depends on the rendered size.
+    // A better way logic-wise:
+    
+    const ctm = group.getCTM();
+    // Transform the local BBox of the children by this CTM to get the bbox in user space (root SVG space)
+    
+    // Let's print out what we need:
+    // We want the bbox of the group in the current coordinate system of the parent (which is the root svg).
+    
+    // Actually, since the group has a 'transform', getBBox returns the box BEFORE that transform.
+    // We want the box AFTER that transform.
+    
+    function getTransformedBBox(element) {
+        const bbox = element.getBBox();
+        const ctm = element.getCTM();
+        
+        // Create 4 corners
+        const pts = [
+            {x: bbox.x, y: bbox.y},
+            {x: bbox.x + bbox.width, y: bbox.y},
+            {x: bbox.x + bbox.width, y: bbox.y + bbox.height},
+            {x: bbox.x, y: bbox.y + bbox.height}
+        ];
+        
+        // Transform points
+        const transformedPts = pts.map(pt => {
+             const svgPt = svg.createSVGPoint();
+             svgPt.x = pt.x;
+             svgPt.y = pt.y;
+             return svgPt.matrixTransform(ctm);
+        });
+        
+        // Find min/max
+        const minX = Math.min(...transformedPts.map(p => p.x));
+        const minY = Math.min(...transformedPts.map(p => p.y));
+        const maxX = Math.max(...transformedPts.map(p => p.x));
+        const maxY = Math.max(...transformedPts.map(p => p.y));
+        
+        return {
+            x: minX,
+            y: minY,
+            width: maxX - minX,
+            height: maxY - minY
+        };
+    }
+    
+    const finalBox = getTransformedBBox(group);
+    
+    console.log(JSON.stringify({
+        x: finalBox.x,
+        y: finalBox.y,
+        width: finalBox.width,
+        height: finalBox.height
+    }));
+</script>
+
+</body>
+</html>
