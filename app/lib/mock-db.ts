@@ -293,16 +293,16 @@ export const BIZPRO_DATA: BizProDataType = {
     pricing: {
         steps: {
             0: { price: 0, status: "unlocked" },
-            1: { price: 0, status: "active" },
-            2: { price: 97, status: "locked" },
-            3: { price: 47, status: "locked" },
-            4: { price: 0, status: "locked" },
-            5: { price: 197, status: "locked" },
+            1: { price: 79, status: "active" },
+            2: { price: 129, status: "locked" },
+            3: { price: 199, status: "locked" },
+            4: { price: 0, status: "locked" }, // Bank account usually free/referral
+            5: { price: 199, status: "locked" }, // Assumed matched check for step 5
             6: { price: 0, status: "locked" }
         },
         packages: {
-            startup: { id: 'startup', price: 299, savings: 58, includes: [1, 2, 3] },
-            readiness: { id: 'readiness', price: 899, savings: 237, includes: [1, 2, 3, 4, 5] }
+            startup: { id: 'startup', price: 299, savings: 108, includes: [1, 2, 3] }, // 79+129+199 = 407. 407-299 = 108 savings
+            readiness: { id: 'readiness', price: 899, savings: 237, includes: [1, 2, 3, 4, 5] } // Custom value prop
         },
         paywallTemplates: {
             es: "<h1>Desbloquea este paso</h1><p>Paga ahora.</p>",
