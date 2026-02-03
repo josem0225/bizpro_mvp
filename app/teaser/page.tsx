@@ -4,6 +4,7 @@ import { useBizPro } from "@/app/context/BizProContext";
 import { Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import DocumentPreview from "@/app/components/DocumentPreview";
+import LockedPlanPreview from "./components/LockedPlanPreview";
 
 export default function TeaserPage() {
     const { language, data } = useBizPro();
@@ -38,6 +39,11 @@ export default function TeaserPage() {
                     {/* INSTANT GRATIFICATION: Document Preview */}
                     <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
                         <DocumentPreview businessName={displayBusinessName} language={language} />
+                    </div>
+
+                    {/* PERSONALIZED ROADMAP (Locked) */}
+                    <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+                        <LockedPlanPreview />
                     </div>
                 </div>
 

@@ -51,14 +51,14 @@ export default function AdminDashboard() {
 
                 <div className="bg-white border border-amber-200 p-6 rounded-2xl relative overflow-hidden shadow-sm">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-amber-50 rounded-bl-full"></div>
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-4 relative z-10">
                         <span className="text-amber-700 font-medium">Requieren Acción</span>
-                        <div className="w-10 h-10 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-white shadow-sm text-amber-600 rounded-lg flex items-center justify-center">
                             <AlertCircle className="w-5 h-5" />
                         </div>
                     </div>
-                    <div className="text-3xl font-bold text-slate-900">{pendingActions}</div>
-                    <div className="text-xs text-amber-600 mt-2 font-medium">Trámites estancados &gt; 3 días</div>
+                    <div className="text-3xl font-bold text-slate-900 relative z-10">{pendingActions}</div>
+                    <div className="text-xs text-amber-600 mt-2 font-medium relative z-10">Trámites estancados &gt; 3 días</div>
                 </div>
             </div>
 

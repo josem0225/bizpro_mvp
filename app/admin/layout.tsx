@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { LayoutDashboard, Users, CreditCard, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, CreditCard, Settings, LogOut, DollarSign, Rocket, ShieldCheck } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -41,6 +41,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <Settings className="w-5 h-5" />
                         <span className="">Configuración</span>
                     </Link>
+
+                    <div className="pt-4 pb-2">
+                        <div className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Management</div>
+                        <Link href="/admin/pricing" className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-blue-600 rounded-xl transition-all font-medium group">
+                            <DollarSign className="w-4 h-4 text-slate-400 group-hover:text-blue-600" />
+                            <span className="text-sm">Pricing Manager</span>
+                        </Link>
+                        <Link href="/admin/steps" className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-purple-600 rounded-xl transition-all font-medium group">
+                            <Rocket className="w-4 h-4 text-slate-400 group-hover:text-purple-600" />
+                            <span className="text-sm">Step Activation</span>
+                        </Link>
+                        <Link href="/admin/audit" className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all font-medium group">
+                            <ShieldCheck className="w-4 h-4 text-slate-400 group-hover:text-slate-900" />
+                            <span className="text-sm">Audit Log</span>
+                        </Link>
+                    </div>
                 </nav>
 
                 <div className="p-4 border-t border-slate-100 bg-slate-50">
