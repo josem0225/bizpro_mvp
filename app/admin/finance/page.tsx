@@ -10,10 +10,10 @@ export default function FinancePage() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const totalRevenue = transactions
-        .filter(t => t.status === "Completed")
-        .reduce((sum, t) => sum + t.amount, 0);
+        .filter((t: any) => t.status === "Completed")
+        .reduce((sum: number, t: any) => sum + t.amount, 0);
 
-    const filteredTransactions = transactions.filter(t =>
+    const filteredTransactions = transactions.filter((t: any) =>
         t.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.concept.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -112,7 +112,7 @@ export default function FinancePage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                            {filteredTransactions.map((tx) => (
+                            {filteredTransactions.map((tx: any) => (
                                 <tr key={tx.id} className="hover:bg-slate-50 transition-colors">
                                     <td className="p-4 text-slate-600 whitespace-nowrap">{tx.date}</td>
                                     <td className="p-4 font-bold text-[var(--navy-brand)]">{tx.user}</td>

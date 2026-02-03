@@ -8,12 +8,13 @@ export default function AdminDashboard() {
     const users = data.admin?.users || [];
 
     // Calculate Metrics
+    // Calculate Metrics
     const totalRevenue = users
-        .filter(u => u.status === 'Paid')
-        .reduce((acc, curr) => acc + (curr.plan === 'Startup' ? 299 : curr.plan === 'Readiness' ? 899 : 79), 0);
+        .filter((u: any) => u.status === 'Paid')
+        .reduce((acc: number, curr: any) => acc + (curr.plan === 'Startup' ? 299 : curr.plan === 'Readiness' ? 899 : 79), 0);
 
-    const pendingActions = users.filter(u => u.status === 'Pending').length;
-    const activeClients = users.filter(u => u.status === 'Paid').length;
+    const pendingActions = users.filter((u: any) => u.status === 'Pending').length;
+    const activeClients = users.filter((u: any) => u.status === 'Paid').length;
 
     const fmt = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
 
@@ -79,7 +80,7 @@ export default function AdminDashboard() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                            {users.map((user) => (
+                            {users.map((user: any) => (
                                 <tr key={user.id} className="hover:bg-slate-50 transition-colors">
                                     <td className="p-4">
                                         <div className="font-bold text-slate-900">{user.name}</div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useBizPro } from "@/app/context/BizProContext";
-import { ArrowLeft, CheckCircle, Download, ExternalLink, FileText, Lock } from "lucide-react";
+import { ArrowLeft, CheckCircle, Download, ExternalLink, FileText, Lock, Eye } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -142,26 +142,75 @@ export default function StepDetailPage() {
                         <div className="space-y-6">
 
                             {/* Downloads */}
-                            {stepData.downloads && stepData.downloads.length > 0 && (
+                            {/* Downloads & Resources Logic */}
+                            {stepId === 5 ? (
+                                /* STEP 5 SPECIAL LAYOUT: PROJECTIONHUB */
                                 <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
                                     <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
-                                        {language === 'es' ? "Descargas" : "Downloads"}
+                                        Recursos Financieros (Dual View)
                                     </h4>
-                                    <div className="space-y-3">
-                                        {stepData.downloads.map((dl, idx) => (
-                                            <a key={idx} href={dl.url} className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-lg hover:border-[var(--navy-brand)] hover:shadow-sm transition-all group">
-                                                <div className="w-10 h-10 bg-[var(--navy-brand)] rounded flex items-center justify-center text-white group-hover:scale-105 transition-transform">
-                                                    <FileText className="w-5 h-5" />
-                                                </div>
-                                                <div className="overflow-hidden">
-                                                    <div className="text-sm font-bold text-slate-700 truncate group-hover:text-[var(--navy-brand)] transition-colors">{dl.name[language]}</div>
-                                                    <div className="text-xs text-slate-400">PDF • 2.4 MB</div>
-                                                </div>
-                                                <Download className="w-4 h-4 ml-auto text-slate-400 group-hover:text-[var(--navy-brand)]" />
-                                            </a>
-                                        ))}
+                                    <div className="grid grid-cols-1 gap-4">
+                                        {/* 1. Download Excel (English) */}
+                                        <a href="/assets/projectionhub_workbook.xlsx" download className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-xl hover:border-emerald-500 hover:shadow-md transition-all group">
+                                            <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center shrink-0">
+                                                <FileText className="w-6 h-6" />
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="font-bold text-slate-700 group-hover:text-emerald-700">Download Workbook (XLSX)</div>
+                                                <div className="text-xs text-slate-400">English • Official ProjectionHub Template</div>
+                                            </div>
+                                            <Download className="w-5 h-5 text-slate-400 group-hover:text-emerald-600" />
+                                        </a>
+
+                                        {/* 2. Preview Guide (Spanish) */}
+                                        <a href="/assets/financial_guide_es.pdf" target="_blank" className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-xl hover:border-[var(--navy-brand)] hover:shadow-md transition-all group">
+                                            <div className="w-12 h-12 bg-blue-50 text-[var(--navy-brand)] rounded-lg flex items-center justify-center shrink-0">
+                                                <Eye className="w-6 h-6" />
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="font-bold text-slate-700 group-hover:text-[var(--navy-brand)]">Leer Guía de Proyección (PDF)</div>
+                                                <div className="text-xs text-slate-400">Español • Instrucciones paso a paso</div>
+                                            </div>
+                                            <ExternalLink className="w-5 h-5 text-slate-400 group-hover:text-[var(--navy-brand)]" />
+                                        </a>
                                     </div>
                                 </div>
+                            ) : (
+                                /* STANDARD LAYOUT */
+                                stepData.downloads && stepData.downloads.length > 0 && (
+                                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
+                                        <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
+                                            {language === 'es' ? "Descargas" : "Downloads"}
+                                        </h4>
+                                        <div className="space-y-3">
+                                            {stepData.downloads.map((dl, idx) => {
+                                                const isPdf = dl.url.endsWith('.pdf');
+                                                return (
+                                                    <a
+                                                        key={idx}
+                                                        href={dl.url}
+                                                        target={isPdf ? "_blank" : "_self"}
+                                                        download={!isPdf}
+                                                        className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-lg hover:border-[var(--navy-brand)] hover:shadow-sm transition-all group"
+                                                    >
+                                                        <div className={`w-10 h-10 rounded flex items-center justify-center text-white group-hover:scale-105 transition-transform ${isPdf ? "bg-[var(--navy-brand)]" : "bg-emerald-600"}`}>
+                                                            {isPdf ? <Eye className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
+                                                        </div>
+                                                        <div className="overflow-hidden flex-1">
+                                                            <div className="text-sm font-bold text-slate-700 truncate group-hover:text-[var(--navy-brand)] transition-colors">{dl.name[language]}</div>
+                                                            <div className="text-xs text-slate-400 uppercase">{isPdf ? "Vista Previa" : "Descargar"}</div>
+                                                        </div>
+                                                        {isPdf ? (
+                                                            <ExternalLink className="w-4 h-4 ml-auto text-slate-400 group-hover:text-[var(--navy-brand)]" />
+                                                        ) : (
+                                                            <Download className="w-4 h-4 ml-auto text-slate-400 group-hover:text-emerald-600" />
+                                                        )}
+                                                    </a>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )
                             )}
 
                             {/* External Resources */}

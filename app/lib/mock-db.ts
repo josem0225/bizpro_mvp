@@ -1,54 +1,84 @@
-export const BIZPRO_DATA = {
-    // 1. CONFIGURACIÓN
+export type Language = "es" | "en";
+
+export interface StepDetail {
+    id: number;
+    title: { [key in Language]: string };
+    short_desc: { [key in Language]: string };
+    education_html: { [key in Language]: string };
+    checklist: { id: string; text: { [key in Language]: string } }[];
+    downloads?: { name: { [key in Language]: string }; url: string }[];
+    resources?: { name: string; url: string }[];
+    referrals?: { name: string; specialty: { [key in Language]: string }; location: string }[];
+}
+
+export interface BizProDataType {
     config: {
-        currentView: 'landing',
-        language: 'es' as 'es' | 'en', // Type assertion for TS
-        isAuthenticated: false,
-        isAdmin: false,
-        activeStepId: null as number | null
-    },
-
-    // 2. DATOS DE USUARIO
+        language: Language;
+        isAuthenticated: boolean;
+        activeStepId: number;
+    };
     user: {
-        name: "Carlos Emprendedor",
-        email: "carlos@example.com",
-        businessName: "",
-        industry: "",
+        name: string;
+        email: string;
+        businessName: string;
         progress: {
-            completedSteps: [] as number[],
-            unlockedSteps: [0],
-            purchasedPackage: null as string | null,
-            uploadedFiles: [] as any[]
+            completedSteps: number[];
+            unlockedSteps: number[];
+        };
+    };
+    content: {
+        ui: {
+            nav: {
+                login: { [key in Language]: string };
+                start: { [key in Language]: string };
+                dashboard: { [key in Language]: string };
+                howItWorks: { [key in Language]: string };
+                pricing: { [key in Language]: string };
+                about: { [key in Language]: string };
+            };
+            admin: {
+                title: { [key in Language]: string };
+                save: { [key in Language]: string };
+            };
+            footer: {
+                disclaimer: { [key in Language]: string };
+            };
+        };
+        landing: {
+            hero: any;
+            features: any;
+            comparison: any;
+            pricing: any;
+            [key: string]: any;
+        };
+        intakeQuestions: {
+            id: string;
+            type: string;
+            label: { [key in Language]: string };
+            placeholder?: { [key in Language]: string };
+            options?: { value: string; label: string }[];
+        }[];
+        stepsDetail: StepDetail[];
+    };
+    pricing: any;
+    admin: any;
+}
+
+export const BIZPRO_DATA: BizProDataType = {
+    config: {
+        language: 'es',
+        isAuthenticated: true,
+        activeStepId: 1
+    },
+    user: {
+        name: "José Miguel",
+        email: "jose@bizpro.com",
+        businessName: "Mi Empresa LLC",
+        progress: {
+            completedSteps: [0, 1],
+            unlockedSteps: [0, 1, 2, 3, 4, 5, 6] // Unlocking all for MVP testing
         }
     },
-
-    // 3. LOG DE AUDITORÍA
-    auditLog: [
-        { id: 1, date: '2026-01-20', action: 'PRICE_CHANGE', detail: 'Admin changed Step 1 to $79', user: 'SuperAdmin' }
-    ],
-
-    // 4. PRECIOS Y REGLAS
-    pricing: {
-        paywallTemplates: {
-            es: "Este paso cuesta ${price}. O desbloquea todo por ${packagePrice} y ahorra.",
-            en: "This step costs ${price}. Or unlock all for ${packagePrice} and save."
-        },
-        steps: {
-            0: { price: 0, status: 'active' },
-            1: { price: 79, status: 'active' },
-            2: { price: 129, status: 'active' },
-            3: { price: 129, status: 'active' },
-            4: { price: 199, status: 'dormant' },
-            5: { price: 199, status: 'dormant' },
-            6: { price: 0, status: 'dormant' }
-        } as Record<number, { price: number; status: string }>,
-        packages: {
-            startup: { id: 'startup', price: 299, savings: 58, includes: [1, 2, 3] },
-            readiness: { id: 'readiness', price: 899, savings: 237, includes: [1, 2, 3, 4, 5] }
-        }
-    },
-
-    // 5. CONTENIDO UI
     content: {
         ui: {
             nav: {
@@ -72,13 +102,13 @@ export const BIZPRO_DATA = {
         },
         landing: {
             hero: {
-                title: { es: "Bienvenido a BizPro!", en: "Welcome to BizPro!" },
-                subtitle: { es: "Coordina tu negocio. Sin distracciones.", en: "Coordinate your business. No distractions." },
-                cta_primary: { es: "Comenzar Gratis", en: "Start Free" },
-                cta_secondary: { es: "Ver Cómo Funciona", en: "See How It Works" },
+                title: { es: "Tu Negocio en USA, Sin Fronteras", en: "Your US Business, Without Borders" },
+                subtitle: { es: "La plataforma todo-en-uno para emprendedores latinos.", en: "The all-in-one platform for Latino entrepreneurs." },
+                cta_primary: { es: "Comenzar Ahora", en: "Start Now" },
+                cta_secondary: { es: "Cómo Funciona", en: "How It Works" },
                 audience_bullets: {
-                    es: ["Quiere iniciar un negocio", "Miedo al IRS", "Busca formalidad"],
-                    en: ["Wants to start a business", "Fear of IRS", "Seeking formality"]
+                    es: ["Sin viajar a USA", "Sin SSN/ITIN", "100% Online"],
+                    en: ["No US travel needed", "No SSN/ITIN", "100% Online"]
                 }
             },
             features: {
@@ -127,7 +157,7 @@ export const BIZPRO_DATA = {
                     desc: { es: "Llave en mano", en: "Turnkey solution" },
                     cta: { es: "Ver Detalles", en: "View Details" }
                 }
-            },
+            }
         },
         intakeQuestions: [
             {
@@ -156,121 +186,166 @@ export const BIZPRO_DATA = {
             {
                 id: 0,
                 title: { es: "Orientación Inicial", en: "Initial Orientation" },
-                short_desc: { es: "Tu punto de partida.", en: "Your starting point." },
+                short_desc: { es: "Entiende el camino antes de empezar.", en: "Understand the path before starting." },
                 education_html: {
-                    es: "<h3>¿Qué es BizPro?</h3><p>No somos abogados. Somos coordinadores...</p>",
-                    en: "<h3>What is BizPro?</h3><p>We are not lawyers. We are coordinators...</p>"
+                    es: "<p>Bienvenido a BizPro. Este camino está diseñado para llevarte de cero a una empresa operativa en USA.</p>",
+                    en: "<p>Welcome to BizPro. This path is designed to take you from zero to an operating US company.</p>"
                 },
                 checklist: [
-                    { id: 'c0_1', text: { es: "Leer guía", en: "Read guide" } },
-                    { id: 'c0_2', text: { es: "Entender límites", en: "Understand limits" } }
-                ],
-                downloads: [
-                    { name: { es: "Guía_Inicio.pdf", en: "Start_Guide.pdf" }, url: "#" }
-                ],
-                uploads: [
-                    { id: 'u0_1', label: { es: "Sube tu confirmación (Opcional)", en: "Upload confirmation (Optional)" } }
-                ],
-                resources: [] as any[],
-                referrals: [] as any[]
+                    { id: "c0_1", text: { es: "Ver video de bienvenida", en: "Watch welcome video" } },
+                    { id: "c0_2", text: { es: "Unirse a la comunidad de WhatsApp", en: "Join WhatsApp community" } }
+                ]
             },
             {
                 id: 1,
-                title: { es: "Identidad del Negocio", en: "Business Identity" },
-                short_desc: { es: "Estructura y nombre.", en: "Structure and name." },
+                title: { es: "Identidad & Estructura", en: "Identity & Structure" },
+                short_desc: { es: "Define el nombre y tipo de entidad legal.", en: "Define name and legal entity type." },
                 education_html: {
-                    es: "<p>El 30% de los errores ocurren aquí. Elige: LLC o Sole Prop...</p>",
-                    en: "<p>30% of errors happen here. Choose: LLC or Sole Prop...</p>"
+                    es: "<p>Elegir el nombre correcto es crucial. Verifica disponibilidad y evita marcas registradas.</p>",
+                    en: "<p>Choosing the right name is crucial. Check availability and avoid trademarks.</p>"
                 },
                 checklist: [
-                    { id: 'c1_1', text: { es: "Brainstorm 5 nombres", en: "Brainstorm 5 names" } },
-                    { id: 'c1_2', text: { es: "Verificar en Sunbiz", en: "Check Sunbiz" } }
+                    { id: "c1_1", text: { es: "Verificar disponibilidad de nombre", en: "Check name availability" } },
+                    { id: "c1_2", text: { es: "Definir tipo de entidad (LLC vs Corp)", en: "Define entity type (LLC vs Corp)" } }
                 ],
                 downloads: [
-                    { name: { es: "Plantilla_Nombres.pdf", en: "Name_Template.pdf" }, url: "#" }
-                ],
-                uploads: [
-                    { id: 'u1_1', label: { es: "Sube captura de Sunbiz", en: "Upload Sunbiz screenshot" } }
+                    { name: { es: "Guía de Nombres", en: "Naming Guide" }, url: "/assets/state_requirements.pdf" }
                 ],
                 resources: [
-                    { name: "Sunbiz", url: "https://dos.fl.gov/sunbiz/" }
+                    { name: "Sunbiz Search", url: "https://sunbiz.org" }
+                ]
+            },
+            {
+                id: 2,
+                title: { es: "Registro Estatal", en: "State Registration" },
+                short_desc: { es: "Formaliza tu empresa ante el estado.", en: "Formalize your company with the state." },
+                education_html: {
+                    es: "<p>Es hora de presentar los Artículos de Organización ante la División de Corporaciones.</p>",
+                    en: "<p>Time to file Articles of Organization with the Division of Corporations.</p>"
+                },
+                checklist: [
+                    { id: "c2_1", text: { es: "Llenar formulario de registro", en: "Fill registration form" } },
+                    { id: "c2_2", text: { es: "Pagar tasas estatales", en: "Pay state fees" } }
                 ],
-                referrals: [
-                    {
-                        name: "Abogado Ejemplo",
-                        specialty: { es: "Formación LLC", en: "LLC Formation" },
-                        location: "Miami"
-                    }
+                downloads: [
+                    { name: { es: "Checklist de Apertura", en: "Opening Checklist" }, url: "/assets/opening_checklist.pdf" }
+                ]
+            },
+            {
+                id: 3,
+                title: { es: "Obtención de EIN", en: "EIN Obtainment" },
+                short_desc: { es: "Consigue tu número de identificación fiscal.", en: "Get your tax ID number." },
+                education_html: {
+                    es: "<p>El EIN es como el seguro social de tu empresa. Lo necesitas para abrir cuentas bancarias.</p>",
+                    en: "<p>The EIN is like your company's social security number. You need it to open bank accounts.</p>"
+                },
+                checklist: [
+                    { id: "c3_1", text: { es: "Solicitar EIN online (SS-4)", en: "Apply for EIN online (SS-4)" } }
+                ],
+                resources: [
+                    { name: "IRS Website", url: "https://irs.gov" }
+                ]
+            },
+            {
+                id: 4,
+                title: { es: "Cuenta Bancaria", en: "Bank Account" },
+                short_desc: { es: "Abre tu cuenta de negocios en USA.", en: "Open your US business bank account." },
+                education_html: {
+                    es: "<p>Separa tus finanzas personales de las del negocio.</p>",
+                    en: "<p>Separate your personal finances from business ones.</p>"
+                },
+                checklist: [
+                    { id: "c4_1", text: { es: "Reunir documentos (Artículos + EIN)", en: "Gather docs (Articles + EIN)" } },
+                    { id: "c4_2", text: { es: "Aplicar a Mercury/Relay", en: "Apply to Mercury/Relay" } }
+                ],
+                downloads: [
+                    { name: { es: "Carta de Presentación Bancaria", en: "Bank Letter" }, url: "/assets/bank_letter.docx" }
+                ]
+            },
+            {
+                id: 5,
+                title: { es: "Finanzas & Proyección", en: "Finance & Projection" },
+                short_desc: { es: "Planifica el futuro financiero con ProjectionHub.", en: "Plan financial future with ProjectionHub." },
+                education_html: {
+                    es: "<p>Usa nuestras herramientas exclusivas de ProjectionHub para modelar tus ingresos.</p>",
+                    en: "<p>Use our exclusive ProjectionHub tools to model your revenue.</p>"
+                },
+                checklist: [
+                    { id: "c5_1", text: { es: "Descargar Workbook Financiero", en: "Download Financial Workbook" } },
+                    { id: "c5_2", text: { es: "Completar hoja de ingresos", en: "Complete revenue sheet" } }
+                ]
+                // Downloads handled by special layout logic
+            },
+            {
+                id: 6,
+                title: { es: "Lanzamiento", en: "Launch" },
+                short_desc: { es: "Todo listo para operar.", en: "Ready to operate." },
+                education_html: {
+                    es: "<p>¡Felicidades! Tu empresa está lista.</p>",
+                    en: "<p>Congratulations! Your company is ready.</p>"
+                },
+                checklist: [
+                    { id: "c6_1", text: { es: "Celebrar", en: "Celebrate" } }
                 ]
             }
         ]
     },
+    pricing: {
+        steps: {
+            0: { price: 0, status: "unlocked" },
+            1: { price: 0, status: "active" },
+            2: { price: 97, status: "locked" },
+            3: { price: 47, status: "locked" },
+            4: { price: 0, status: "locked" },
+            5: { price: 197, status: "locked" },
+            6: { price: 0, status: "locked" }
+        },
+        packages: {
+            startup: { id: 'startup', price: 299, savings: 58, includes: [1, 2, 3] },
+            readiness: { id: 'readiness', price: 899, savings: 237, includes: [1, 2, 3, 4, 5] }
+        },
+        paywallTemplates: {
+            es: "<h1>Desbloquea este paso</h1><p>Paga ahora.</p>",
+            en: "<h1>Unlock this step</h1><p>Pay now.</p>"
+        }
+    },
     admin: {
         users: [
-            { id: "u1", name: "Carlos Emprendedor", email: "carlos@example.com", plan: "Start", status: "Paid", lastContact: "2026-01-29", step: 1 },
-            { id: "u2", name: "Ana Pizzería", email: "ana@pizza.com", plan: "Readiness", status: "Pending", lastContact: "2026-01-25", step: 3 },
-            { id: "u3", name: "Luis Taller", email: "luis@taller.com", plan: "None", status: "Lead", lastContact: "2026-01-30", step: 0 },
-            { id: "u4", name: "María Consultora", email: "maria@legal.com", plan: "Start", status: "Paid", lastContact: "2026-01-20", step: 2 },
-            { id: "u5", name: "Jorge Tech", email: "jorge@startup.com", plan: "Readiness", status: "Paid", lastContact: "2026-01-31", step: 5 }
+            { id: 1, name: "Carlos Mendoza", email: "carlos@techmiami.com", plan: "Readiness", status: "Paid", lastContact: "Hoy, 9:20 AM", step: 3 },
+            { id: 2, name: "Ana Rodriguez", email: "ana.r@bakery.com", plan: "Startup", status: "Pending", lastContact: "Ayer, 4:15 PM", step: 1 },
+            { id: 3, name: "Luis Fernandez", email: "luis@importsexport.com", plan: "None", status: "Lead", lastContact: "Hace 2 días", step: 0 },
+            { id: 4, name: "Sofia Gaviria", email: "sofia@designstudio.io", plan: "Readiness", status: "Paid", lastContact: "Hace 3 días", step: 5 },
+            { id: 5, name: "Jorge Trejo", email: "jorge@constructora.com", plan: "Startup", status: "Paid", lastContact: "Hace 1 semana", step: 2 }
         ],
         transactions: [
-            { id: "tx1", date: "2026-01-31", user: "Jorge Tech", amount: 899, method: "Stripe", status: "Completed", concept: "Pack Business Ready" },
-            { id: "tx2", date: "2026-01-29", user: "Carlos Emprendedor", amount: 299, method: "Zelle", status: "Completed", concept: "Pack Startup" },
-            { id: "tx3", date: "2026-01-20", user: "María Consultora", amount: 79, method: "Stripe", status: "Completed", concept: "Step 1: Identity" },
-            { id: "tx4", date: "2026-01-15", user: "Pedro Construct", amount: 150, method: "Cash", status: "Pending", concept: "Manual Adjustment" }
+            { id: "tx_1", date: "Oct 24, 2025", user: "Carlos Mendoza", concept: "Business Readiness Pack", method: "Stripe", amount: 899, status: "Completed" },
+            { id: "tx_2", date: "Oct 24, 2025", user: "Ana Rodriguez", concept: "Startup Pack (Deposit)", method: "Zelle", amount: 150, status: "Pending" },
+            { id: "tx_3", date: "Oct 23, 2025", user: "Sofia Gaviria", concept: "Business Readiness Pack", method: "Stripe", amount: 899, status: "Completed" },
+            { id: "tx_4", date: "Oct 22, 2025", user: "Jorge Trejo", concept: "Startup Pack", method: "Stripe", amount: 299, status: "Completed" },
+            { id: "tx_5", date: "Oct 21, 2025", user: "Miguel Ángel", concept: "Consultoría Hora", method: "Cash", amount: 100, status: "Completed" }
         ],
         builder: {
             verticals: [
                 {
-                    id: "v1",
-                    name: "Restaurantes / Food Service",
-                    description: "Licencias de salud, alcohol y permisos municipales.",
+                    id: "1",
+                    name: "Florida LLC Formation",
                     status: "Active",
                     steps: [
-                        {
-                            id: "s1",
-                            title: "Consulta Inicial & Estructura",
-                            price: 0, // Hook (Free)
-                            description: "Definimos si serás LLC o Corp y verificamos el nombre.",
-                            files: [{ name: "Guia_Restaurantes_FL.pdf", url: "#" }],
-                            formFields: [
-                                { id: "f1", type: "text", label: "Nombre Propuesto del Restaurante" },
-                                { id: "f2", type: "select", label: "Tipo de Servicio", options: ["Dine-in", "Takeout", "Food Truck"] }
-                            ]
-                        },
-                        {
-                            id: "s2",
-                            title: "Licencias Estatales (DBPR)",
-                            price: 199,
-                            description: "Gestión de la licencia de Hoteles y Restaurantes de FL.",
-                            files: [],
-                            formFields: [
-                                { id: "f3", type: "text", label: "Número de Asientos" },
-                                { id: "f4", type: "textarea", label: "Descripción del Menú (para plan review)" }
-                            ]
-                        }
+                        { id: "s1", title: "Identidad del Negocio", price: 0, description: "Definición de nombre y estructura.", formFields: [], files: [] },
+                        { id: "s2", title: "Registro Estatal", price: 150, description: "Presentación oficial ante Sunbiz.", formFields: [], files: [] },
+                        { id: "s3", title: "Obtención de EIN", price: 50, description: "Número fiscal federal.", formFields: [], files: [] },
+                        { id: "s4", title: "Acuerdo Operativo", price: 100, description: "Reglas internas de la empresa.", formFields: [], files: [] }
                     ]
                 },
                 {
-                    id: "v2",
-                    name: "Detailing / Car Wash Móvil",
-                    description: "Permisos de agua, seguro y registro de vehículo comercial.",
+                    id: "2",
+                    name: "Delaware Corp (Tech)",
                     status: "Draft",
                     steps: [
-                        {
-                            id: "s1",
-                            title: "Registro Básico",
-                            price: 0,
-                            description: "Registro en Sunbiz y EIN.",
-                            files: [],
-                            formFields: []
-                        }
+                        { id: "s1", title: "Name Reservation", price: 50, formFields: [], files: [] }
                     ]
                 }
             ]
         }
     }
 };
-
-// Type helper
-export type BizProDataType = typeof BIZPRO_DATA;

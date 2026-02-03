@@ -65,7 +65,7 @@ export default function HeroSection() {
 
                 {/* Target Audience Tabs - Premium Look */}
                 <div className="flex flex-wrap justify-center gap-3 mb-10">
-                    {hero.audience_bullets[language].map((item, idx) => (
+                    {hero.audience_bullets[language].map((item: any, idx: number) => (
                         <div key={idx} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-100 rounded-full shadow-sm text-sm font-medium text-slate-600">
                             <Check className="w-4 h-4 text-[var(--navy-brand)]" />
                             <span>{item}</span>

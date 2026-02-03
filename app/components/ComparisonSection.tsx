@@ -24,7 +24,7 @@ export default function ComparisonSection() {
                             BizPro
                         </h3>
                         <div className="space-y-6">
-                            {comparison.bizpro[language].map((item, idx) => (
+                            {comparison.bizpro[language].map((item: any, idx: number) => (
                                 <div key={idx} className="flex items-start gap-4">
                                     <div className="w-6 h-6 rounded-full bg-[var(--success)]/10 border border-[var(--success)] flex items-center justify-center text-[var(--success)] shrink-0">
                                         <Check className="w-3.5 h-3.5" />
@@ -39,7 +39,7 @@ export default function ComparisonSection() {
                     <div className="bg-[var(--background)] border border-[var(--glass-border)] rounded-[var(--radius-lg)] p-8 relative opacity-80">
                         <h3 className="text-2xl font-bold mb-8 text-[var(--text-gray)]">Gestores / Others</h3>
                         <div className="space-y-6">
-                            {comparison.others[language].map((item, idx) => (
+                            {comparison.others[language].map((item: any, idx: number) => (
                                 <div key={idx} className="flex items-start gap-4">
                                     <div className="w-6 h-6 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 shrink-0">
                                         <X className="w-3.5 h-3.5" />

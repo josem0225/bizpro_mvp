@@ -4,10 +4,11 @@ import { useBizPro } from "@/app/context/BizProContext";
 import { useState } from "react";
 import {
     Save, ArrowLeft, Plus, FileText, Trash2, GripVertical,
-    Type, List, AlignLeft, Download, Upload, Edit
+    Type, List, AlignLeft, Download, Upload, Edit, Eye
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { ASSET_LIBRARY } from "@/app/lib/mock-assets";
 
 export default function BuilderEditorPage() {
     const params = useParams();
@@ -17,7 +18,7 @@ export default function BuilderEditorPage() {
     // In a real app, these would come from the context/DB based on params.id
     // For MVP, we default to the first one if ID matches, or mock it.
     const verticalId = params.id;
-    const initialData = data.admin?.builder?.verticals.find(v => v.id === verticalId) || data.admin?.builder?.verticals[0];
+    const initialData = data.admin?.builder?.verticals.find((v: any) => v.id === verticalId) || data.admin?.builder?.verticals[0];
 
     const [activeStepIndex, setActiveStepIndex] = useState(0);
     const [vertical, setVertical] = useState(initialData);
@@ -49,7 +50,7 @@ export default function BuilderEditorPage() {
     };
 
     const handleDeleteField = (fieldId: string) => {
-        const newFields = activeStep.formFields?.filter(f => f.id !== fieldId) || [];
+        const newFields = activeStep.formFields?.filter((f: any) => f.id !== fieldId) || [];
         handleUpdateActiveStep('formFields', newFields);
     };
 
@@ -91,7 +92,7 @@ export default function BuilderEditorPage() {
                         </h3>
 
                         <div className="space-y-2">
-                            {vertical.steps.map((step, idx) => (
+                            {vertical.steps.map((step: any, idx: number) => (
                                 <div
                                     key={step.id}
                                     onClick={() => setActiveStepIndex(idx)}
@@ -247,28 +248,66 @@ export default function BuilderEditorPage() {
                                 <div className="flex justify-between items-center">
                                     <h3 className="text-lg font-bold text-[var(--navy-brand)] flex items-center gap-2">
                                         <Download className="w-5 h-5 text-purple-600" />
-                                        Biblioteca de Archivos
+                                        Biblioteca de Archivos (Airtable)
                                     </h3>
-                                    <button className="px-3 py-1.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors hover:bg-purple-100">
-                                        <Upload className="w-3 h-3" /> Subir PDF
-                                    </button>
+                                </div>
+
+                                {/* Asset Picker */}
+                                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Asignar Nuevo Recurso</label>
+                                    <div className="flex gap-2">
+                                        <select
+                                            className="flex-1 bg-white border border-slate-300 rounded-lg text-sm p-2 outline-none focus:border-[var(--navy-brand)]"
+                                            onChange={(e) => {
+                                                const selectedId = e.target.value;
+                                                const asset = ASSET_LIBRARY.find(a => a.id === selectedId);
+                                                if (asset) {
+                                                    const newFile = {
+                                                        name: { es: asset.name, en: asset.name }, // Simple mock for i18n
+                                                        url: asset.url
+                                                    };
+                                                    const newFiles = [...(activeStep.files || []), newFile];
+                                                    handleUpdateActiveStep('files', newFiles);
+                                                }
+                                                e.target.value = ""; // Reset
+                                            }}
+                                        >
+                                            <option value="">-- Seleccionar de la Biblioteca --</option>
+                                            {ASSET_LIBRARY.map(asset => (
+                                                <option key={asset.id} value={asset.id}>
+                                                    {asset.type.toUpperCase()} - {asset.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-2">
                                     {(!activeStep.files || activeStep.files.length === 0) ? (
-                                        <div className="text-center text-slate-400 text-sm py-8 italic border border-dashed border-slate-200 rounded-xl bg-slate-50">
-                                            No hay archivos adjuntos para que el usuario descargue.
+                                        <div className="text-center text-slate-400 text-sm py-4 italic">
+                                            No hay archivos asignados a este paso.
                                         </div>
                                     ) : (
                                         activeStep.files.map((file: any, index: number) => (
-                                            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 shadow-sm hover:border-purple-200 transition-colors">
+                                            <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="p-2 bg-purple-50 rounded-lg text-purple-600">
-                                                        <FileText className="w-4 h-4" />
+                                                    <div className={`p-2 rounded-lg ${file.url?.endsWith('.pdf') ? 'bg-blue-50 text-blue-600' : 'bg-emerald-50 text-emerald-600'}`}>
+                                                        {file.url?.endsWith('.pdf') ? <Eye className="w-4 h-4" /> : <FileText className="w-4 h-4" />}
                                                     </div>
-                                                    <span className="text-sm font-medium text-slate-700">{file.name}</span>
+                                                    <div className="overflow-hidden">
+                                                        <div className="text-sm font-medium text-slate-700 truncate max-w-[200px]">{file.name.es || file.name}</div>
+                                                        <div className="text-[10px] text-slate-400 uppercase">{file.url?.endsWith('.pdf') ? 'Vista Previa' : 'Descarga'}</div>
+                                                    </div>
                                                 </div>
-                                                <button className="text-red-400 hover:text-red-600 text-xs font-medium px-2 py-1 hover:bg-red-50 rounded">Eliminar</button>
+                                                <button
+                                                    onClick={() => {
+                                                        const newFiles = activeStep.files.filter((_: any, i: number) => i !== index);
+                                                        handleUpdateActiveStep('files', newFiles);
+                                                    }}
+                                                    className="text-red-400 hover:text-red-600 p-2 hover:bg-red-50 rounded transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
                                             </div>
                                         ))
                                     )}

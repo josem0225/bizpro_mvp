@@ -46,7 +46,7 @@ export function BizProProvider({ children }: { children: React.ReactNode }) {
                     ...prev.admin,
                     builder: {
                         ...prev.admin.builder,
-                        verticals: prev.admin.builder.verticals.map(v =>
+                        verticals: prev.admin.builder.verticals.map((v: any) =>
                             v.id === updatedVertical.id ? updatedVertical : v
                         )
                     }

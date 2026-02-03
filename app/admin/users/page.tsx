@@ -11,7 +11,7 @@ export default function ClientsPage() {
     const [filterStatus, setFilterStatus] = useState<"All" | "Paid" | "Pending" | "Lead">("All");
     const [selectedUser, setSelectedUser] = useState<any | null>(null);
 
-    const filteredUsers = users.filter(user => {
+    const filteredUsers = users.filter((user: any) => {
         const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             user.email.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesFilter = filterStatus === "All" || user.status === filterStatus;
@@ -64,7 +64,7 @@ export default function ClientsPage() {
 
             {/* Clients Table / Grid */}
             <div className="grid gap-4">
-                {filteredUsers.map((user) => (
+                {filteredUsers.map((user: any) => (
                     <div key={user.id} className="group bg-white border border-slate-200 hover:border-[var(--navy-brand)] p-6 rounded-2xl transition-all duration-200 shadow-sm hover:shadow-md">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
 

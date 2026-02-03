@@ -45,7 +45,7 @@ export default function FeaturesSection() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {features.cards.map((card, idx) => {
+                    {features.cards.map((card: any, idx: number) => {
                         const Icon = iconMap[idx] || Globe;
                         return (
                             <div
