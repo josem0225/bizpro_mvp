@@ -13,7 +13,7 @@ import { ASSET_LIBRARY } from "@/app/lib/mock-assets";
 export default function BuilderEditorPage() {
     const params = useParams();
     const router = useRouter(); // Import useRouter
-    const { data, updateVertical } = useBizPro();
+    const { data, updateVertical, language } = useBizPro();
 
     // In a real app, these would come from the context/DB based on params.id
     // For MVP, we default to the first one if ID matches, or mock it.
@@ -23,6 +23,92 @@ export default function BuilderEditorPage() {
 
     const verticalId = params.id;
     const initialData = data.admin?.builder?.verticals.find((v: any) => v.id === verticalId) || data.admin?.builder?.verticals[0];
+
+    // Dictionary for Builder Editor
+    const text = {
+        es: {
+            header: { subtitle: "Editando flujo de trabajo", save: "Guardar Cambios", saved: "Cambios guardados en memoria exitosamente." },
+            sidebar: { sequence: "Secuencia de Pasos", add: "Agregar Paso", price: "Gratis", inputs: "inputs" },
+            empty: "Selecciona un paso para editar",
+            basics: {
+                title: "Configuración Básica",
+                stepTitle: "Título del Paso",
+                price: "Precio ($)",
+                desc: "Descripción Educativa"
+            },
+            form: {
+                title: "Formulario de Entrada",
+                add: { text: "Texto", area: "Area", select: "Dropdown" },
+                empty: "No hay campos configurados para este paso.",
+                placeholder: "Pregunta o Etiqueta del Campo",
+                optionsPlaceholder: "Opciones separadas por coma (ej. Opción A, Opción B)"
+            },
+            files: {
+                title: "Biblioteca de Archivos (Airtable)",
+                assign: "Asignar Recurso",
+                selectPlaceholder: "-- Seleccionar de la Biblioteca --",
+                new: "Nuevo",
+                empty: "No hay archivos asignados a este paso.",
+                modal: {
+                    title: "Subir Nuevo Recurso",
+                    name: "Nombre del Archivo",
+                    type: "Tipo de Archivo",
+                    note: "Nota: En este MVP, el archivo se simulará con una URL generada automáticamente.",
+                    cancel: "Cancelar",
+                    save: "Guardar y Asignar"
+                }
+            },
+            tools: {
+                title: "Herramientas Oficiales (Links)",
+                add: "Agregar Tool",
+                empty: "No hay herramientas asignadas.",
+                placeholderName: "Nombre de la Herramienta",
+                placeholderUrl: "URL (https://...)"
+            }
+        },
+        en: {
+            header: { subtitle: "Editing workflow", save: "Save Changes", saved: "Changes saved to memory successfully." },
+            sidebar: { sequence: "Steps Sequence", add: "Add Step", price: "Free", inputs: "inputs" },
+            empty: "Select a step to edit",
+            basics: {
+                title: "Basic Configuration",
+                stepTitle: "Step Title",
+                price: "Price ($)",
+                desc: "Educational Description"
+            },
+            form: {
+                title: "Input Form",
+                add: { text: "Text", area: "Area", select: "Dropdown" },
+                empty: "No fields configured for this step.",
+                placeholder: "Question or Field Label",
+                optionsPlaceholder: "Comma separated options (e.g. Option A, Option B)"
+            },
+            files: {
+                title: "File Library (Airtable)",
+                assign: "Assign Resource",
+                selectPlaceholder: "-- Select from Library --",
+                new: "New",
+                empty: "No files assigned to this step.",
+                modal: {
+                    title: "Upload New Resource",
+                    name: "File Name",
+                    type: "File Type",
+                    note: "Note: In this MVP, the file will be simulated with an auto-generated URL.",
+                    cancel: "Cancel",
+                    save: "Save & Assign"
+                }
+            },
+            tools: {
+                title: "Official Tools (Links)",
+                add: "Add Tool",
+                empty: "No official tools assigned.",
+                placeholderName: "Tool Name",
+                placeholderUrl: "URL (https://...)"
+            }
+        }
+    };
+
+    const t = language === 'es' ? text.es : text.en;
 
     const [activeStepIndex, setActiveStepIndex] = useState(0);
     const [vertical, setVertical] = useState(initialData);
@@ -63,16 +149,14 @@ export default function BuilderEditorPage() {
 
     const handleSave = () => {
         updateVertical(vertical);
-        alert("Cambios guardados en memoria exitosamente.");
+        alert(t.header.saved);
     };
-
-
 
     const handleAddField = (type: 'text' | 'textarea' | 'select') => {
         const newField = {
             id: `f_${Date.now()}`,
             type,
-            label: "Nueva Pregunta",
+            label: language === 'es' ? "Nueva Pregunta" : "New Question",
             options: type === 'select' ? ["Opción 1", "Opción 2"] : undefined
         };
         const newFields = [...(activeStep.formFields || []), newField];
@@ -99,7 +183,7 @@ export default function BuilderEditorPage() {
                                 {vertical.status}
                             </span>
                         </div>
-                        <p className="text-sm text-slate-500">Editando flujo de trabajo</p>
+                        <p className="text-sm text-slate-500">{t.header.subtitle}</p>
                     </div>
                 </div>
                 <button
@@ -107,7 +191,7 @@ export default function BuilderEditorPage() {
                     className="px-5 py-2.5 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center gap-2 shadow-md hover:shadow-lg"
                 >
                     <Save className="w-5 h-5" />
-                    Guardar Cambios
+                    {t.header.save}
                 </button>
             </div>
 
@@ -118,7 +202,7 @@ export default function BuilderEditorPage() {
                 <div className="w-1/3 flex flex-col gap-4">
                     <div className="bg-white border border-slate-200 rounded-2xl p-4 flex-1 overflow-y-auto shadow-sm">
                         <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 px-2">
-                            Secuencia de Pasos
+                            {t.sidebar.sequence}
                         </h3>
 
                         <div className="space-y-2">
@@ -141,8 +225,8 @@ export default function BuilderEditorPage() {
                                             {step.title}
                                         </div>
                                         <div className="text-xs text-slate-400 flex justify-between mt-0.5">
-                                            <span>{step.price === 0 ? "Gratis" : `$${step.price}`}</span>
-                                            <span>{Array.isArray(step.formFields) ? step.formFields.length : 0} inputs</span>
+                                            <span>{step.price === 0 ? t.sidebar.price : `$${step.price}`}</span>
+                                            <span>{Array.isArray(step.formFields) ? step.formFields.length : 0} {t.sidebar.inputs}</span>
                                         </div>
                                     </div>
                                     {idx === activeStepIndex && <div className="w-1.5 h-1.5 rounded-full bg-[var(--navy-brand)]"></div>}
@@ -152,7 +236,7 @@ export default function BuilderEditorPage() {
 
                         <button className="w-full mt-4 py-3 border-2 border-dashed border-slate-200 hover:border-[var(--navy-brand)] hover:bg-slate-50 rounded-xl text-slate-500 hover:text-[var(--navy-brand)] font-bold transition-all flex items-center justify-center gap-2">
                             <Plus className="w-4 h-4" />
-                            Agregar Paso
+                            {t.sidebar.add}
                         </button>
                     </div>
                 </div>
@@ -166,11 +250,11 @@ export default function BuilderEditorPage() {
                             <div className="space-y-4">
                                 <h3 className="text-lg font-bold text-[var(--navy-brand)] flex items-center gap-2">
                                     <Edit className="w-5 h-5 text-blue-500" />
-                                    Configuración Básica
+                                    {t.basics.title}
                                 </h3>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-bold text-slate-600 mb-1">Título del Paso</label>
+                                        <label className="block text-sm font-bold text-slate-600 mb-1">{t.basics.stepTitle}</label>
                                         <input
                                             type="text"
                                             value={activeStep.title}
@@ -179,7 +263,7 @@ export default function BuilderEditorPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-bold text-slate-600 mb-1">Precio ($)</label>
+                                        <label className="block text-sm font-bold text-slate-600 mb-1">{t.basics.price}</label>
                                         <input
                                             type="number"
                                             value={activeStep.price}
@@ -189,7 +273,7 @@ export default function BuilderEditorPage() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-bold text-slate-600 mb-1">Descripción Educativa</label>
+                                    <label className="block text-sm font-bold text-slate-600 mb-1">{t.basics.desc}</label>
                                     <textarea
                                         value={activeStep.description}
                                         onChange={(e) => handleUpdateActiveStep('description', e.target.value)}
@@ -206,17 +290,17 @@ export default function BuilderEditorPage() {
                                 <div className="flex justify-between items-center">
                                     <h3 className="text-lg font-bold text-[var(--navy-brand)] flex items-center gap-2">
                                         <List className="w-5 h-5 text-amber-500" />
-                                        Formulario de Entrada
+                                        {t.form.title}
                                     </h3>
                                     <div className="flex gap-2">
                                         <button onClick={() => handleAddField('text')} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-600 flex items-center gap-1 transition-colors">
-                                            <Type className="w-3 h-3" /> Texto
+                                            <Type className="w-3 h-3" /> {t.form.add.text}
                                         </button>
                                         <button onClick={() => handleAddField('textarea')} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-600 flex items-center gap-1 transition-colors">
-                                            <AlignLeft className="w-3 h-3" /> Area
+                                            <AlignLeft className="w-3 h-3" /> {t.form.add.area}
                                         </button>
                                         <button onClick={() => handleAddField('select')} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-600 flex items-center gap-1 transition-colors">
-                                            <List className="w-3 h-3" /> Dropdown
+                                            <List className="w-3 h-3" /> {t.form.add.select}
                                         </button>
                                     </div>
                                 </div>
@@ -224,7 +308,7 @@ export default function BuilderEditorPage() {
                                 <div className="space-y-3 bg-slate-50 rounded-xl p-4 min-h-[100px] border border-slate-100">
                                     {(!activeStep.formFields || activeStep.formFields.length === 0) && (
                                         <div className="text-center text-slate-400 text-sm py-8 italic">
-                                            No hay campos configurados para este paso.
+                                            {t.form.empty}
                                         </div>
                                     )}
                                     {activeStep.formFields?.map((field: any, idx: number) => (
@@ -244,7 +328,7 @@ export default function BuilderEditorPage() {
                                                         handleUpdateActiveStep('formFields', newFields);
                                                     }}
                                                     className="w-full bg-transparent border-none p-0 text-[var(--navy-brand)] font-bold focus:ring-0 placeholder-slate-300"
-                                                    placeholder="Pregunta o Etiqueta del Campo"
+                                                    placeholder={t.form.placeholder}
                                                 />
                                                 {field.type === 'select' && (
                                                     <input
@@ -256,7 +340,7 @@ export default function BuilderEditorPage() {
                                                             handleUpdateActiveStep('formFields', newFields);
                                                         }}
                                                         className="w-full text-xs bg-slate-50 rounded px-2 py-1 text-slate-500 border border-slate-200 focus:border-[var(--navy-brand)] focus:ring-0"
-                                                        placeholder="Opciones separadas por coma (ej. Opción A, Opción B)"
+                                                        placeholder={t.form.optionsPlaceholder}
                                                     />
                                                 )}
                                             </div>
@@ -278,13 +362,13 @@ export default function BuilderEditorPage() {
                                 <div className="flex justify-between items-center">
                                     <h3 className="text-lg font-bold text-[var(--navy-brand)] flex items-center gap-2">
                                         <Download className="w-5 h-5 text-purple-600" />
-                                        Biblioteca de Archivos (Airtable)
+                                        {t.files.title}
                                     </h3>
                                 </div>
 
                                 {/* Asset Picker */}
                                 <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Asignar Recurso</label>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2">{t.files.assign}</label>
                                     <div className="flex gap-2">
                                         <select
                                             className="flex-1 bg-white border border-slate-300 rounded-lg text-sm p-2 outline-none focus:border-[var(--navy-brand)]"
@@ -302,7 +386,7 @@ export default function BuilderEditorPage() {
                                                 e.target.value = ""; // Reset
                                             }}
                                         >
-                                            <option value="">-- Seleccionar de la Biblioteca --</option>
+                                            <option value="">{t.files.selectPlaceholder}</option>
                                             {library.map(asset => (
                                                 <option key={asset.id} value={asset.id}>
                                                     {asset.type.toUpperCase()} - {asset.name}
@@ -315,7 +399,7 @@ export default function BuilderEditorPage() {
                                             title="Subir Nuevo Archivo"
                                         >
                                             <Upload className="w-4 h-4" />
-                                            <span className="hidden sm:inline text-xs font-bold">Nuevo</span>
+                                            <span className="hidden sm:inline text-xs font-bold">{t.files.new}</span>
                                         </button>
                                     </div>
                                 </div>
@@ -326,12 +410,12 @@ export default function BuilderEditorPage() {
                                         <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl scale-100 animate-in zoom-in-95 duration-200">
                                             <h3 className="text-xl font-bold text-[var(--navy-brand)] mb-4 flex items-center gap-2">
                                                 <Upload className="w-5 h-5" />
-                                                Subir Nuevo Recurso
+                                                {t.files.modal.title}
                                             </h3>
 
                                             <div className="space-y-4">
                                                 <div>
-                                                    <label className="block text-sm font-bold text-slate-700 mb-1">Nombre del Archivo</label>
+                                                    <label className="block text-sm font-bold text-slate-700 mb-1">{t.files.modal.name}</label>
                                                     <input
                                                         type="text"
                                                         placeholder="Ej: Guía de Impuestos 2026"
@@ -342,7 +426,7 @@ export default function BuilderEditorPage() {
                                                 </div>
 
                                                 <div>
-                                                    <label className="block text-sm font-bold text-slate-700 mb-1">Tipo de Archivo</label>
+                                                    <label className="block text-sm font-bold text-slate-700 mb-1">{t.files.modal.type}</label>
                                                     <div className="grid grid-cols-2 gap-2">
                                                         {['pdf', 'xlsx', 'docx', 'image'].map(type => (
                                                             <button
@@ -360,7 +444,7 @@ export default function BuilderEditorPage() {
                                                 </div>
 
                                                 <div className="bg-amber-50 text-amber-800 text-xs p-3 rounded-lg border border-amber-100">
-                                                    Nota: En este MVP, el archivo se simulará con una URL generada automáticamente.
+                                                    {t.files.modal.note}
                                                 </div>
                                             </div>
 
@@ -369,14 +453,14 @@ export default function BuilderEditorPage() {
                                                     onClick={() => setIsUploadModalOpen(false)}
                                                     className="px-4 py-2 text-slate-500 hover:bg-slate-100 rounded-lg font-medium transition-colors"
                                                 >
-                                                    Cancelar
+                                                    {t.files.modal.cancel}
                                                 </button>
                                                 <button
                                                     onClick={handleQuickUpload}
                                                     disabled={!newFile.name}
                                                     className="px-5 py-2 bg-[var(--navy-brand)] text-white rounded-lg font-bold hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                                                 >
-                                                    Guardar y Asignar
+                                                    {t.files.modal.save}
                                                 </button>
                                             </div>
                                         </div>
@@ -386,7 +470,7 @@ export default function BuilderEditorPage() {
                                 <div className="grid grid-cols-1 gap-2">
                                     {(!activeStep.files || activeStep.files.length === 0) ? (
                                         <div className="text-center text-slate-400 text-sm py-4 italic">
-                                            No hay archivos asignados a este paso.
+                                            {t.files.empty}
                                         </div>
                                     ) : (
                                         activeStep.files.map((file: any, index: number) => (
@@ -421,7 +505,7 @@ export default function BuilderEditorPage() {
                                 <div className="flex justify-between items-center">
                                     <h3 className="text-lg font-bold text-[var(--navy-brand)] flex items-center gap-2">
                                         <ExternalLink className="w-5 h-5 text-indigo-500" />
-                                        Herramientas Oficiales (Links)
+                                        {t.tools.title}
                                     </h3>
                                     <button
                                         onClick={() => {
@@ -431,14 +515,14 @@ export default function BuilderEditorPage() {
                                         }}
                                         className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-600 flex items-center gap-1 transition-colors"
                                     >
-                                        <Plus className="w-3 h-3" /> Agregar Tool
+                                        <Plus className="w-3 h-3" /> {t.tools.add}
                                     </button>
                                 </div>
 
                                 <div className="space-y-3 bg-slate-50 rounded-xl p-4 min-h-[100px] border border-slate-100">
                                     {(!activeStep.resources || activeStep.resources.length === 0) && (
                                         <div className="text-center text-slate-400 text-sm py-4 italic">
-                                            No hay herramientas asignadas.
+                                            {t.tools.empty}
                                         </div>
                                     )}
                                     {activeStep.resources?.map((res: any, idx: number) => (
@@ -456,7 +540,7 @@ export default function BuilderEditorPage() {
                                                         handleUpdateActiveStep('resources', newResources);
                                                     }}
                                                     className="w-full bg-transparent border-none p-0 text-sm font-bold text-[var(--navy-brand)] focus:ring-0 placeholder-slate-300"
-                                                    placeholder="Nombre de la Herramienta"
+                                                    placeholder={t.tools.placeholderName}
                                                 />
                                                 <input
                                                     type="text"
@@ -467,7 +551,7 @@ export default function BuilderEditorPage() {
                                                         handleUpdateActiveStep('resources', newResources);
                                                     }}
                                                     className="w-full text-xs bg-slate-50 rounded px-2 py-1 text-slate-500 border border-slate-200 focus:border-[var(--navy-brand)] focus:ring-0"
-                                                    placeholder="URL (https://...)"
+                                                    placeholder={t.tools.placeholderUrl}
                                                 />
                                             </div>
                                             <button
@@ -487,7 +571,7 @@ export default function BuilderEditorPage() {
                     ) : (
                         <div className="h-full flex flex-col items-center justify-center text-slate-400">
                             <Plus className="w-12 h-12 mb-4 opacity-20" />
-                            <p>Selecciona un paso para editar</p>
+                            <p>{t.empty}</p>
                         </div>
                     )}
                 </div>

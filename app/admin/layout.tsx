@@ -3,8 +3,19 @@
 import Link from "next/link";
 import Image from "next/image";
 import { LayoutDashboard, Users, CreditCard, Settings, LogOut, DollarSign, Rocket, ShieldCheck } from "lucide-react";
+import { useBizPro } from "@/app/context/BizProContext";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+    // We need to access context, but this is a Layout. 
+    // Layouts in Next.js App Router wrap pages but if we need client context we must ensure it's client side.
+    // The file already has "use client" so we can use hooks.
+    // However, we need to import useBizPro.
+    // Since we can't easily inject the hook call at the top level if it's not already there in a way that respects the `children` prop pattern cleanly without a wrapper sometimes,
+    // but here it is a direct functional component.
+
+    // Let's assume we can add the hook call.
+    const { language } = useBizPro(); // This will require importing useBizPro which is not in the original file imports shown in view_file.
+
     return (
         <div className="min-h-screen bg-slate-50 flex">
             {/* Sidebar */}
@@ -31,15 +42,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </Link>
                     <Link href="/admin/users" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-[var(--navy-brand)] rounded-xl transition-all font-medium">
                         <Users className="w-5 h-5" />
-                        <span className="">Clientes</span>
+                        <span className="">{language === 'es' ? "Clientes" : "Clients"}</span>
                     </Link>
                     <Link href="/admin/finance" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-[var(--navy-brand)] rounded-xl transition-all font-medium">
                         <CreditCard className="w-5 h-5" />
-                        <span className="">Finanzas</span>
+                        <span className="">{language === 'es' ? "Finanzas" : "Finance"}</span>
                     </Link>
                     <Link href="/admin/builder" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-[var(--navy-brand)] rounded-xl transition-all font-medium">
                         <Settings className="w-5 h-5" />
-                        <span className="">Configuración</span>
+                        <span className="">{language === 'es' ? "Configuración" : "Settings"}</span>
                     </Link>
 
                     <div className="pt-4 pb-2">
@@ -62,7 +73,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="p-4 border-t border-slate-100 bg-slate-50">
                     <Link href="/" className="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all font-bold">
                         <LogOut className="w-5 h-5" />
-                        <span className="">Salir</span>
+                        <span className="">{language === 'es' ? "Salir" : "Sign Out"}</span>
                     </Link>
                 </div>
             </aside>

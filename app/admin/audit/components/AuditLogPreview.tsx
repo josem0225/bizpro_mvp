@@ -2,8 +2,44 @@
 
 import React from 'react';
 import { History, Search, Download, ShieldCheck } from 'lucide-react';
+import { useBizPro } from '@/app/context/BizProContext';
 
 export default function AuditLogPreview() {
+    const { language } = useBizPro();
+
+    const text = {
+        es: {
+            title: "Registro de Auditoría",
+            subtitle: "Registro inmutable de todas las acciones administrativas para cumplimiento.",
+            export: "Exportar CSV",
+            searchPlaceholder: "Buscar por usuario, acción o ID...",
+            table: {
+                timestamp: "Fecha / ID",
+                user: "Usuario",
+                action: "Acción",
+                entity: "Entidad",
+                changes: "Cambios",
+                ip: "Dir. IP"
+            }
+        },
+        en: {
+            title: "Audit Log",
+            subtitle: "Immutable record of all admin actions for compliance.",
+            export: "Export CSV",
+            searchPlaceholder: "Search by user, action, or ID...",
+            table: {
+                timestamp: "Timestamp / ID",
+                user: "User",
+                action: "Action",
+                entity: "Entity",
+                changes: "Changes",
+                ip: "IP Addr"
+            }
+        }
+    };
+
+    const t = language === 'es' ? text.es : text.en;
+
     // FAKE DATA
     const logs = [
         { id: 'LOG-001', date: 'Jan 25, 2026 14:30', user: 'Carlos Admin', action: 'Update Price', entity: 'Step 1', old: '$79', new: '$89', ip: '192.168.1.1' },
@@ -17,12 +53,12 @@ export default function AuditLogPreview() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-2">
-                        <ShieldCheck className="text-slate-700" /> Audit Log
+                        <ShieldCheck className="text-slate-700" /> {t.title}
                     </h1>
-                    <p className="text-slate-500 mt-1">Immutable record of all admin actions for compliance.</p>
+                    <p className="text-slate-500 mt-1">{t.subtitle}</p>
                 </div>
                 <button className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm font-medium border border-slate-300 px-4 py-2 rounded-lg bg-white hover:bg-slate-50">
-                    <Download size={16} /> Export CSV
+                    <Download size={16} /> {t.export}
                 </button>
             </div>
 
@@ -32,7 +68,7 @@ export default function AuditLogPreview() {
                 <div className="p-4 border-b border-slate-200 flex gap-4">
                     <div className="relative flex-1 max-w-md">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                        <input type="text" placeholder="Search by user, action, or ID..." className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-100" />
+                        <input type="text" placeholder={t.searchPlaceholder} className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-100" />
                     </div>
                 </div>
 
@@ -41,12 +77,12 @@ export default function AuditLogPreview() {
                     <table className="w-full text-left text-sm">
                         <thead className="bg-slate-50 text-slate-500 font-semibold uppercase tracking-wider text-xs">
                             <tr className="border-b border-slate-200">
-                                <th className="px-6 py-3">Timestamp / ID</th>
-                                <th className="px-6 py-3">User</th>
-                                <th className="px-6 py-3">Action</th>
-                                <th className="px-6 py-3">Entity</th>
-                                <th className="px-6 py-3">Changes</th>
-                                <th className="px-6 py-3 text-right">IP Addr</th>
+                                <th className="px-6 py-3">{t.table.timestamp}</th>
+                                <th className="px-6 py-3">{t.table.user}</th>
+                                <th className="px-6 py-3">{t.table.action}</th>
+                                <th className="px-6 py-3">{t.table.entity}</th>
+                                <th className="px-6 py-3">{t.table.changes}</th>
+                                <th className="px-6 py-3 text-right">{t.table.ip}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">

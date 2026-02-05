@@ -3,14 +3,17 @@
 import Link from "next/link";
 import { Plus, Package, Edit, Copy, MoreHorizontal, ArrowRight, Eye, Archive, Trash } from "lucide-react";
 import { useState } from "react";
+import { useBizPro } from "@/app/context/BizProContext";
 
 export default function BuilderPage() {
+    const { language } = useBizPro();
+
     // Mock data for verticals
     const verticals = [
         {
             id: 1,
             title: "Florida LLC Formation",
-            description: "Flujo estándar para registro de LLCs en Florida.",
+            description: language === 'es' ? "Flujo estándar para registro de LLCs en Florida." : "Standard workflow for Florida LLC registration.",
             steps: 6,
             users: 142,
             revenue: 28400,
@@ -19,7 +22,7 @@ export default function BuilderPage() {
         {
             id: 2,
             title: "Non-Profit Organization",
-            description: "Registro de organizaciones sin fines de lucro 501(c)(3).",
+            description: language === 'es' ? "Registro de organizaciones sin fines de lucro 501(c)(3)." : "NPO 501(c)(3) registration workflow.",
             steps: 8,
             users: 12,
             revenue: 0,
@@ -28,7 +31,7 @@ export default function BuilderPage() {
         {
             id: 3,
             title: "Sole Proprietorship",
-            description: "Registro simple para dueños únicos.",
+            description: language === 'es' ? "Registro simple para dueños únicos." : "Simple registration for sole proprietors.",
             steps: 4,
             users: 45,
             revenue: 2200,
@@ -40,36 +43,64 @@ export default function BuilderPage() {
 
     const handleDuplicate = (id: number) => {
         setOpenMenuId(null);
-        alert(`Duplicando template #${id}... (Lógica de backend pendiente)`);
+        alert(language === 'es' ? `Duplicando template #${id}...` : `Duplicating template #${id}...`);
     };
 
     const handlePreview = (id: number) => {
         setOpenMenuId(null);
-        alert(`Abriendo vista previa para template #${id}...`);
+        alert(language === 'es' ? `Abriendo vista previa para template #${id}...` : `Opening preview for template #${id}...`);
     };
 
     const handleArchive = (id: number) => {
         setOpenMenuId(null);
-        alert(`Archivando template #${id}...`);
+        alert(language === 'es' ? `Archivando template #${id}...` : `Archiving template #${id}...`);
     };
 
     const handleDelete = (id: number) => {
         setOpenMenuId(null);
-        if (confirm("¿Estás seguro de eliminar este template? Esta acción no se puede deshacer.")) {
-            alert(`Eliminando template #${id}...`);
+        const msg = language === 'es'
+            ? "¿Estás seguro de eliminar este template? Esta acción no se puede deshacer."
+            : "Are you sure you want to delete this template? This action cannot be undone.";
+        if (confirm(msg)) {
+            alert(language === 'es' ? `Eliminando template #${id}...` : `Deleting template #${id}...`);
         }
     };
+
+    const text = {
+        es: {
+            title: "Constructor de Negocios",
+            subtitle: "Gestiona los flujos de trabajo y ofertas para tus clientes.",
+            newModel: "Nuevo Modelo",
+            steps: "Pasos",
+            users: "Usuarios",
+            status: { active: "Activo", draft: "Borrador" },
+            edit: "Editar Flujo",
+            menu: { duplicate: "Duplicar Modelo", preview: "Vista Previa", archive: "Archivar", delete: "Eliminar" }
+        },
+        en: {
+            title: "Business Builder",
+            subtitle: "Manage workflows and offers for your clients.",
+            newModel: "New Model",
+            steps: "Steps",
+            users: "Users",
+            status: { active: "Active", draft: "Draft" },
+            edit: "Edit Workflow",
+            menu: { duplicate: "Duplicate Model", preview: "Preview", archive: "Archive", delete: "Delete" }
+        }
+    };
+
+    const t = language === 'es' ? text.es : text.en;
 
     return (
         <div className="space-y-8">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-3xl font-bold text-[var(--navy-brand)] mb-2">Constructor de Negocios</h1>
-                    <p className="text-slate-600">Gestiona los flujos de trabajo y ofertas para tus clientes.</p>
+                    <h1 className="text-3xl font-bold text-[var(--navy-brand)] mb-2">{t.title}</h1>
+                    <p className="text-slate-600">{t.subtitle}</p>
                 </div>
                 <button className="px-5 py-2.5 bg-[var(--navy-brand)] text-white rounded-xl font-bold hover:bg-[#1e1e38] transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
                     <Plus className="w-5 h-5" />
-                    Nuevo Modelo
+                    {t.newModel}
                 </button>
             </div>
 
@@ -92,15 +123,15 @@ export default function BuilderPage() {
                                     <div className="flex items-center gap-6 text-sm">
                                         <div className="flex items-center gap-2 text-slate-500 font-medium">
                                             <span className="w-2 h-2 rounded-full bg-slate-300"></span>
-                                            {vertical.steps} Pasos
+                                            {vertical.steps} {t.steps}
                                         </div>
                                         <div className="flex items-center gap-2 text-slate-500 font-medium">
                                             <span className="w-2 h-2 rounded-full bg-slate-300"></span>
-                                            {vertical.users} Usuarios
+                                            {vertical.users} {t.users}
                                         </div>
                                         <div className={`px-2 py-0.5 rounded-full text-xs font-bold border ${vertical.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-amber-50 text-amber-700 border-amber-100'
                                             }`}>
-                                            {vertical.status === 'Active' ? 'Activo' : 'Borrador'}
+                                            {vertical.status === 'Active' ? t.status.active : t.status.draft}
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +143,7 @@ export default function BuilderPage() {
                                     className="px-4 py-2 bg-white hover:bg-slate-50 text-[var(--navy-brand)] rounded-lg font-bold transition-colors flex items-center gap-2 border border-slate-200 hover:border-[var(--navy-brand)]"
                                 >
                                     <Edit className="w-4 h-4" />
-                                    Editar Flujo
+                                    {t.edit}
                                 </Link>
                                 <button className="p-2 text-slate-400 hover:text-[var(--navy-brand)] transition-colors hover:bg-slate-100 rounded-lg">
                                     <Copy className="w-5 h-5" />
@@ -133,17 +164,17 @@ export default function BuilderPage() {
                                             <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl z-20 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
                                                 <div className="p-1">
                                                     <button onClick={() => handleDuplicate(vertical.id)} className="w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[var(--navy-brand)] rounded-lg flex items-center gap-2 transition-colors">
-                                                        <Copy className="w-4 h-4" /> Duplicar Modelo
+                                                        <Copy className="w-4 h-4" /> {t.menu.duplicate}
                                                     </button>
                                                     <button onClick={() => handlePreview(vertical.id)} className="w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[var(--blue-electric)] rounded-lg flex items-center gap-2 transition-colors">
-                                                        <Eye className="w-4 h-4" /> Vista Previa
+                                                        <Eye className="w-4 h-4" /> {t.menu.preview}
                                                     </button>
                                                     <button onClick={() => handleArchive(vertical.id)} className="w-full text-left px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-amber-600 rounded-lg flex items-center gap-2 transition-colors">
-                                                        <Archive className="w-4 h-4" /> Archivar
+                                                        <Archive className="w-4 h-4" /> {t.menu.archive}
                                                     </button>
                                                     <div className="h-px bg-slate-100 my-1"></div>
                                                     <button onClick={() => handleDelete(vertical.id)} className="w-full text-left px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2 transition-colors">
-                                                        <Trash className="w-4 h-4" /> Eliminar
+                                                        <Trash className="w-4 h-4" /> {t.menu.delete}
                                                     </button>
                                                 </div>
                                             </div>

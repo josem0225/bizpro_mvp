@@ -1,9 +1,35 @@
+"use client";
+
 import AuthForm from "@/app/components/AuthForm";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Suspense } from "react";
+import { useBizPro } from "@/app/context/BizProContext";
 
 export default function LoginPage() {
+    const { language } = useBizPro();
+
+    const t = {
+        es: {
+            backHome: "Volver al inicio",
+            loading: "Cargando...",
+            headline: "Coordina tu negocio sin sorpresas.",
+            subheadline: "Únete a más de 500 emprendedores latinos que ya han formalizado su negocio en Florida con nuestra guía paso a paso.",
+            spanishLabel: "En Español",
+            hiddenCostsLabel: "Costos Ocultos"
+        },
+        en: {
+            backHome: "Back to Home",
+            loading: "Loading...",
+            headline: "Coordinate your business, surprise-free.",
+            subheadline: "Join over 500 Latino entrepreneurs who have already formalized their business in Florida with our step-by-step guide.",
+            spanishLabel: "In Spanish",
+            hiddenCostsLabel: "Hidden Costs"
+        }
+    };
+
+    const text = language === 'en' ? t.en : t.es;
+
     return (
         <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-white">
 
@@ -11,12 +37,12 @@ export default function LoginPage() {
             <div className="flex flex-col justify-center items-center p-8 lg:p-12 relative border-r border-slate-100">
                 <div className="absolute top-8 left-8">
                     <Link href="/" className="flex items-center text-[var(--navy-brand)] hover:opacity-80 transition-opacity text-sm gap-2 font-bold">
-                        <ArrowLeft className="w-5 h-5" /> Volver al inicio
+                        <ArrowLeft className="w-5 h-5" /> {text.backHome}
                     </Link>
                 </div>
 
                 <div className="w-full max-w-sm">
-                    <Suspense fallback={<div className="text-[var(--navy-brand)]">Cargando...</div>}>
+                    <Suspense fallback={<div className="text-[var(--navy-brand)]">{text.loading}</div>}>
                         <AuthForm />
                     </Suspense>
                 </div>
@@ -95,19 +121,19 @@ export default function LoginPage() {
                     </div>
 
                     <div className="mt-10 text-center max-w-md mx-auto">
-                        <h2 className="text-2xl font-bold text-[var(--navy-brand)] mb-3">Coordina tu negocio sin sorpresas.</h2>
+                        <h2 className="text-2xl font-bold text-[var(--navy-brand)] mb-3">{text.headline}</h2>
                         <p className="text-slate-500 text-base leading-relaxed mb-6">
-                            Unete a más de 500 emprendedores latinos que ya han formalizado su negocio en Florida con nuestra guía paso a paso.
+                            {text.subheadline}
                         </p>
 
                         <div className="flex justify-center gap-4">
                             <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100 w-28">
                                 <div className="text-lg font-bold text-slate-900 mb-0.5">100%</div>
-                                <div className="text-[10px] text-slate-400 font-medium uppercase">En Español</div>
+                                <div className="text-[10px] text-slate-400 font-medium uppercase">{text.spanishLabel}</div>
                             </div>
                             <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100 w-28">
                                 <div className="text-lg font-bold text-slate-900 mb-0.5">$0</div>
-                                <div className="text-[10px] text-slate-400 font-medium uppercase">Costos Ocultos</div>
+                                <div className="text-[10px] text-slate-400 font-medium uppercase">{text.hiddenCostsLabel}</div>
                             </div>
                         </div>
                     </div>

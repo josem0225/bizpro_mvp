@@ -27,6 +27,42 @@ export function BizProProvider({ children }: { children: React.ReactNode }) {
     const [data, setData] = useState<BizProDataType>(BIZPRO_DATA);
     const [isAdminMode, setIsAdminMode] = useState(false);
 
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        // Hydrate User
+        const storedUser = localStorage.getItem('bizpro_user');
+        if (storedUser) {
+            login(JSON.parse(storedUser).name);
+        }
+
+        // Logic for Language from URL or LocalStorage
+        const params = new URLSearchParams(window.location.search);
+        const langParam = params.get('lang') || params.get('locale');
+
+        let targetLang: Language | null = null;
+        if (langParam === 'en' || langParam === 'es') {
+            targetLang = langParam;
+            // Persist preference
+            localStorage.setItem('bizpro_lang', targetLang);
+        } else {
+            const storedLang = localStorage.getItem('bizpro_lang');
+            if (storedLang === 'en' || storedLang === 'es') {
+                targetLang = storedLang;
+            }
+        }
+
+        if (targetLang) {
+            setData(prev => ({
+                ...prev,
+                config: {
+                    ...prev.config,
+                    language: targetLang as Language
+                }
+            }));
+        }
+    }, []);
+
     const toggleLanguage = () => {
         setData(prev => ({
             ...prev,

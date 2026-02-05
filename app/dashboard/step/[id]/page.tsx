@@ -127,7 +127,7 @@ export default function StepDetailPage() {
                                 </div>
                                 <div className="mt-6 pt-6 border-t border-slate-100">
                                     <div className="flex justify-between text-sm mb-2">
-                                        <span className="text-slate-500">Progreso</span>
+                                        <span className="text-slate-500">{language === 'es' ? "Progreso" : "Progress"}</span>
                                         <span className="font-bold text-[var(--navy-brand)]">{progress}%</span>
                                     </div>
                                     <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
@@ -260,7 +260,7 @@ export default function StepDetailPage() {
                                             </div>
 
                                             <button className="self-center bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-[var(--navy-brand)] hover:text-white transition-colors">
-                                                Contactar
+                                                {language === 'es' ? "Contactar" : "Contact"}
                                             </button>
                                         </div>
                                     ))}

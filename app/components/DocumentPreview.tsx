@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { FileText, ShieldCheck } from "lucide-react";
+import { FileText } from "lucide-react";
 
 export default function DocumentPreview({ businessName, language }: { businessName: string, language: 'es' | 'en' }) {
+    const [docRef, setDocRef] = useState("");
+
+    useEffect(() => {
+        setDocRef(Math.random().toString(36).substring(7).toUpperCase());
+    }, []);
+
+    // Also fix Date hydration mismatch
+    const [dateStr, setDateStr] = useState("");
+    useEffect(() => {
+        setDateStr(new Date().toLocaleDateString());
+    }, []);
+
     return (
         <div className="relative w-full max-w-lg mx-auto bg-white text-black p-8 rounded-sm shadow-2xl rotate-1 hover:rotate-0 transition-transform duration-500 mb-12 border border-gray-200">
             {/* Watermark */}
@@ -42,7 +54,7 @@ export default function DocumentPreview({ businessName, language }: { businessNa
                     </div>
                     <div>
                         <div className="font-bold mb-1">Fecha de Efecto:</div>
-                        <div>{new Date().toLocaleDateString()}</div>
+                        <div>{dateStr || "Loading..."}</div>
                     </div>
                     <div>
                         <div className="font-bold mb-1">Estatus:</div>
@@ -54,8 +66,7 @@ export default function DocumentPreview({ businessName, language }: { businessNa
             {/* Footer */}
             <div className="mt-8 pt-4 border-t border-gray-200 flex justify-between items-end">
                 <div className="text-[10px] text-gray-400">
-                    {/* Fix: docRef was undefined. We can generate a dummy one or use a prop if available. Using a dummy for now. */}
-                    Doc Ref: {Math.random().toString(36).substring(7).toUpperCase()}
+                    Doc Ref: {docRef || "GENERATING..."}
                 </div>
                 <div className="flex items-center gap-1 text-[10px] text-blue-600">
                     <FileText className="w-3 h-3" />

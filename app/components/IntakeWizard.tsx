@@ -50,6 +50,30 @@ export default function IntakeWizard() {
         }
     };
 
+    const text = {
+        es: {
+            step: "Paso",
+            of: "de",
+            completed: "Completado",
+            back: "Anterior",
+            next: "Siguiente",
+            finishing: "Finalizando...",
+            finish: "Finalizar"
+        },
+        en: {
+            step: "Step",
+            of: "of",
+            completed: "Completed",
+            back: "Back",
+            next: "Next",
+            finishing: "Finishing...",
+            finish: "Finish"
+        }
+    };
+
+    // Default to 'es' if language isn't set properly, though context should handle it
+    const tLabel = language === 'en' ? text.en : text.es;
+
     const progressPercentage = ((currentStep + 1) / questions.length) * 100;
 
     return (
@@ -57,8 +81,8 @@ export default function IntakeWizard() {
             {/* Progress Bar */}
             <div className="mb-8">
                 <div className="flex justify-between text-sm text-slate-500 mb-2 font-medium">
-                    <span>Paso {currentStep + 1} de {questions.length}</span>
-                    <span>{Math.round(progressPercentage)}% Completado</span>
+                    <span>{tLabel.step} {currentStep + 1} {tLabel.of} {questions.length}</span>
+                    <span>{Math.round(progressPercentage)}% {tLabel.completed}</span>
                 </div>
                 <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
                     <div
@@ -120,7 +144,7 @@ export default function IntakeWizard() {
                         disabled={currentStep === 0}
                         className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-slate-400 transition-colors ${currentStep === 0 ? 'opacity-0 pointer-events-none' : 'hover:text-slate-700'}`}
                     >
-                        <ArrowLeft className="w-4 h-4" /> Anterior
+                        <ArrowLeft className="w-4 h-4" /> {tLabel.back}
                     </button>
 
                     <button
@@ -129,9 +153,9 @@ export default function IntakeWizard() {
                         className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--navy-brand)] text-white font-bold shadow-lg shadow-indigo-900/10 hover:bg-[#1a1a3a] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                         {isLastStep ? (
-                            isSubmitting ? "Finalizando..." : "Finalizar"
+                            isSubmitting ? tLabel.finishing : tLabel.finish
                         ) : (
-                            "Siguiente"
+                            tLabel.next
                         )}
                         {!isSubmitting && <ArrowRight className="w-4 h-4" />}
                     </button>

@@ -5,7 +5,7 @@ import { DollarSign, Download, Plus, Search, Calendar, CreditCard } from "lucide
 import { useState } from "react";
 
 export default function FinancePage() {
-    const { data } = useBizPro();
+    const { data, language } = useBizPro();
     const transactions = data.admin?.transactions || [];
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -22,27 +22,68 @@ export default function FinancePage() {
 
     // Mock functionality for manual payment logic
     const handleAddPayment = () => {
-        alert("Esta función abrirá un modal para registrar pagos manuales (Zelle/Cash) y actualizar el estado del cliente.");
+        alert(language === 'es'
+            ? "Esta función abrirá un modal para registrar pagos manuales (Zelle/Cash) y actualizar el estado del cliente."
+            : "This function will open a modal to register manual payments (Zelle/Cash) and update client status.");
     };
+
+    const text = {
+        es: {
+            title: "Finanzas",
+            subtitle: "Control de ingresos y conciliación de pagos.",
+            export: "Exportar CSV",
+            manual: "Registrar Pago Manual",
+            metrics: {
+                total: "Ingresos Totales",
+                average: "Ticket Promedio",
+                month: "Este Mes",
+                est: "(Est.)"
+            },
+            recent: "Transacciones Recientes",
+            searchPlaceholder: "Buscar por cliente o concepto...",
+            cols: { date: "Fecha", client: "Cliente", concept: "Concepto", method: "Método", amount: "Monto", status: "Estado" },
+            status: { completed: "Completado", pending: "Pendiente" },
+            empty: "No se encontraron transacciones."
+        },
+        en: {
+            title: "Finance",
+            subtitle: "Revenue control and payment reconciliation.",
+            export: "Export CSV",
+            manual: "Manual Payment",
+            metrics: {
+                total: "Total Revenue",
+                average: "Average Ticket",
+                month: "This Month",
+                est: "(Est.)"
+            },
+            recent: "Recent Transactions",
+            searchPlaceholder: "Search by client or concept...",
+            cols: { date: "Date", client: "Client", concept: "Concept", method: "Method", amount: "Amount", status: "Status" },
+            status: { completed: "Completed", pending: "Pending" },
+            empty: "No transactions found."
+        }
+    };
+
+    const t = language === 'es' ? text.es : text.en;
 
     return (
         <div className="space-y-8">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-3xl font-bold text-[var(--navy-brand)] mb-2">Finanzas</h1>
-                    <p className="text-slate-600">Control de ingresos y conciliación de pagos.</p>
+                    <h1 className="text-3xl font-bold text-[var(--navy-brand)] mb-2">{t.title}</h1>
+                    <p className="text-slate-600">{t.subtitle}</p>
                 </div>
                 <div className="flex gap-3">
                     <button className="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition-all flex items-center gap-2 font-medium shadow-sm hover:t">
                         <Download className="w-4 h-4" />
-                        Exportar CSV
+                        {t.export}
                     </button>
                     <button
                         onClick={handleAddPayment}
                         className="px-5 py-2 bg-[var(--navy-brand)] text-white rounded-xl font-bold hover:bg-[#1e1e38] transition-all flex items-center gap-2 shadow-md hover:shadow-lg"
                     >
                         <Plus className="w-5 h-5" />
-                        Registrar Pago Manual
+                        {t.manual}
                     </button>
                 </div>
             </div>
@@ -55,7 +96,7 @@ export default function FinancePage() {
                         <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
                             <DollarSign className="w-4 h-4" />
                         </div>
-                        <span className="text-slate-500 font-bold uppercase text-xs tracking-wider">Ingresos Totales</span>
+                        <span className="text-slate-500 font-bold uppercase text-xs tracking-wider">{t.metrics.total}</span>
                     </div>
                     <div className="text-3xl font-bold text-[var(--navy-brand)]">{fmt(totalRevenue)}</div>
                 </div>
@@ -65,7 +106,7 @@ export default function FinancePage() {
                         <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-[var(--navy-brand)]">
                             <CreditCard className="w-4 h-4" />
                         </div>
-                        <span className="text-slate-500 font-bold uppercase text-xs tracking-wider">Ticket Promedio</span>
+                        <span className="text-slate-500 font-bold uppercase text-xs tracking-wider">{t.metrics.average}</span>
                     </div>
                     <div className="text-3xl font-bold text-[var(--navy-brand)]">
                         {transactions.length > 0 ? fmt(totalRevenue / transactions.length) : "$0.00"}
@@ -77,21 +118,21 @@ export default function FinancePage() {
                         <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600">
                             <Calendar className="w-4 h-4" />
                         </div>
-                        <span className="text-slate-500 font-bold uppercase text-xs tracking-wider">Este Mes</span>
+                        <span className="text-slate-500 font-bold uppercase text-xs tracking-wider">{t.metrics.month}</span>
                     </div>
-                    <div className="text-3xl font-bold text-[var(--navy-brand)]">{fmt(totalRevenue * 0.3)} <span className="text-xs font-normal text-slate-400">(Est.)</span></div>
+                    <div className="text-3xl font-bold text-[var(--navy-brand)]">{fmt(totalRevenue * 0.3)} <span className="text-xs font-normal text-slate-400">{t.metrics.est}</span></div>
                 </div>
             </div>
 
             {/* Transactions Table */}
             <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                 <div className="p-5 border-b border-slate-100 flex justify-between items-center gap-4">
-                    <h2 className="text-lg font-bold text-[var(--navy-brand)]">Transacciones Recientes</h2>
+                    <h2 className="text-lg font-bold text-[var(--navy-brand)]">{t.recent}</h2>
                     <div className="relative max-w-xs w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <input
                             type="text"
-                            placeholder="Buscar por cliente o concepto..."
+                            placeholder={t.searchPlaceholder}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-[var(--foreground)] focus:outline-none focus:border-[var(--navy-brand)] focus:ring-1 focus:ring-[var(--navy-brand)]/20 transition-all placeholder:text-slate-400"
@@ -103,12 +144,12 @@ export default function FinancePage() {
                     <table className="w-full text-left text-sm">
                         <thead className="bg-slate-50 text-slate-500">
                             <tr>
-                                <th className="p-4 font-medium">Fecha</th>
-                                <th className="p-4 font-medium">Cliente</th>
-                                <th className="p-4 font-medium">Concepto</th>
-                                <th className="p-4 font-medium">Método</th>
-                                <th className="p-4 font-medium">Monto</th>
-                                <th className="p-4 font-medium text-right">Estado</th>
+                                <th className="p-4 font-medium">{t.cols.date}</th>
+                                <th className="p-4 font-medium">{t.cols.client}</th>
+                                <th className="p-4 font-medium">{t.cols.concept}</th>
+                                <th className="p-4 font-medium">{t.cols.method}</th>
+                                <th className="p-4 font-medium">{t.cols.amount}</th>
+                                <th className="p-4 font-medium text-right">{t.cols.status}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -130,7 +171,7 @@ export default function FinancePage() {
                                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${tx.status === 'Completed' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
                                             'bg-amber-50 text-amber-700 border border-amber-100'
                                             }`}>
-                                            {tx.status === 'Completed' ? 'Completado' : 'Pendiente'}
+                                            {tx.status === 'Completed' ? t.status.completed : t.status.pending}
                                         </span>
                                     </td>
                                 </tr>
@@ -138,7 +179,7 @@ export default function FinancePage() {
                             {filteredTransactions.length === 0 && (
                                 <tr>
                                     <td colSpan={6} className="p-8 text-center text-slate-500">
-                                        No se encontraron transacciones.
+                                        {t.empty}
                                     </td>
                                 </tr>
                             )}
