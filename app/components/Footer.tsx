@@ -18,7 +18,7 @@ export default function Footer() {
                         className="h-20 w-20"
                     />
                 </div>
-                <p>&copy; 2026 BizPro USA LLC. {language === 'es' ? "Todos los derechos reservados." : "All rights reserved."}</p>
+                <p>&copy; 2026 BizPro LLC. {language === 'es' ? "Todos los derechos reservados." : "All rights reserved."}</p>
                 <p className="mt-2.5">
                     {data.content.ui.footer.disclaimer[language]}
                 </p>

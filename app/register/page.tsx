@@ -20,7 +20,7 @@ export default function RegisterPage() {
                 </Suspense>
 
                 <div className="absolute bottom-8 text-center text-[var(--text-gray)] text-xs">
-                    &copy; 2026 BizPro USA LLC
+                    &copy; 2026 BizPro LLC
                 </div>
             </div>
 

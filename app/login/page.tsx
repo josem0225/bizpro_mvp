@@ -48,7 +48,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className="absolute bottom-8 text-center text-slate-400 text-xs">
-                    &copy; 2026 BizPro USA LLC
+                    &copy; 2026 BizPro LLC
                 </div>
             </div>
 

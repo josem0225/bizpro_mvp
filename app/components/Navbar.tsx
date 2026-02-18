@@ -33,7 +33,7 @@ export default function Navbar() {
                         className="h-14 w-14"
                         priority
                     />
-                    <span className="text-2xl font-bold tracking-tighter text-[var(--foreground)]">BizPro USA</span>
+                    <span className="text-2xl font-bold tracking-tighter text-[var(--foreground)]">BizPro</span>
                 </Link>
 
                 {/* Desktop Nav */}
