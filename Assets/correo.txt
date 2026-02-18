@@ -1,0 +1,41 @@
+Hola Eugenio,
+
+Gracias por tu feedback y por la claridad del documento técnico. Nos alegra que la base del diseño haya sido de tu agrado. Entendemos perfectamente que para aprobar el presupuesto final necesitas seguridad sobre los puntos técnicos bloqueantes.
+
+A continuación, la justificación detallada y el plan de acción para alinear el desarrollo con tus requerimientos:
+
+1. Sobre las 12 Preguntas y el Wizard Secuencial (Issue #3) Tienes toda la razón. En el diseño preliminar simplificamos la visualización, pero confirmamos que implementaremos las 12 pantallas secuenciales tal como las especificaste (Nombre, Ubicación, Industria, etc.).
+
+Implementación: Desarrollaremos un "Wizard" paso a paso (una pregunta por pantalla) con guardado automático de progreso.
+
+Flexibilidad: Adicionalmente, incluiremos un módulo en el administrador para que puedas ver estas preguntas base y tengas la libertad de agregar nuevos campos en el futuro.
+
+2. Justificación del Incremento ($2,700 vs $3,700) El ajuste de presupuesto responde directamente a la complejidad de la lógica de negocio que solicitas en el documento Developer Review. El MVP inicial ($2,700) cubría un sistema funcional básico, pero los $1,000 adicionales se utilizarán para programar la automatización y seguridad que pediste:
+
+Automatización de Desbloqueo (Issue #4): Implementaremos la "Regla del 80%" (el botón de desbloqueo solo aparecerá al completar el 80% del checklist) y conectaremos los Webhooks de Stripe para que el acceso se otorgue en tiempo real tras el pago, enviando los correos correspondientes sin intervención manual.
+
+Filtrado de Archivos (Issue #1): Programaremos el motor de descarga para que filtre dinámicamente los archivos según el Idioma y el Paso Actual del usuario, asegurando que cada cliente vea solo lo que le corresponde.
+
+Seguridad (Audit Log): Desarrollaremos la base de datos inmutable para el historial de cambios de precios, garantizando que nadie pueda borrar registros.
+
+3. Cobertura de Puntos Faltantes (Issues #2 y #5) Para que tengas total tranquilidad, confirmamos que también desarrollaremos los puntos críticos de acceso y administración que mencionaste:
+
+Lógica del Paso 0 (Issue #2): Crearemos dos rutas separadas tal como lo exige el documento: una Ruta Pública (/step-0) para visitantes y una Ruta Privada (/dashboard/step-0) para usuarios registrados, cada una con sus propios botones de acción (CTA) diferenciados.
+
+Panel de Precios Completo (Issue #5): Además del Audit Log, implementaremos el Dashboard de Métricas (para ver ahorros por paquete), el Gestor de Enlaces de Stripe (con validación de URL) y el Editor de Textos del Paywall, para que tengas control total sobre las ofertas.
+
+4. Plan de Fechas y Entregables Estamos alineados con tu sugerencia de tiempos (12 al 28 de febrero).
+
+Esta Semana: Realizaremos los ajustes visuales (Logo, Wireframes de las 12 preguntas y sección de Descargas) para tu aprobación final.
+
+Inicio de Desarrollo: Una vez aprobado el diseño ajustado y realizado el segundo pago, iniciaremos la programación.
+
+5. Acuerdo de Pagos Confirmamos el esquema propuesto:
+
+✅ Payment 1: $250 (Recibido).
+
+⏳ Payment 2: $1,600 (Contra entrega de los ajustes visuales de esta semana y firma de este alcance).
+
+🏁 Payment 3: $1,850 (Contra entrega final del software funcional).
+
+Si estás de acuerdo con este plan, procederemos de inmediato a diseñar las vistas faltantes para mostrártelas.

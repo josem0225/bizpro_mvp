@@ -1,0 +1,174 @@
+El documento no es un cuestionario para ti, sino una especificación técnica. Sin embargo, contiene una sección crítica con 12 preguntas literales que debes programar en el "Intake Wizard" (Asistente de inicio) de la aplicación, y además plantea dudas técnicas (problemas bloqueantes) que tú debes resolver con código.
+
+Aquí tienes la lista completa desglosada en dos partes: A) Las preguntas que la App debe hacer al usuario, y B) Los requerimientos técnicos (Checklists) que el cliente te está pidiendo completar.
+
+A. Las 12 Preguntas del "Intake Wizard" (Issue #3)
+El cliente exige cambiar el formulario de 3 preguntas por uno de 12 pantallas secuenciales. Estas son las preguntas exactas que debes incluir (en español e inglés) y el tipo de dato requerido:
+
+Nombre del negocio:
+
+ES: ¿Cuál es el nombre de tu negocio propuesto?
+
+EN: What is your proposed business name?
+
+
+Input: Texto libre (min 2 caracteres).
+
+Ubicación:
+
+ES: ¿En cuál condado de Florida operarás?
+
+EN: Which Florida county will you operate in?
+
+
+Input: Dropdown/Selector de tarjetas (Miami-Dade, Broward, Hillsborough, Orange, Duval, Other).
+
+Industria:
+
+ES: ¿Cuál es tu industria principal?
+
+EN: What is your primary industry?
+
+
+Input: Dropdown (Retail, Services, Food & Beverage, Consulting, Tech, Real Estate, Other).
+
+Estructura Legal:
+
+ES: ¿Prefieres LLC o Propietario Único?
+
+EN: Do you prefer LLC or Sole Proprietorship?
+
+
+Input: Radio buttons (LLC, Sole Proprietorship, Not sure).
+
+Dominio Web:
+
+ES: ¿Necesitas ayuda con un dominio web?
+
+EN: Do you need help with a web domain?
+
+
+Input: Sí/No.
+
+Experiencia:
+
+ES: ¿Tienes experiencia previa en negocios?
+
+EN: Do you have prior business experience?
+
+
+Input: Sí/No.
+
+Financiamiento:
+
+ES: ¿Buscarás financiamiento en los próximos 12 meses?
+
+EN: Will you seek funding in the next 12 months?
+
+
+Input: Sí/No/Tal vez.
+
+Cuenta Bancaria:
+
+ES: ¿Necesitas abrir una cuenta bancaria comercial?
+
+EN: Do you need to open a business bank account?
+
+
+Input: Sí/No/Ya tengo.
+
+Pagos (Stripe):
+
+ES: ¿Necesitas ayuda configurando Stripe (pagos)?
+
+EN: Do you need help setting up Stripe (payments)?
+
+
+Input: Sí/No.
+
+Idioma:
+
+ES: ¿Prefieres instrucciones completamente en español?
+
+EN: Do you prefer full Spanish instructions?
+
+
+Input: Sí/No.
+
+Fecha de Lanzamiento:
+
+ES: ¿Cuándo esperas lanzar tu negocio?
+
+EN: When do you expect to launch your business?
+
+
+Input: Selector de fecha (Opcional).
+
+Información Adicional:
+
+ES: ¿Hay algo más que deba saber sobre tu situación?
+
+EN: Is there anything else I should know about your situation?
+
+
+Input: Área de texto (Opcional, max 500 caracteres).
+
+B. Listas de Verificación para el Desarrollador (Lo que debes entregar)
+El documento lista 5 "Blocking Issues" (Problemas Bloqueantes). Para que el cliente te apruebe y pague, debes cumplir con estos Checklists de Implementación:
+
+1. Gestión de Archivos (Portal de Descargas)
+Debes crear un componente en Softr conectado a Airtable que cumpla con esto:
+
+[ ] Conectar a la tabla "Resources" de Airtable.
+
+[ ] Implementar filtro: Mostrar solo archivos del paso actual (Step = current) Y que estén activos (IsActive = TRUE) Y coincidan con el idioma del cliente.
+
+[ ] Botón "Preview" (Vista previa): Solo para PDFs.
+
+[ ] Botón "Download" (Descargar): Para todos los tipos de archivo (PDF, DOCX, XLSX).
+
+[ ] Agrupar archivos por categorías (Templates, Guides, Checklists, etc.).
+
+[ ] Diseño responsivo en móviles (tarjetas apiladas verticalmente).
+
+2. Lógica de Acceso al Paso 0 (Gratis vs Pago)
+El diseño actual era confuso. Debes implementar dos rutas distintas:
+
+[ ] Crear ruta pública /step-0 (accesible sin login).
+
+[ ] Crear ruta autenticada /dashboard/step-0 (para usuarios logueados).
+
+[ ] Landing Page: Botón "View Step 0 Free" lleva a la ruta pública; Botón "Get Started Free" lleva al Wizard de pago.
+
+[ ] El Paso 0 debe permitir descargar 2 PDFs sin pedir email ni login.
+
+[ ] Sidebar del Dashboard: Debe ocultar los pasos bloqueados (no mostrarlos en gris, sino ocultarlos).
+
+3. Automatización del Desbloqueo de Pasos
+Debes programar la lógica de cuándo se abre el siguiente paso:
+
+[ ] Regla del 80%: El botón "Unlock Step X+1" solo aparece cuando el usuario completa el 80% del checklist del paso actual.
+
+[ ] Al hacer clic en "Unlock", el estado cambia de bloqueado a desbloqueado inmediatamente.
+
+[ ] Enviar email automático al desbloquear (vía Zapier/Airtable).
+
+[ ] Implementar recordatorio de inactividad a los 7 días (email automático).
+
+[ ] Panel Admin: Permitir desbloqueo manual por parte de soporte.
+
+4. Características de Administración de Precios
+Faltaban herramientas para el administrador. Debes crear 3 paneles nuevos:
+
+[ ] Editor de Copia del Paywall: Editor de texto enriquecido que soporte variables como ${price} y ${step_name}.
+
+[ ] Gestor de Enlaces de Stripe: Panel para crear/editar/archivar los 7 enlaces de pago. Debe validar que el link empiece por https://buy.stripe.com/.
+
+[ ] Dashboard de Referencia de Precios: Panel de solo lectura que muestre precios actuales, métricas de ingresos (últimos 30 días) y ahorro por paquete.
+
+[ ] Log de Auditoría: Crear tabla inmutable PriceHistory en Airtable que registre cada cambio de precio (quién, cuándo, valor anterior, valor nuevo).
+
+[ ] Regla del 20%: Si se cambia un precio más del 20%, el sistema debe pedir confirmación.
+
+
+Resumen de esfuerzo: El cliente estima que esto tomará ~15 días y recomienda trabajar del 12 al 28 de febrero.

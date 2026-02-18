@@ -1,6 +1,6 @@
 "use client";
 
-import IntakeWizard from "@/app/components/IntakeWizard";
+import IntakeWizard from "@/app/intake/components/IntakeWizard";
 import ParticlesBackground from "@/app/components/ParticlesBackground";
 
 export default function IntakePage() {
