@@ -57,13 +57,17 @@ export default function StepDetailPage() {
                     <ArrowLeft className="w-4 h-4" /> {language === 'es' ? "Volver" : "Back"}
                 </Link>
                 <div className="space-y-2">
-                    {data.content.stepsDetail.map(s => (
-                        <div key={s.id} className={`p-3 rounded-lg text-sm transition-all ${s.id === stepId
-                            ? 'bg-[var(--navy-brand)] text-white font-bold shadow-md'
-                            : 'text-slate-600 hover:bg-white hover:shadow-sm cursor-pointer'}`}>
-                            {language === 'es' ? "Paso" : "Step"} {s.id}: {s.title[language]}
-                        </div>
-                    ))}
+                    <div className="space-y-2">
+                        {data.content.stepsDetail
+                            .filter(s => data.user.progress.unlockedSteps.includes(s.id))
+                            .map(s => (
+                                <div key={s.id} className={`p-3 rounded-lg text-sm transition-all ${s.id === stepId
+                                    ? 'bg-[var(--navy-brand)] text-white font-bold shadow-md'
+                                    : 'text-slate-600 hover:bg-white hover:shadow-sm cursor-pointer'}`}>
+                                    {language === 'es' ? "Paso" : "Step"} {s.id}: {s.title[language]}
+                                </div>
+                            ))}
+                    </div>
                 </div>
             </aside>
 

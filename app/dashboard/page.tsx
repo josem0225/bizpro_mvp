@@ -76,6 +76,41 @@ export default function DashboardPage() {
                     </p>
                 </div>
 
+                {/* REALISTIC DASHBOARD SUMMARY (Added per request) */}
+                <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-10 flex flex-col md:flex-row gap-8 items-center bg-gradient-to-r from-white to-slate-50">
+                    <div className="flex-1">
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+                            {language === 'es' ? "Estado de la Empresa" : "Company Status"}
+                        </div>
+                        <div className="flex items-center gap-3 mb-1">
+                            <h2 className="text-2xl font-bold text-[var(--navy-brand)]">{displayBusinessName}</h2>
+                            <span className="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-0.5 rounded-full border border-amber-200">
+                                {language === 'es' ? "En Proceso" : "In Progress"}
+                            </span>
+                        </div>
+                        <p className="text-sm text-slate-500">
+                            {language === 'es' ? "Estructura: LLC en Delaware" : "Structure: Delaware LLC"}
+                        </p>
+                    </div>
+
+                    <div className="flex gap-8 w-full md:w-auto border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-8">
+                        <div>
+                            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                                {language === 'es' ? "Lanzamiento Est." : "Est. Launch"}
+                            </div>
+                            <div className="font-bold text-slate-700">March 15, 2026</div>
+                        </div>
+                        <div>
+                            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                                {language === 'es' ? "Siguiente Acción" : "Next Action"}
+                            </div>
+                            <div className="font-bold text-[var(--navy-brand)] flex items-center gap-2">
+                                {language === 'es' ? "Subir Documentos" : "Upload Documents"} <ArrowRight className="w-4 h-4" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Steps Grid */}
                 <div className="grid gap-6">
                     {contentSteps.map((stepContent) => {

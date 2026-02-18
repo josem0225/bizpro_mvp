@@ -2,6 +2,8 @@
 
 import { useBizPro } from "@/app/context/BizProContext";
 import { DollarSign, UserCheck, AlertCircle } from "lucide-react";
+import ClientDrawer from "./components/ClientDrawer";
+import { useState } from "react";
 
 export default function AdminDashboard() {
     const { data, language } = useBizPro();
@@ -52,8 +54,10 @@ export default function AdminDashboard() {
 
     const t = language === 'es' ? text.es : text.en;
 
+    const [selectedUser, setSelectedUser] = useState<any | null>(null);
+
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 relative">
             <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-bold text-[var(--navy-brand)]">{t.title}</h1>
                 <span className="text-sm text-slate-500">{t.updated}</span>
@@ -141,7 +145,10 @@ export default function AdminDashboard() {
                                         {user.lastContact}
                                     </td>
                                     <td className="p-4 text-right">
-                                        <button className="text-[var(--navy-brand)] hover:text-indigo-900 font-bold hover:underline">
+                                        <button
+                                            onClick={() => setSelectedUser(user)}
+                                            className="text-[var(--navy-brand)] hover:text-indigo-900 font-bold hover:underline"
+                                        >
                                             {t.manage}
                                         </button>
                                     </td>
@@ -151,6 +158,14 @@ export default function AdminDashboard() {
                     </table>
                 </div>
             </div>
+
+            {/* Client Management Drawer */}
+            {selectedUser && (
+                <ClientDrawer
+                    user={selectedUser}
+                    onClose={() => setSelectedUser(null)}
+                />
+            )}
         </div>
     );
 }
