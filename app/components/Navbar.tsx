@@ -59,6 +59,13 @@ export default function Navbar() {
 
                 {/* CTA Buttons */}
                 <div className="flex gap-4 items-center">
+
+                    {/* DEMO ONLY: Admin Link */}
+                    <Link href="/admin" className="hidden md:flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-md border border-amber-200 hover:bg-amber-100 transition-colors mr-2">
+                        <Menu className="w-3 h-3" /> {/* Replaced by ShieldCheck in imports check */}
+                        ADMIN
+                    </Link>
+
                     {/* Language Toggle */}
                     <button
                         onClick={toggleLanguage}

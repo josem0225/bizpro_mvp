@@ -2,8 +2,13 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { BIZPRO_DATA, BizProDataType } from "@/app/lib/mock-db";
+import { ASSET_LIBRARY, Asset } from "@/app/lib/mock-assets";
 
 type Language = "es" | "en";
+
+interface ExtendedAsset extends Asset {
+    status: 'visible' | 'hidden';
+}
 
 interface BizProContextType {
     data: BizProDataType;
@@ -12,12 +17,17 @@ interface BizProContextType {
     updatePrice: (stepId: number, newPrice: number) => void;
     updateStepStatus: (stepId: number, status: string) => void;
     updatePaywallTemplate: (lang: Language, template: string) => void;
-    updateVertical: (vertical: any) => void; // New method
+    updateVertical: (vertical: any) => void;
     login: (name: string) => void;
     logout: () => void;
     setBusinessName: (name: string) => void;
     setActiveStep: (stepId: number) => void;
     isAdminMode: boolean;
+    // Resources
+    resources: ExtendedAsset[];
+    addResource: (resource: ExtendedAsset) => void;
+    updateResource: (id: string, updates: Partial<ExtendedAsset>) => void;
+    deleteResource: (id: string) => void;
 }
 
 const BizProContext = createContext<BizProContextType | undefined>(undefined);
@@ -26,6 +36,11 @@ export function BizProProvider({ children }: { children: React.ReactNode }) {
     // We initialize state with the static data, allowing us to mutate it in memory
     const [data, setData] = useState<BizProDataType>(BIZPRO_DATA);
     const [isAdminMode, setIsAdminMode] = useState(false);
+
+    // Initialize resources with mock data + default status
+    const [resources, setResources] = useState<ExtendedAsset[]>(
+        ASSET_LIBRARY.map(a => ({ ...a, status: 'visible' }))
+    );
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -176,6 +191,19 @@ export function BizProProvider({ children }: { children: React.ReactNode }) {
         }));
     };
 
+    // --- Resources Management ---
+    const addResource = (resource: ExtendedAsset) => {
+        setResources(prev => [...prev, resource]);
+    };
+
+    const updateResource = (id: string, updates: Partial<ExtendedAsset>) => {
+        setResources(prev => prev.map(r => r.id === id ? { ...r, ...updates } : r));
+    };
+
+    const deleteResource = (id: string) => {
+        setResources(prev => prev.filter(r => r.id !== id));
+    };
+
     return (
         <BizProContext.Provider
             value={{
@@ -190,7 +218,12 @@ export function BizProProvider({ children }: { children: React.ReactNode }) {
                 logout,
                 setBusinessName,
                 setActiveStep,
-                isAdminMode
+                isAdminMode,
+                // Resources
+                resources,
+                addResource,
+                updateResource,
+                deleteResource
             }}
         >
             {children}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { LayoutDashboard, Users, CreditCard, Settings, LogOut, DollarSign, Rocket, ShieldCheck } from "lucide-react";
+import { LayoutDashboard, Users, CreditCard, Settings, LogOut, DollarSign, Rocket, ShieldCheck, FileText } from "lucide-react";
 import { useBizPro } from "@/app/context/BizProContext";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -66,6 +66,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <Link href="/admin/audit" className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all font-medium group">
                             <ShieldCheck className="w-4 h-4 text-slate-400 group-hover:text-slate-900" />
                             <span className="text-sm">Audit Log</span>
+                        </Link>
+                        <Link href="/admin/resources" className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all font-medium group">
+                            <FileText className="w-4 h-4 text-slate-400 group-hover:text-indigo-600" />
+                            <span className="text-sm">File Manager</span>
                         </Link>
                     </div>
                 </nav>

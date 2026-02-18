@@ -1,7 +1,7 @@
 "use client";
 
 import { useBizPro } from "@/app/context/BizProContext";
-import { Check, ArrowRight } from "lucide-react";
+import { Check, ArrowRight, Download, FileText } from "lucide-react";
 import Link from "next/link";
 import DocumentPreview from "@/app/components/DocumentPreview";
 import LockedPlanPreview from "./components/LockedPlanPreview";
@@ -37,8 +37,33 @@ export default function TeaserPage() {
                     </p>
 
                     {/* INSTANT GRATIFICATION: Document Preview */}
-                    <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+                    <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 mb-12">
                         <DocumentPreview businessName={displayBusinessName} language={language} />
+
+                        {/* REQ C: Free Downloads */}
+                        <div className="mt-8 flex flex-col md:flex-row justify-center gap-4">
+                            <a href="/assets/structure_guide.pdf" download className="flex items-center gap-3 px-6 py-4 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-[var(--navy-brand)] hover:shadow-md transition-all group text-left">
+                                <div className="w-10 h-10 bg-blue-50 text-[var(--navy-brand)] rounded-lg flex items-center justify-center shrink-0">
+                                    <FileText className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="font-bold text-[var(--navy-brand)] text-sm group-hover:underline">{language === 'es' ? "Guía de Estructura" : "Structure Guide"}</div>
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">PDF • Free</div>
+                                </div>
+                                <Download className="w-4 h-4 text-slate-400 group-hover:text-[var(--navy-brand)] ml-2" />
+                            </a>
+
+                            <a href="/assets/checklist_teaser.pdf" download className="flex items-center gap-3 px-6 py-4 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-emerald-500 hover:shadow-md transition-all group text-left">
+                                <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center shrink-0">
+                                    <Check className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="font-bold text-slate-700 text-sm group-hover:text-emerald-700 group-hover:underline">{language === 'es' ? "Checklist de Inicio" : "Start Checklist"}</div>
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">PDF • Free</div>
+                                </div>
+                                <Download className="w-4 h-4 text-slate-400 group-hover:text-emerald-600 ml-2" />
+                            </a>
+                        </div>
                     </div>
 
                     {/* PERSONALIZED ROADMAP (Locked) */}

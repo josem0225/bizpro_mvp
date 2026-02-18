@@ -13,13 +13,9 @@ import { ASSET_LIBRARY } from "@/app/lib/mock-assets";
 export default function BuilderEditorPage() {
     const params = useParams();
     const router = useRouter(); // Import useRouter
-    const { data, updateVertical, language } = useBizPro();
+    const { data, updateVertical, language, resources } = useBizPro();
 
-    // In a real app, these would come from the context/DB based on params.id
-    // For MVP, we default to the first one if ID matches, or mock it.
-    const [library, setLibrary] = useState(ASSET_LIBRARY);
-    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-    const [newFile, setNewFile] = useState<{ name: string, type: 'pdf' | 'xlsx' | 'docx' | 'image' }>({ name: '', type: 'pdf' });
+    const activeResources = resources.filter(r => r.status === 'visible');
 
     const verticalId = params.id;
     const initialData = data.admin?.builder?.verticals.find((v: any) => v.id === verticalId) || data.admin?.builder?.verticals[0];
@@ -44,19 +40,11 @@ export default function BuilderEditorPage() {
                 optionsPlaceholder: "Opciones separadas por coma (ej. Opción A, Opción B)"
             },
             files: {
-                title: "Biblioteca de Archivos (Airtable)",
-                assign: "Asignar Recurso",
-                selectPlaceholder: "-- Seleccionar de la Biblioteca --",
-                new: "Nuevo",
-                empty: "No hay archivos asignados a este paso.",
-                modal: {
-                    title: "Subir Nuevo Recurso",
-                    name: "Nombre del Archivo",
-                    type: "Tipo de Archivo",
-                    note: "Nota: En este MVP, el archivo se simulará con una URL generada automáticamente.",
-                    cancel: "Cancelar",
-                    save: "Guardar y Asignar"
-                }
+                title: "Recursos Asignados",
+                assign: "Asignar de Biblioteca Central",
+                selectPlaceholder: "-- Seleccionar Archivo --",
+                manage: "Gestionar Biblioteca",
+                empty: "No hay recursos asignados. Selecciona uno de la biblioteca.",
             },
             tools: {
                 title: "Herramientas Oficiales (Links)",
@@ -84,19 +72,11 @@ export default function BuilderEditorPage() {
                 optionsPlaceholder: "Comma separated options (e.g. Option A, Option B)"
             },
             files: {
-                title: "File Library (Airtable)",
-                assign: "Assign Resource",
-                selectPlaceholder: "-- Select from Library --",
-                new: "New",
-                empty: "No files assigned to this step.",
-                modal: {
-                    title: "Upload New Resource",
-                    name: "File Name",
-                    type: "File Type",
-                    note: "Note: In this MVP, the file will be simulated with an auto-generated URL.",
-                    cancel: "Cancel",
-                    save: "Save & Assign"
-                }
+                title: "Assigned Resources",
+                assign: "Assign from Central Library",
+                selectPlaceholder: "-- Select File --",
+                manage: "Manage Library",
+                empty: "No resources assigned. Select one from the library.",
             },
             tools: {
                 title: "Official Tools (Links)",
@@ -119,30 +99,6 @@ export default function BuilderEditorPage() {
         const newSteps = [...vertical.steps];
         newSteps[activeStepIndex] = { ...newSteps[activeStepIndex], [field]: value };
         setVertical({ ...vertical, steps: newSteps });
-    };
-
-    const handleQuickUpload = () => {
-        const newAsset = {
-            id: `custom_${Date.now()}`,
-            name: newFile.name,
-            type: newFile.type,
-            url: `/assets/mock_${Date.now()}.${newFile.type}`
-        };
-
-        // 1. Add to local library
-        setLibrary([...library, newAsset]);
-
-        // 2. Add to current step
-        const stepFile = {
-            name: { es: newAsset.name, en: newAsset.name },
-            url: newAsset.url
-        };
-        const newFiles = [...(activeStep.files || []), stepFile];
-        handleUpdateActiveStep('files', newFiles);
-
-        // 3. Reset and close
-        setNewFile({ name: '', type: 'pdf' });
-        setIsUploadModalOpen(false);
     };
 
     if (!vertical) return <div className="text-white">Vertical no encontrada.</div>;
@@ -357,13 +313,14 @@ export default function BuilderEditorPage() {
 
                             <hr className="border-slate-100" />
 
-                            {/* 3. Files Library */}
+                            {/* 3. Files Library (Centralized) */}
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center">
                                     <h3 className="text-lg font-bold text-[var(--navy-brand)] flex items-center gap-2">
                                         <Download className="w-5 h-5 text-purple-600" />
                                         {t.files.title}
                                     </h3>
+                                    <Link href="/admin/resources" target="_blank" className="text-xs text-blue-600 font-bold hover:underline py-1 px-2">{t.files.manage}</Link>
                                 </div>
 
                                 {/* Asset Picker */}
@@ -374,10 +331,10 @@ export default function BuilderEditorPage() {
                                             className="flex-1 bg-white border border-slate-300 rounded-lg text-sm p-2 outline-none focus:border-[var(--navy-brand)]"
                                             onChange={(e) => {
                                                 const selectedId = e.target.value;
-                                                const asset = library.find(a => a.id === selectedId);
+                                                const asset = resources.find(a => a.id === selectedId);
                                                 if (asset) {
                                                     const newFile = {
-                                                        name: { es: asset.name, en: asset.name }, // Simple mock for i18n
+                                                        name: { es: asset.name, en: asset.name },
                                                         url: asset.url
                                                     };
                                                     const newFiles = [...(activeStep.files || []), newFile];
@@ -387,85 +344,14 @@ export default function BuilderEditorPage() {
                                             }}
                                         >
                                             <option value="">{t.files.selectPlaceholder}</option>
-                                            {library.map(asset => (
+                                            {activeResources.map(asset => (
                                                 <option key={asset.id} value={asset.id}>
                                                     {asset.type.toUpperCase()} - {asset.name}
                                                 </option>
                                             ))}
                                         </select>
-                                        <button
-                                            onClick={() => setIsUploadModalOpen(true)}
-                                            className="px-3 py-2 bg-[var(--navy-brand)] text-white rounded-lg hover:bg-slate-800 transition-colors flex items-center gap-2"
-                                            title="Subir Nuevo Archivo"
-                                        >
-                                            <Upload className="w-4 h-4" />
-                                            <span className="hidden sm:inline text-xs font-bold">{t.files.new}</span>
-                                        </button>
                                     </div>
                                 </div>
-
-                                {/* Upload Modal */}
-                                {isUploadModalOpen && (
-                                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-                                        <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl scale-100 animate-in zoom-in-95 duration-200">
-                                            <h3 className="text-xl font-bold text-[var(--navy-brand)] mb-4 flex items-center gap-2">
-                                                <Upload className="w-5 h-5" />
-                                                {t.files.modal.title}
-                                            </h3>
-
-                                            <div className="space-y-4">
-                                                <div>
-                                                    <label className="block text-sm font-bold text-slate-700 mb-1">{t.files.modal.name}</label>
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Ej: Guía de Impuestos 2026"
-                                                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 outline-none focus:border-[var(--navy-brand)]"
-                                                        value={newFile.name}
-                                                        onChange={(e) => setNewFile({ ...newFile, name: e.target.value })}
-                                                    />
-                                                </div>
-
-                                                <div>
-                                                    <label className="block text-sm font-bold text-slate-700 mb-1">{t.files.modal.type}</label>
-                                                    <div className="grid grid-cols-2 gap-2">
-                                                        {['pdf', 'xlsx', 'docx', 'image'].map(type => (
-                                                            <button
-                                                                key={type}
-                                                                onClick={() => setNewFile({ ...newFile, type: type as any })}
-                                                                className={`p-2 rounded-lg border text-sm font-medium transition-all ${newFile.type === type
-                                                                    ? 'bg-[var(--navy-brand)] text-white border-[var(--navy-brand)]'
-                                                                    : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                                                                    }`}
-                                                            >
-                                                                {type.toUpperCase()}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                </div>
-
-                                                <div className="bg-amber-50 text-amber-800 text-xs p-3 rounded-lg border border-amber-100">
-                                                    {t.files.modal.note}
-                                                </div>
-                                            </div>
-
-                                            <div className="flex gap-3 justify-end mt-6">
-                                                <button
-                                                    onClick={() => setIsUploadModalOpen(false)}
-                                                    className="px-4 py-2 text-slate-500 hover:bg-slate-100 rounded-lg font-medium transition-colors"
-                                                >
-                                                    {t.files.modal.cancel}
-                                                </button>
-                                                <button
-                                                    onClick={handleQuickUpload}
-                                                    disabled={!newFile.name}
-                                                    className="px-5 py-2 bg-[var(--navy-brand)] text-white rounded-lg font-bold hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                                                >
-                                                    {t.files.modal.save}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
 
                                 <div className="grid grid-cols-1 gap-2">
                                     {(!activeStep.files || activeStep.files.length === 0) ? (
