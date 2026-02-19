@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useBizPro } from "@/app/context/BizProContext";
@@ -62,7 +62,7 @@ export default function Navbar() {
 
                     {/* DEMO ONLY: Admin Link */}
                     <Link href="/admin" className="hidden md:flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-md border border-amber-200 hover:bg-amber-100 transition-colors mr-2">
-                        <Menu className="w-3 h-3" /> {/* Replaced by ShieldCheck in imports check */}
+                        <ShieldCheck className="w-3 h-3" />
                         ADMIN
                     </Link>
 
